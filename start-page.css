@@ -30,7 +30,7 @@
 #ss .start-btn:active .start-btn-inner{transform:scale(0.95)}
 #ss .start-btn-inner{display:inline-block}
 
-.day-bg {
+﻿.day-bg {
   background: linear-gradient(180deg, var(--cream) 0%, var(--pale-aqua) 40%, var(--ocean) 100%);
 }
 

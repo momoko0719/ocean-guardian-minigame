@@ -1,4 +1,4 @@
-/* Ocean Guardian start screen (Start Page day style) */
+/* Tidekeeper start screen (Start Page day style) */
 #ss{--cream:#FFF8F0;--pale-aqua:#E8F4F0;--ocean:#B8D8E8;--ocean-mid:#A0C8D8;--ocean-deep:#90B8C8;--sand:#F5E6D3;--sand-dark:#E8D5C0;--coral:#E8A0A0;--coral-soft:#F0C0C0;--sage:#A8C8A0;--sage-soft:#C0D8B8;--lavender:#C8A8D0;--lavender-soft:#D0C0E0;--charcoal:#5A5A5A;--teal:#4A7A7A;--teal-light:#6A9A9A;--night-bg:#1A1A3E;--night-sky:#252552;--night-ocean:#1A2848;--night-ocean-mid:#162040;--night-ocean-deep:#121838;--night-amber:#FFD080;--night-amber-dim:#CC9A50;--night-moon:#F0E8D0;--night-text:#C8C0D8;padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:stretch;justify-content:flex-start;background:transparent;backdrop-filter:none}
 #ss .sp-root{position:relative;width:100%;min-height:100vh;min-height:100dvh;overflow:hidden;flex-shrink:0}
 #ss .day-bg{
@@ -11,13 +11,14 @@
 #ss #sparkles{position:absolute;inset:0;z-index:15;pointer-events:none}
 #ss h1.title{margin:0}
 /* Big rounded title (Fredoka) — ~2× previous Titan One size */
-#ss .title-group{top:14%}
+#ss .title-group{top:20%}
 #ss .island-container{bottom:32%}
 #ss .day .title{
   font-family:'Fredoka','Fredoka One',system-ui,sans-serif;
   font-weight:700;
-  font-size:clamp(4.25rem,11.5vw,7.5rem);
+  font-size:clamp(5.5rem,14vw,9.5rem);
   letter-spacing:0.04em;
+  padding-left:0.04em;
   white-space:normal;
   max-width:min(96vw,22em);
   margin-left:auto;margin-right:auto;

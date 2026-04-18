@@ -60,18 +60,40 @@ canvas{display:block;width:100%;height:100%}
 .gbtn:hover{filter:brightness(1.08);box-shadow:0 6px 28px rgba(42,152,128,0.55);transform:translateY(-1px)}
 .gbtn:active{transform:translateY(0)}
 #ss .gbtn{margin-top:6px;width:100%;max-width:280px;margin-left:auto;margin-right:auto;display:block}
-#es .gbtn,#mgs .gbtn{background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.35);box-shadow:none;text-transform:none;letter-spacing:2px;padding:11px 40px;border-radius:8px;width:auto;max-width:none}
-#es .gbtn:hover,#mgs .gbtn:hover{filter:none;background:rgba(255,255,255,0.2)}
-.rl{width:310px;margin-bottom:14px}
-.rr{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:3px 0;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)}
-.rm{font-size:18px;width:24px;text-align:center}
-.rname{font:700 13px/1 'Helvetica Neue',Arial,sans-serif;flex:1}
-.rmoney{font:900 19px/1 'Helvetica Neue',Arial,sans-serif;color:#ffd700}
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:310px;margin-bottom:12px}
-.sb{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 13px}
-.sv{font:800 15px/1 'Helvetica Neue',Arial,sans-serif;color:#fff}
-.sl{font:400 10px/1 'Helvetica Neue',Arial,sans-serif;color:rgba(255,255,255,0.4);margin-top:3px}
-.beh{font:400 11px/1.85 'Helvetica Neue',Arial,sans-serif;color:rgba(255,255,255,0.3);max-width:310px;text-align:center;margin-bottom:16px}
+#es .gbtn,#mgs .gbtn{background:rgba(255,255,255,0.9);color:#23506e;border:1.5px solid rgba(120,170,205,0.7);box-shadow:0 4px 12px rgba(20,60,90,.12);text-transform:none;letter-spacing:2px;padding:11px 40px;border-radius:10px;width:auto;max-width:none}
+#es .gbtn:hover,#mgs .gbtn:hover{filter:none;background:#ffffff}
+#es.scr{background:url('assets/resultbg.png') center/cover no-repeat;backdrop-filter:none;overflow-y:auto}
+.res-wrap{width:min(1100px,96vw);max-height:none;padding:18px 22px 20px;border-radius:24px;display:flex;flex-direction:column;gap:0;background:transparent}
+.res-top-title{flex:0 0 auto;font:900 clamp(26px,4vw,52px)/1.1 'Fredoka','Segoe UI',sans-serif;color:#1a7694;text-align:center;text-shadow:0 2px 0 rgba(255,255,255,.6);margin:0 0 4px;padding:4px 0}
+.res-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(16px,2.5vw,28px);align-items:end;padding:72px 12px 0;margin-bottom:0}
+.res-card{position:relative;border-radius:20px;overflow:visible;box-shadow:0 10px 22px rgba(16,48,78,.2);margin:0 6px;background:#fff}
+.res-card.rank1{transform:translateY(-14px)}
+.res-head{height:90px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font:900 52px/1 'Fredoka','Segoe UI',sans-serif;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.16);border-radius:20px 20px 0 0}
+.res-card.rank1 .res-head{background:#e5c44f}
+.res-card.rank2 .res-head{background:#c8cdc6}
+.res-card.rank3 .res-head{background:#c39669}
+.res-body{background:#ffffff;padding:12px 14px 12px;border:1px solid rgba(115,150,180,.22);border-top:none;border-radius:0 0 20px 20px}
+.res-avatar{position:absolute;left:50%;top:-52px;transform:translateX(-50%);width:90px;height:90px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:transparent;z-index:5}
+.res-avatar img{width:100%;height:100%;object-fit:contain;display:block}
+.res-badges{display:flex;justify-content:center;gap:5px;min-height:24px;margin-bottom:6px;flex-wrap:wrap}
+.res-badge{padding:3px 8px;border-radius:999px;font:700 11px/1 'Segoe UI',sans-serif;border:2px solid}
+.res-badge.eco{color:#067a46;background:#e8ffe9;border-color:#22b573}
+.res-badge.over{color:#b3133a;background:#ffe6ec;border-color:#f17098}
+.res-pname{font:800 22px/1 'Fredoka','Segoe UI',sans-serif;text-align:center;margin:0 0 6px}
+.res-money{font:900 42px/1 'Fredoka','Segoe UI',sans-serif;color:#be7c00;text-align:center;margin:0}
+.res-basemoney{font:600 12px/1.4 'Segoe UI',sans-serif;text-align:center;color:#888;margin:2px 0 0}
+.res-moral{font:700 15px/1 'Segoe UI',sans-serif;text-align:center;color:#48626f;margin:4px 0 8px}
+.res-mini{display:flex;justify-content:space-around;font:600 13px/1.2 'Segoe UI',sans-serif;color:#30444e}
+.res-mini b{display:block;font-size:20px;margin-bottom:2px}
+.res-row4{display:grid;grid-template-columns:64px 80px 1fr auto 110px 110px 110px;align-items:center;gap:10px;padding:12px 18px;border-radius:16px;background:#ffffff;border:1px solid rgba(120,160,190,.28);box-shadow:0 4px 14px rgba(0,40,70,.1);margin:16px 10px 0;flex:0 0 auto}
+.res-row4-rank{font:900 28px/1 'Fredoka','Segoe UI',sans-serif;color:#3e4e53;text-align:center}
+.res-row4-avatar{width:64px;height:64px;border-radius:10px;background:transparent;display:flex;align-items:center;justify-content:center}
+.res-row4-avatar img{width:100%;height:100%;object-fit:contain;display:block}
+.res-row4-name{font:800 20px/1 'Fredoka','Segoe UI',sans-serif}
+.res-row4-money{font:900 34px/1 'Fredoka','Segoe UI',sans-serif;color:#be7c00;text-align:center;white-space:nowrap}
+.res-row4-moral,.res-row4-st,.res-row4-rel{font:700 18px/1.1 'Segoe UI',sans-serif;color:#405861;text-align:center}
+.res-row4-lbl{display:block;font-size:11px;color:#6d8390;font-weight:700}
+.res-actions{display:flex;justify-content:center;margin-top:18px;padding-bottom:6px}
 .mgbars{display:flex;gap:28px;align-items:flex-end;height:88px;margin-bottom:14px}
 .mgbw{display:flex;flex-direction:column;align-items:center;gap:7px}
 .mgbg{width:54px;height:76px;background:rgba(255,255,255,0.08);border-radius:8px;display:flex;align-items:flex-end;overflow:hidden;border:1px solid rgba(255,255,255,0.12)}
@@ -118,55 +140,19 @@ canvas{display:block;width:100%;height:100%}
 </head>
 <body>
 <canvas id="c"></canvas>
+<audio id="bgm" preload="auto" src="assets/bgm.mp3"></audio>
 <div id="ann"><div id="annbox"></div></div>
 
 <div id="gameHelp" class="game-help collapsed" style="display:none" aria-live="polite">
   <button type="button" class="gh-toggle" id="ghToggle">How to play</button>
   <div class="gh-body" id="ghBody">
     <div class="gh-flow">
-      <p class="gh-goal"><b>Goal</b> — Most <b>$</b> when time ends.</p>
-      <p class="gh-flow-line"><b>Ocean</b> — <span class="gh-c-act">Action</span> gathers seaweed, then build / upgrade ponds in your zone (🌿×3 each).</p>
-      <p class="gh-flow-line"><b>Market</b> — sell fish · <b>Kitchen</b> — cook, then sell cooked fish at Market.</p>
-      <p class="gh-flow-line"><b>Steal</b> — <span class="gh-c-act">Action</span> near others’ ponds · they <span class="gh-c-grd">Guard</span> to block.</p>
-      <p class="gh-flow-line"><b>Ocean</b> — <span class="gh-c-grd">Guard</span> releases a held fish to restore seaweed.</p>
-    </div>
-    <div class="gh-keys">
-      <div class="gh-keys-cap">Gamepads · P1–P4 = 1st–4th controller</div>
-      <div class="gh-grid">
-        <div class="gh-pcell">
-          <div class="gh-p p0">P1 · pad 1</div>
-          <div class="gh-pl">
-            <span class="gh-keygrp"><span class="gh-key-cap">Move</span><span class="kbd kbd-mv kbd-pad">LS + D-Pad</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#c43d18">Act</span><span class="kbd kbd-act">A</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#156a90">Grd</span><span class="kbd kbd-grd">B</span></span>
-          </div>
-        </div>
-        <div class="gh-pcell">
-          <div class="gh-p p1">P2 · pad 2</div>
-          <div class="gh-pl">
-            <span class="gh-keygrp"><span class="gh-key-cap">Move</span><span class="kbd kbd-mv kbd-pad">LS + D-Pad</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#c43d18">Act</span><span class="kbd kbd-act">A</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#156a90">Grd</span><span class="kbd kbd-grd">B</span></span>
-          </div>
-        </div>
-        <div class="gh-pcell">
-          <div class="gh-p p2">P3 · pad 3</div>
-          <div class="gh-pl">
-            <span class="gh-keygrp"><span class="gh-key-cap">Move</span><span class="kbd kbd-mv kbd-pad">LS + D-Pad</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#c43d18">Act</span><span class="kbd kbd-act">A</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#156a90">Grd</span><span class="kbd kbd-grd">B</span></span>
-          </div>
-        </div>
-        <div class="gh-pcell">
-          <div class="gh-p p3">P4 · pad 4</div>
-          <div class="gh-pl">
-            <span class="gh-keygrp"><span class="gh-key-cap">Move</span><span class="kbd kbd-mv kbd-pad">LS + D-Pad</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#c43d18">Act</span><span class="kbd kbd-act">A</span></span>
-            <span class="gh-keygrp"><span class="gh-key-cap" style="color:#156a90">Grd</span><span class="kbd kbd-grd">B</span></span>
-          </div>
-        </div>
-      </div>
-      <p class="gh-flow" style="margin:8px 0 0;font-size:9.5px;color:#5a6a78">Standard layout: A = bottom face (btn 0), B = right face (btn 1). Keyboard still works (see GAMEPAD.md).</p>
+      <p class="gh-goal"><b>Goal</b> — Most <b>$</b> when time runs out.</p>
+      <p class="gh-flow-line">🕹 <b>Left Stick / D-Pad</b> — Move</p>
+      <p class="gh-flow-line"><span class="gh-c-act">A</span> — Gather seaweed &middot; Choose &amp; build pond (🌿×3) &middot; Pick fish &middot; Sell at Market &middot; Steal</p>
+      <p class="gh-flow-line"><span class="gh-c-grd">B</span> — Ocean: release fish (+seaweed) &middot; Island short-press: build/upgrade pond menu &middot; Island hold: Guard shield (5 s, then cooldown)</p>
+      <p class="gh-flow-line">🐟 Build <b>Salmon</b> or <b>Tuna</b> ponds — watch the live price board and sell when hot!</p>
+      <p class="gh-flow-line">⭐ Rare <b>SSR</b> fish can spawn — stealing one triggers a mash battle!</p>
     </div>
   </div>
 </div>
@@ -179,7 +165,7 @@ canvas{display:block;width:100%;height:100%}
     <div class="cloud cloud-2"></div>
     <div class="cloud cloud-3"></div>
     <div class="title-group">
-      <h1 class="title">OCEAN GUARDIAN</h1>
+      <h1 class="title">Tidekeeper</h1>
     </div>
     <div class="island-container">
       <div class="island">
@@ -340,19 +326,20 @@ canvas{display:block;width:100%;height:100%}
         <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏆</span><p class="ss-f-txt"><strong>Goal</strong> — Most <strong>$</strong> when time ends.</p></li>
         <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🌊</span><p class="ss-f-txt"><span class="gh-c-act">Action</span> in ocean → seaweed → pond in your zone (<strong>🌿×3</strong>).</p></li>
         <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏪</span><p class="ss-f-txt"><strong>Market</strong> sell · <strong>Kitchen</strong> cook → sell at Market.</p></li>
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏴</span><p class="ss-f-txt"><span class="gh-c-act">Action</span> on rival ponds · <span class="gh-c-grd">Guard</span> blocks.</p></li>
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">♻️</span><p class="ss-f-txt"><span class="gh-c-grd">Guard</span> in ocean → release fish → restore seaweed.</p></li>
+        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏴</span><p class="ss-f-txt"><span class="gh-c-act">A</span> on rival ponds to steal · <span class="gh-c-grd">Hold B</span> to raise shield.</p></li>
+        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">♻️</span><p class="ss-f-txt"><span class="gh-c-grd">B</span> in ocean → release fish + seaweed · Short press on island → build pond.</p></li>
       </ul>
     </section>
   </div>
 </div>
 
 <div class="scr" id="es" style="display:none">
-  <h1 style="font-size:22px;color:#ffd700;margin-bottom:18px">— Game over —</h1>
-  <div class="rl" id="rl"></div>
-  <div class="sg" id="sg"></div>
-  <div class="beh" id="beh"></div>
-  <button class="gbtn" id="rb">Play again</button>
+  <div class="res-wrap">
+    <h1 class="res-top-title">Who Ruled the Sea?</h1>
+    <div class="res-podium" id="resPodium"></div>
+    <div class="res-row4" id="resRow4"></div>
+    <div class="res-actions"><button class="gbtn" id="rb">Play again</button></div>
+  </div>
 </div>
 
 <div class="scr" id="mgs" style="display:none">
@@ -383,6 +370,12 @@ function startSparkles(){
 }
 function rsz(){W=CV.width=window.innerWidth;H=CV.height=window.innerHeight;}
 rsz();window.addEventListener('resize',rsz);
+(function(){
+  var bgmEl=document.getElementById('bgm');
+  function startBgm(){if(!bgmEl)return;bgmEl.volume=0.2;bgmEl.loop=true;var pr=bgmEl.play();if(pr&&pr.catch)pr.catch(function(){});}
+  startBgm();
+  document.addEventListener('pointerdown',startBgm,{once:true,capture:true});
+})();
 
 var PC=['#e88888','#6a9fd4','#7bc99a','#e8a86e'];
 var PD=['#c45c5c','#4a7ab8','#5aa67a','#c88850'];
@@ -460,7 +453,10 @@ document.addEventListener('keydown',function(e){
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].indexOf(k)>=0)e.preventDefault();
   if(!keys[k]){keys[k]=true;if(mg)onMgKey(k);else if(running)onKey(k);}
 });
-document.addEventListener('keyup',function(e){keys[e.key.toLowerCase()]=false;});
+document.addEventListener('keyup',function(e){
+  var k=e.key.toLowerCase();keys[k]=false;
+  for(var i=0;i<4;i++){if(k===CTRL[i].grd)onGuardRelease(i);}
+});
 
 // Island geometry
 function IC(){
@@ -480,6 +476,7 @@ function inIsland(px,py){
 }
 function inOcean(px,py){return !inIsland(px,py);}
 function buildY(){var ic=IC();return ic.y-ic.ry*0.36;}
+function inIslandOpen(px,py){return inIsland(px,py)&&!inMarket(px,py)&&!inKitchen(px,py);}
 function inMarket(px,py){return py<buildY()&&inIsland(px,py)&&px<W/2;}
 function inKitchen(px,py){return py<buildY()&&inIsland(px,py)&&px>=W/2;}
 function inZone(pi,px,py){
@@ -505,6 +502,7 @@ function pp(pi,idx){
 
 // State
 var G=null,running=false,gameTime=0,lastTs=0,raf=0,annT=0,mg=null,_t=0;
+var fishPrices={salmon:4,tuna:3},priceTimer=0;
 var imgBg=new Image();
 var imgP=[new Image(),new Image(),new Image(),new Image()];
 var imgSeaweed=new Image();
@@ -515,6 +513,8 @@ imgSeaweed.src='assets/seaweed.png';
 imgPond[0].src='assets/pondlv1.png';
 imgPond[1].src='assets/pondlv2.png';
 imgPond[2].src='assets/pondlv3.png';
+var imgSalmon=new Image(),imgTuna=new Image();
+imgSalmon.src='assets/salmon.png';imgTuna.src='assets/tuna.png';
 var imgMarket=new Image();
 var imgKitchen=new Image();
 imgMarket.src='assets/market.png';
@@ -531,7 +531,7 @@ function drawHudIcon(img,cx,cy,pix){
   return true;
 }
 
-function mkP(i){var p=zc(i);return{i:i,x:p.x,y:p.y,money:0,morality:0,seaweed:0,hand:[],cooking:null,cookT:0,gathering:null,guarding:false,guardT:0,guardCD:0,stealCD:0,steals:0,releases:0};}
+function mkP(i){var p=zc(i);return{i:i,x:p.x,y:p.y,money:0,morality:0,seaweed:0,hand:[],cooking:null,cookT:0,cooked:[],gathering:null,guarding:false,guardT:0,guardCD:0,stealCD:0,steals:0,releases:0,buildMenu:false,buildMenuSel:0,buildMenuOpts:[],guardHeld:false,guardHoldT:0,sellMenu:false,sellMenuSel:0,sellMenuOpts:[],cookMenu:false,cookMenuSel:0,cookMenuOpts:[],menuDxPrev:0};}
 
 function genSW(){
   // Used only when releasing fish (addSW). Spawns one seaweed near island shore.
@@ -576,6 +576,7 @@ function genFixedSeaweeds(){
 function mkGame(){
   var sw=genFixedSeaweeds();
   G={players:[mkP(0),mkP(1),mkP(2),mkP(3)],ponds:[],nextId:1,seaweeds:sw,eco:15};
+fishPrices={salmon:4,tuna:3};priceTimer=0;
 }
 
 function addSW(n){
@@ -589,11 +590,18 @@ function addSW(n){
   G.eco=Math.min(15,G.eco+added);
 }
 
-function pickFish(){
-  var r=Math.random();
-  if(r<0.05)return{type:'ssr',name:'SSR goldfish',sell:30,cook:70,cookT:20,col:'#ffd700',rad:7};
-  if(r<0.25)return{type:'blue',name:'Blue fish',sell:6,cook:14,cookT:12,col:'#5dade2',rad:5};
-  return{type:'fish',name:'Common fish',sell:2,cook:5,cookT:8,col:'#7fb3d3',rad:4};
+function pickFishForPond(ft){
+  if(Math.random()<0.05)return{fishType:'ssr',name:'SSR goldfish',sell:15,cook:35,cookT:20,col:'#ffd700',rad:7};
+  var col=ft==='salmon'?'#f4956a':'#4a8fcc';
+  return{fishType:ft,name:ft==='salmon'?'Salmon':'Tuna',sell:0,cook:0,cookT:10,col:col,rad:5};
+}
+function getFishSellPrice(f){
+  if(f.fishType==='ssr')return f.sell;
+  return fishPrices[f.fishType]||3;
+}
+function getFishCookPrice(f){
+  if(f.fishType==='ssr')return f.cook;
+  return Math.round((fishPrices[f.fishType]||3)*2);
 }
 
 var PCAP=[0,5,10,15],PRATE=[0,13,10,8];
@@ -610,27 +618,63 @@ function doOceanRelease(pi){
   addSW(rg);p.releases++;p.morality++;p.gathering=null;
   sfxSplash();ann(PN[pi]+' released '+f.name+'! +'+rg+' seaweed 🌿',PC[pi]);
 }
-function onGuard(pi){
+function openBuildMenu(pi){
   if(!G)return;
   var p=G.players[pi];
+  if(p.buildMenu)return;
+  if(!inIsland(p.x,p.y)){ann('Must be on the island!','#888');return;}
+  if(p.seaweed<3){sfxNo();ann('Need \uD83C\uDF3F\xD73 (have '+p.seaweed+')','#888');return;}
+  var myP=G.ponds.filter(function(d){return d.owner===pi;});
+  var salPond=null,tunPond=null;
+  for(var qi=0;qi<myP.length;qi++){if(myP[qi].fishType==='salmon')salPond=myP[qi];else tunPond=myP[qi];}
+  var opt0=salPond?(salPond.level<3?{action:'upgrade',fishType:'salmon',label:'\u2B06 Upgrade Salmon'}:{action:'none',fishType:'salmon',label:'Salmon MAX \u2714'}):{action:'create',fishType:'salmon',label:'+ Create Salmon'};
+  var opt1=tunPond?(tunPond.level<3?{action:'upgrade',fishType:'tuna',label:'\u2B06 Upgrade Tuna'}:{action:'none',fishType:'tuna',label:'Tuna MAX \u2714'}):{action:'create',fishType:'tuna',label:'+ Create Tuna'};
+  if(opt0.action==='none'&&opt1.action==='none'){sfxNo();ann('Both ponds are max level!','#888');return;}
+  p.buildMenu=true;p.buildMenuOpts=[opt0,opt1];
+  p.buildMenuSel=(opt0.action==='none')?1:0;
+  ann(PN[pi]+': \u25C4\u25BA choose  \u2022  A confirm  \u2022  B cancel','#6a9fd4');
+}
+function onGuardPress(pi){
+  if(!G)return;
+  var p=G.players[pi];
+  // Cancel any open menu immediately
+  if(p.sellMenu){p.sellMenu=false;ann(PN[pi]+' cancelled','#888');return;}
+  if(p.cookMenu){p.cookMenu=false;ann(PN[pi]+' cancelled','#888');return;}
+  if(p.buildMenu){p.buildMenu=false;ann(PN[pi]+' cancelled','#888');return;}
+  // Ocean + fish → release fish (short-press unchanged)
   if(!inIsland(p.x,p.y)&&p.hand.length>0){doOceanRelease(pi);return;}
+  // Ocean no fish → nothing
   if(!inIsland(p.x,p.y))return;
-  if(p.guarding)return;
-  if(p.guardCD>0){ann('Guard cooldown '+Math.ceil(p.guardCD)+'s','#6b86a8');return;}
-  p.guarding=true;
-  p.guardT=5;
-  ann(PN[pi]+' guard up (5s)','rgba(80,150,220,0.95)');
+  // Island on cooldown → inform
+  if(p.guardCD>0){ann('Guard CD '+Math.ceil(p.guardCD)+'s','#6b86a8');return;}
+  // Start tracking hold
+  p.guardHeld=true;p.guardHoldT=0;
+}
+function onGuardRelease(pi){
+  if(!G)return;
+  var p=G.players[pi];
+  if(!p.guardHeld)return;
+  if(p.guardHoldT<0.25){
+    // Short press on island → open build menu
+    if(inIsland(p.x,p.y))openBuildMenu(pi);
+  } else {
+    // Long press ended → deactivate guard
+    if(p.guarding){p.guarding=false;p.guardT=0;p.guardCD=5;ann(PN[pi]+' guard down','#6b86a8');}
+  }
+  p.guardHeld=false;p.guardHoldT=0;
 }
 function onKey(k){
   for(var i=0;i<4;i++){
     if(k===CTRL[i].act)doAction(i);
-    if(k===CTRL[i].grd)onGuard(i);
+    if(k===CTRL[i].grd)onGuardPress(i);
   }
 }
 
 function doAction(pi){
   if(!G)return;
   var p=G.players[pi],px=p.x,py=p.y;
+  // Build menu confirm takes highest priority — avoids conflict with fish pickup
+  if(p.buildMenu){if(tryZoneBuild())return;}
   // steal enemy pond
   for(var oi=0;oi<4;oi++){
     if(oi===pi)continue;
@@ -650,49 +694,74 @@ function doAction(pi){
     }
   }
   function tryZoneBuild(){
-    if(!inZone(pi,px,py))return false;
+    if(!p.buildMenu)return false;
+    if(!inIsland(px,py)){p.buildMenu=false;return false;}
     var myP=G.ponds.filter(function(d){return d.owner===pi;});
-    if(myP.length>0&&myP[0].level<3&&p.seaweed>=3){p.seaweed-=3;myP[0].level++;sfxBuild();ann(PN[pi]+' pond Lv.'+myP[0].level+'! 🎉',PC[pi]);return true;}
-    if(myP.length<2&&p.seaweed>=3){
-      p.seaweed-=3;var ppos=pp(pi,myP.length);
-      G.ponds.push({id:G.nextId++,owner:pi,level:1,fish:[],timer:0,x:ppos.x,y:ppos.y});
-      sfxBuild();ann(PN[pi]+' built a pond!',PC[pi]);return true;
+    var salPond=null,tunPond=null;
+    for(var qi=0;qi<myP.length;qi++){if(myP[qi].fishType==='salmon')salPond=myP[qi];else tunPond=myP[qi];}
+    var opt0=salPond?(salPond.level<3?{action:'upgrade',fishType:'salmon'}:{action:'none',fishType:'salmon'}):{action:'create',fishType:'salmon'};
+    var opt1=tunPond?(tunPond.level<3?{action:'upgrade',fishType:'tuna'}:{action:'none',fishType:'tuna'}):{action:'create',fishType:'tuna'};
+    var sel=p.buildMenuSel===0?opt0:opt1;
+    if(sel.action==='none'){sfxNo();ann(sel.fishType==='salmon'?'Salmon pond is max level!':'Tuna pond is max level!','#c45c5c');return true;}
+    p.buildMenu=false;p.seaweed-=3;
+    if(sel.action==='create'){
+      // Check pond collision
+      for(var ci=0;ci<G.ponds.length;ci++){if(Math.hypot(px-G.ponds[ci].x,py-G.ponds[ci].y)<52){sfxNo();ann('Too close to another pond!','#888');p.seaweed+=3;return true;}}
+      G.ponds.push({id:G.nextId++,owner:pi,level:1,fish:[],timer:0,x:px,y:py,fishType:sel.fishType});
+      sfxBuild();ann(PN[pi]+' created '+sel.fishType+' pond! \uD83C\uDF89',PC[pi]);
+    } else {
+      var tgt=sel.fishType==='salmon'?salPond:tunPond;
+      if(tgt){tgt.level++;sfxBuild();ann(PN[pi]+' '+sel.fishType+' pond Lv.'+tgt.level+'! \uD83C\uDF89',PC[pi]);}
     }
-    if(p.seaweed<3){sfxNo();ann('Need 🌿×3 (have '+p.seaweed+')','#888');return true;}
     return true;
-  }
-  // Ambiguous case (holding fish + enough seaweed): decide by nearest objective.
-  if(inIsland(px,py)&&p.hand.length>0&&p.seaweed>=3){
-    var ic=IC(),bw=ic.rx*0.28,bh=ic.ry*0.44,sep=ic.rx*0.22;
-    var mx=ic.x-bw-ic.rx*0.04-sep+bw/2,my=ic.y-ic.ry*0.98+bh/2;
-    var kx=ic.x+ic.rx*0.04+sep+bw/2,ky=my;
-    var dFish=Math.min(Math.hypot(px-mx,py-my),Math.hypot(px-kx,py-ky));
-    var dPond=Infinity;
-    for(var opi=0;opi<G.ponds.length;opi++){
-      var opd=G.ponds[opi];
-      if(opd.owner===pi){
-        var dpd=Math.hypot(px-opd.x,py-opd.y);
-        if(dpd<dPond)dPond=dpd;
-      }
-    }
-    if(!isFinite(dPond)){var z=zc(pi);dPond=Math.hypot(px-z.x,py-z.y);}
-    if(dPond<=dFish){
-      if(tryZoneBuild())return;
-      ann('Move to your zone to build/upgrade pond','#6b8aa0');return;
-    }
   }
   // market
   if(inMarket(px,py)){
-    if(p.cooking&&p.cookT<=0){var f=p.cooking;p.cooking=null;p.money+=f.cook;sfxCoin();ann(PN[pi]+' sold cooked '+f.name+' +$'+f.cook,PC[pi]);return;}
-    if(p.hand.length>0){var f=p.hand.pop();p.money+=f.sell;sfxCoin();ann(PN[pi]+' sold '+f.name+' +$'+f.sell,PC[pi]);return;}
-    sfxNo();ann('No fish to sell','#888');return;
+    if(p.sellMenu){
+      var sopt=p.sellMenuOpts[p.sellMenuSel];p.sellMenu=false;
+      if(sopt.source==='cooked'){
+        var cidx=-1;for(var k=p.cooked.length-1;k>=0;k--)if(p.cooked[k].fishType===sopt.fishType){cidx=k;break;}
+        if(cidx>=0){var f=p.cooked.splice(cidx,1)[0];var cp=getFishCookPrice(f);p.money+=cp;sfxCoin();ann(PN[pi]+' sold cooked '+f.name+' +$'+cp,PC[pi]);}
+      }else{
+        var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===sopt.fishType){fidx=k;break;}
+        if(fidx>=0){var f=p.hand.splice(fidx,1)[0];var sp=getFishSellPrice(f);p.money+=sp;sfxCoin();ann(PN[pi]+' sold '+f.name+' +$'+sp,PC[pi]);}
+      }
+      return;
+    }
+    var sopts=[];
+    var rawSeen={};
+    for(var k=p.hand.length-1;k>=0;k--){var rft=p.hand[k].fishType||'salmon';if(!rawSeen[rft]){rawSeen[rft]=true;sopts.push({source:'raw',fishType:rft,label:'Raw '+rft,price:getFishSellPrice(p.hand[k])});}}
+    var cookedSeen={};
+    for(var k=p.cooked.length-1;k>=0;k--){var cft=p.cooked[k].fishType||'salmon';if(!cookedSeen[cft]){cookedSeen[cft]=true;sopts.push({source:'cooked',fishType:cft,label:'Cooked '+cft,price:getFishCookPrice(p.cooked[k])});}}
+    if(sopts.length===0){sfxNo();ann('No fish to sell','#888');return;}
+    if(sopts.length===1){
+      var sopt=sopts[0];
+      if(sopt.source==='cooked'){var cidx=-1;for(var k=p.cooked.length-1;k>=0;k--)if(p.cooked[k].fishType===sopt.fishType){cidx=k;break;}if(cidx>=0){var f=p.cooked.splice(cidx,1)[0];var cp=sopt.price;p.money+=cp;sfxCoin();ann(PN[pi]+' sold cooked '+f.name+' +$'+cp,PC[pi]);}}
+      else{var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===sopt.fishType){fidx=k;break;}if(fidx>=0){var f=p.hand.splice(fidx,1)[0];var sp=sopt.price;p.money+=sp;sfxCoin();ann(PN[pi]+' sold '+f.name+' +$'+sp,PC[pi]);}}
+      return;
+    }
+    p.sellMenu=true;p.sellMenuSel=0;p.sellMenuOpts=sopts;p.menuDxPrev=0;
+    ann(PN[pi]+': \u25c4\u25ba choose  \u2022  A sell  \u2022  B cancel','#2a8a40');return;
   }
   // kitchen
   if(inKitchen(px,py)){
-    if(p.cooking&&p.cookT<=0){sfxPop();ann(PN[pi]+' ready — sell at Market','#d4a050');return;}
-    if(p.cooking){ann('Cooking… '+Math.ceil(p.cookT)+'s','#d4a050');return;}
-    if(p.hand.length>0){p.cooking=p.hand.pop();p.cookT=p.cooking.cookT;sfxPop();ann(PN[pi]+' cooking '+p.cooking.name,'#d4a050');return;}
-    sfxNo();ann('No fish in hand','#888');return;
+    if(p.cookMenu){
+      var copt=p.cookMenuOpts[p.cookMenuSel];p.cookMenu=false;
+      var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===copt.fishType){fidx=k;break;}
+      if(fidx>=0){var f=p.hand.splice(fidx,1)[0];p.cooking=f;p.cookT=f.cookT;sfxPop();ann(PN[pi]+' cooking '+f.name,'#d4a050');}
+      return;
+    }
+    if(p.cooking){ann('Cooking\u2026 '+Math.ceil(p.cookT)+'s','#d4a050');return;}
+    if(p.hand.length===0){sfxNo();ann('No fish in hand','#888');return;}
+    var ctypes={};var copts=[];
+    for(var k=0;k<p.hand.length;k++){var cft=p.hand[k].fishType||'salmon';if(!ctypes[cft]){ctypes[cft]=true;copts.push({fishType:cft,label:'Cook '+cft.charAt(0).toUpperCase()+cft.slice(1)});}}
+    if(copts.length===1){
+      var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===copts[0].fishType){fidx=k;break;}
+      if(fidx>=0){var f=p.hand.splice(fidx,1)[0];p.cooking=f;p.cookT=f.cookT;sfxPop();ann(PN[pi]+' cooking '+f.name,'#d4a050');}
+      return;
+    }
+    p.cookMenu=true;p.cookMenuSel=0;p.cookMenuOpts=copts;p.menuDxPrev=0;
+    ann(PN[pi]+': \u25c4\u25ba choose  \u2022  A cook  \u2022  B cancel','#d4a050');return;
   }
   // zone: build/upgrade pond
   if(tryZoneBuild())return;
@@ -771,7 +840,8 @@ function update(dt){
       }
     }else if(running&&G){
       if(act&&!gpPrevAct[gpi])doAction(gpi);
-      if(grd&&!gpPrevGrd[gpi])onGuard(gpi);
+      if(grd&&!gpPrevGrd[gpi])onGuardPress(gpi);
+      if(!grd&&gpPrevGrd[gpi])onGuardRelease(gpi);
     }
     gpPrevAct[gpi]=!!act;
     gpPrevGrd[gpi]=!!grd;
@@ -779,11 +849,18 @@ function update(dt){
   if(mg)return;
   if(!running||!G)return;
   gameTime-=dt;if(gameTime<=0){gameTime=0;endGame();return;}
+  priceTimer+=dt;
+  if(priceTimer>=30){
+    priceTimer=0;
+    var ps=3+Math.floor(Math.random()*3),pt=3+Math.floor(Math.random()*3);
+    fishPrices={salmon:ps,tuna:pt};
+    ann('📊 Market update!  Salmon $'+ps+'  •  Tuna $'+pt,'#c8860a');
+  }
   var emu=G.eco<5?0.4:1;
   for(var j=0;j<G.ponds.length;j++){
     var pd=G.ponds[j];if(pd.fish.length>=PCAP[pd.level])continue;
     pd.timer+=dt*emu;
-    if(pd.timer>=PRATE[pd.level]){pd.timer=0;var f=pickFish();pd.fish.push(f);if(f.type==='ssr'){sfxSSR();ann('⚠ SSR in '+PN[pd.owner]+"'s pond!",'#ffd700');}}
+    if(pd.timer>=PRATE[pd.level]){pd.timer=0;var f=pickFishForPond(pd.fishType||'salmon');pd.fish.push(f);if(f.fishType==='ssr'){sfxSSR();ann('⚠ SSR in '+PN[pd.owner]+"'s pond!",'#ffd700');}}
   }
   for(var i=0;i<4;i++){
     var p=G.players[i],ct=CTRL[i];var dx=0,dy=0;
@@ -807,16 +884,40 @@ function update(dt){
     if(p.gathering&&inIsland(p.x,p.y))p.gathering=null;
     if(p.stealCD>0)p.stealCD-=dt;
     if(p.guardCD>0)p.guardCD-=dt;
+    if(p.buildMenu){
+      var bDx=0;
+      if(keys[CTRL[i].l])bDx=-1;if(keys[CTRL[i].r])bDx=1;
+      var bPad=pads[i];if(bPad){var bSt=gpStick(bPad),bDp=gpDpad(bPad);
+        bDx=bDx||(bDp.x?bDp.x:(bSt.x>0.5?1:bSt.x<-0.5?-1:0));}
+      if(bDx<0)p.buildMenuSel=0;if(bDx>0)p.buildMenuSel=1;
+    }
+    if(p.sellMenu||p.cookMenu){
+      var mDx=0;
+      if(keys[CTRL[i].l])mDx=-1;if(keys[CTRL[i].r])mDx=1;
+      var mPad=pads[i];if(mPad){var mSt=gpStick(mPad),mDp=gpDpad(mPad);
+        mDx=mDx||(mDp.x?mDp.x:(mSt.x>0.5?1:mSt.x<-0.5?-1:0));}
+      if(mDx!==0&&p.menuDxPrev===0){
+        if(p.sellMenu&&p.sellMenuOpts.length>0){var n=p.sellMenuOpts.length;p.sellMenuSel=(p.sellMenuSel+mDx+n)%n;}
+        if(p.cookMenu&&p.cookMenuOpts.length>0){var n=p.cookMenuOpts.length;p.cookMenuSel=(p.cookMenuSel+mDx+n)%n;}
+      }
+      p.menuDxPrev=mDx;
+    } else {p.menuDxPrev=0;}
+    if(p.guardHeld){
+      p.guardHoldT+=dt;
+      // Activate guard once hold passes 250ms threshold
+      if(!p.guarding&&p.guardHoldT>=0.25&&inIsland(p.x,p.y)){
+        p.guarding=true;p.guardT=5;
+        ann(PN[i]+' guard up (hold B)','rgba(80,150,220,0.95)');
+      }
+    }
     if(p.guarding){
       p.guardT-=dt;
       if(p.guardT<=0){
-        p.guarding=false;
-        p.guardT=0;
-        p.guardCD=5;
+        p.guarding=false;p.guardT=0;p.guardCD=5;p.guardHeld=false;
         ann(PN[i]+' guard expired','#6b86a8');
       }
     }
-    if(p.cooking&&p.cookT>0)p.cookT-=dt;
+    if(p.cooking&&p.cookT>0){p.cookT-=dt;if(p.cookT<=0){p.cooked.push(p.cooking);p.cooking=null;sfxPop();ann(PN[i]+' \u2705 fish cooked! Sell at Market',PC[i]);}}
     if(p.gathering){
       var gi=-1,gd=999;
       for(var gj=0;gj<G.seaweeds.length;gj++){
@@ -924,7 +1025,7 @@ function drawPond(pd){
   var lv=Math.min(Math.max(pd.level,1),3);
   var sc=0.84+(lv-1)*0.14;
   var hasSsr=false;
-  for(var k=0;k<pd.fish.length;k++)if(pd.fish[k].type==='ssr'){hasSsr=true;break;}
+  for(var k=0;k<pd.fish.length;k++)if(pd.fish[k].fishType==='ssr'){hasSsr=true;break;}
   var st=[
     {rim:'#48c878',tag:'#0d5038',sub:'#3d6a55'},
     {rim:'#30c0e8',tag:'#064060',sub:'#2a7090'},
@@ -959,17 +1060,46 @@ function drawPond(pd){
     C.closePath();C.fill();
     C.fillStyle='rgba(255,255,255,0.55)';C.beginPath();C.arc(fx+Math.cos(fa),fy+Math.sin(fa)*0.6,1.3*sc,0,Math.PI*2);C.fill();
   }
-  var tagW=82,tagH=38,tagTop=pd.y-48*sc-lv*5;
-  C.fillStyle='rgba(255,255,255,0.96)';rr(pd.x-tagW/2,tagTop,tagW,tagH,10);C.fill();
-  C.strokeStyle=st.rim;C.lineWidth=lv>=2?3.5:2.2;
-  rr(pd.x-tagW/2,tagTop,tagW,tagH,10);C.stroke();
-  C.shadowColor='rgba(0,0,0,0.15)';C.shadowBlur=4;C.shadowOffsetY=1;
-  C.fillStyle=st.tag;C.font='900 16px "Segoe UI",system-ui,sans-serif';C.textAlign='center';
-  C.fillText('Lv '+lv,pd.x,tagTop+22);
-  C.shadowBlur=0;C.shadowOffsetY=0;
-  C.fillStyle=st.sub;C.font='800 12px "Segoe UI",sans-serif';
-  C.fillText(pd.fish.length+' 🐟',pd.x,tagTop+35);
+  // Panel above pond: fish icon + Lv (no player label — see flag below)
+  var lblIcon=pd.fishType==='tuna'?imgTuna:imgSalmon;
+  var iconSz=14;
+  C.font='800 11px "Segoe UI",system-ui,sans-serif';
+  var lvW=C.measureText('Lv'+lv).width;
+  var hasIcon=lblIcon.complete&&lblIcon.naturalWidth>0;
+  var totalW=(hasIcon?iconSz+3:0)+lvW;
+  var tagW=Math.max(52,totalW+16),tagH=22,tagTop=pd.y-pondH/2-tagH-4;
+  C.fillStyle='rgba(255,255,255,0.97)';rr(pd.x-tagW/2,tagTop,tagW,tagH,8);C.fill();
+  C.strokeStyle=st.rim;C.lineWidth=lv>=2?2.5:1.8;rr(pd.x-tagW/2,tagTop,tagW,tagH,8);C.stroke();
+  var tx=pd.x-totalW/2,ty=tagTop+15;
+  if(hasIcon){C.drawImage(lblIcon,tx,ty-iconSz+2,iconSz,iconSz);tx+=iconSz+3;}
+  C.fillStyle=st.tag;C.textAlign='left';C.fillText('Lv'+lv,tx,ty);
   C.textAlign='left';
+  // Flag: pole + triangular pennant with player color + player PNG
+  var flagX=pd.x+pondW/2+10,poleBot=pd.y+pondH*0.2,poleTop2=pd.y-pondH/2-2;
+  C.strokeStyle='rgba(80,55,30,0.85)';C.lineWidth=2;
+  C.beginPath();C.moveTo(flagX,poleBot);C.lineTo(flagX,poleTop2);C.stroke();
+  // Triangle pennant (points right from pole top) — rounded corners
+  var fW=32,fH=26,fR=3;
+  var p0x=flagX,p0y=poleTop2;
+  var p1x=flagX+fW,p1y=poleTop2+fH/2;
+  var p2x=flagX,p2y=poleTop2+fH;
+  C.beginPath();
+  C.moveTo((p0x+p1x)/2,(p0y+p1y)/2);
+  C.arcTo(p1x,p1y,p2x,p2y,fR);
+  C.arcTo(p2x,p2y,p0x,p0y,fR);
+  C.arcTo(p0x,p0y,p1x,p1y,fR);
+  C.closePath();
+  C.fillStyle='rgba(255,255,255,0.97)';C.fill();
+  C.strokeStyle=PC[pd.owner];C.lineWidth=1.8;C.stroke();
+  // Player PNG centered at triangle centroid
+  var avSz=16,avImg=imgP[pd.owner];
+  var avX=flagX+fW/3-avSz/2,avY=poleTop2+fH/2-avSz/2;
+  if(avImg&&avImg.complete&&avImg.naturalWidth>0){
+    C.drawImage(avImg,avX,avY,avSz,avSz);
+  }else{
+    C.fillStyle=PC[pd.owner];C.font='700 9px sans-serif';C.textAlign='center';
+    C.fillText(PN[pd.owner],flagX+fW*0.38,poleTop2+fH/2+3);C.textAlign='left';
+  }
 }
 
 function drawProgBar(cx,cy,w,h,prog,colA,colB){
@@ -1019,11 +1149,14 @@ function drawPlayer(p){
   }
   C.fillStyle=PD[i];C.font='700 10px "Segoe UI",Arial,sans-serif';C.textAlign='center';
   C.fillText(PN[i],px,top-8);
-  if(p.hand.length>0||p.cooking){
+  if(p.hand.length>0||p.cooking||p.cooked.length>0){
     C.fillStyle='rgba(35,45,55,0.78)';rr(px+14,top-54,38,17,6);C.fill();
     C.strokeStyle='rgba(255,255,255,0.2)';C.lineWidth=0.8;rr(px+14,top-54,38,17,6);C.stroke();
     C.fillStyle='#f8fafc';C.font='11px Arial,sans-serif';C.textAlign='left';
-    var ht='';if(p.hand.length)ht+='🐟'+p.hand.length;if(p.cooking)ht+=(ht?' ':'')+(p.cookT>0?'🍳':'✅');
+    var ht='';
+    if(p.hand.length)ht+='\uD83D\uDC1F'+p.hand.length;
+    if(p.cooking&&p.cookT>0)ht+=(ht?' ':'')+'\uD83C\uDF73';
+    if(p.cooked.length)ht+=(ht?' ':'')+'\u2705'+p.cooked.length;
     C.fillText(ht,px+17,top-42);
   }
   if(p.seaweed>0){
@@ -1032,9 +1165,9 @@ function drawPlayer(p){
     C.fillStyle='#f8fafc';C.font='11px Arial,sans-serif';C.textAlign='left';
     C.fillText('🌿'+p.seaweed,px-47,top-42);
   }
-  if(p.cooking&&p.cookT<=0){
+  if(p.cooked.length>0){
     C.fillStyle='rgba(80,160,95,0.92)';C.font='700 8px "Segoe UI",Arial,sans-serif';C.textAlign='center';
-    C.fillText('Ready',px,footY+12);
+    C.fillText('\u2705 Cooked\xD7'+p.cooked.length,px,footY+12);
   }
   footY=footY+14;
   if(G&&p.hand.length>0&&!inIsland(px,py)){
@@ -1048,28 +1181,114 @@ function drawPlayer(p){
     C.fillStyle='rgba(200,95,85,0.95)';C.font='700 9px "Segoe UI",Arial,sans-serif';C.textAlign='center';
     C.fillText('CD '+Math.ceil(p.stealCD)+'s',px,footY);
   }
+  // Sell menu popup
+  if(p.sellMenu&&p.sellMenuOpts&&p.sellMenuOpts.length>0){
+    var sopts=p.sellMenuOpts;
+    var cardW=68,cardH=64,cardGap=5,cardPad=8;
+    var smW=sopts.length*(cardW+cardGap)-cardGap+cardPad*2,smH=cardH+cardPad*2;
+    var smX=px-smW/2,smY=top-smH-24;
+    C.fillStyle='rgba(255,255,255,0.97)';rr(smX,smY,smW,smH,12);C.fill();
+    C.strokeStyle='rgba(40,160,80,0.7)';C.lineWidth=1.5;rr(smX,smY,smW,smH,12);C.stroke();
+    for(var si=0;si<sopts.length;si++){
+      var sopt=sopts[si],sel=p.sellMenuSel===si;
+      var cx=smX+cardPad+si*(cardW+cardGap),cy=smY+cardPad;
+      C.fillStyle=sel?'rgba(40,180,80,0.18)':'rgba(0,0,0,0.02)';rr(cx,cy,cardW,cardH,8);C.fill();
+      if(sel){C.strokeStyle='#28a050';C.lineWidth=2;rr(cx,cy,cardW,cardH,8);C.stroke();}
+      var fIcon=sopt.fishType==='tuna'?imgTuna:(sopt.fishType==='ssr'?null:imgSalmon);
+      var iSz2=24,icX=cx+cardW/2-iSz2/2,icY=cy+6;
+      if(fIcon&&fIcon.complete&&fIcon.naturalWidth>0){C.drawImage(fIcon,icX,icY,iSz2,iSz2);}
+      else if(sopt.fishType==='ssr'){C.fillStyle='#ffd700';C.font='18px sans-serif';C.textAlign='center';C.fillText('\u2B50',cx+cardW/2,icY+18);}
+      if(sopt.source==='cooked'){C.fillStyle='rgba(180,80,0,0.9)';C.font='bold 7px "Segoe UI",sans-serif';C.textAlign='center';C.fillText('COOKED',cx+cardW/2,cy+8);}
+      C.fillStyle='#1a4020';C.font='800 12px "Segoe UI",sans-serif';C.textAlign='center';
+      C.fillText('$'+sopt.price,cx+cardW/2,cy+44);
+      var lbl=sopt.source==='cooked'?'Ckd '+sopt.fishType.charAt(0).toUpperCase()+sopt.fishType.slice(1):'Raw '+sopt.fishType.charAt(0).toUpperCase()+sopt.fishType.slice(1);
+      C.fillStyle='rgba(40,60,40,0.65)';C.font='600 8px "Segoe UI",sans-serif';
+      C.fillText(lbl,cx+cardW/2,cy+56);
+    }
+    C.fillStyle='rgba(70,90,120,0.72)';C.font='600 7.5px "Segoe UI",sans-serif';
+    C.textAlign='center';C.fillText('\u25c4\u25ba select  \u2022  A sell  \u2022  B cancel',px,smY-5);
+    C.textAlign='left';
+  }
+  // Cook menu popup
+  if(p.cookMenu&&p.cookMenuOpts&&p.cookMenuOpts.length>0){
+    var copts=p.cookMenuOpts;
+    var cardW=72,cardH=64,cardGap=6,cardPad=8;
+    var cmW=copts.length*(cardW+cardGap)-cardGap+cardPad*2,cmH=cardH+cardPad*2;
+    var cmX=px-cmW/2,cmY=top-cmH-24;
+    C.fillStyle='rgba(255,255,255,0.97)';rr(cmX,cmY,cmW,cmH,12);C.fill();
+    C.strokeStyle='rgba(200,130,40,0.7)';C.lineWidth=1.5;rr(cmX,cmY,cmW,cmH,12);C.stroke();
+    for(var ci=0;ci<copts.length;ci++){
+      var copt=copts[ci],sel=p.cookMenuSel===ci;
+      var cx=cmX+cardPad+ci*(cardW+cardGap),cy=cmY+cardPad;
+      C.fillStyle=sel?'rgba(210,140,30,0.18)':'rgba(0,0,0,0.02)';rr(cx,cy,cardW,cardH,8);C.fill();
+      if(sel){C.strokeStyle='#c87820';C.lineWidth=2;rr(cx,cy,cardW,cardH,8);C.stroke();}
+      var fIcon=copt.fishType==='tuna'?imgTuna:imgSalmon;
+      var iSz2=24,icX=cx+cardW/2-iSz2/2;
+      if(fIcon&&fIcon.complete&&fIcon.naturalWidth>0){C.drawImage(fIcon,icX,cy+6,iSz2,iSz2);}
+      C.fillStyle='#784000';C.font='800 12px "Segoe UI",sans-serif';C.textAlign='center';
+      C.fillText('Cook',cx+cardW/2,cy+44);
+      var lbl2=copt.fishType.charAt(0).toUpperCase()+copt.fishType.slice(1);
+      C.fillStyle='rgba(80,50,0,0.65)';C.font='600 8px "Segoe UI",sans-serif';
+      C.fillText(lbl2,cx+cardW/2,cy+56);
+    }
+    C.fillStyle='rgba(70,90,120,0.72)';C.font='600 7.5px "Segoe UI",sans-serif';
+    C.textAlign='center';C.fillText('\u25c4\u25ba select  \u2022  A cook  \u2022  B cancel',px,cmY-5);
+    C.textAlign='left';
+  }
+  // Build menu popup — driven by p.buildMenuOpts[0/1]
+  if(p.buildMenu&&p.buildMenuOpts&&p.buildMenuOpts.length===2){
+    var opts=p.buildMenuOpts;
+    var bpw=186,bph=62,bpx=px-bpw/2,bpy=top-bph-20;
+    C.fillStyle='rgba(255,255,255,0.97)';rr(bpx,bpy,bpw,bph,12);C.fill();
+    C.strokeStyle='rgba(100,160,210,0.8)';C.lineWidth=1.5;rr(bpx,bpy,bpw,bph,12);C.stroke();
+    var half=bpw/2;
+    for(var oi=0;oi<2;oi++){
+      var opt=opts[oi];
+      var ox=bpx+oi*half,sel=p.buildMenuSel===oi,maxed=opt.action==='none';
+      var isSalmon=opt.fishType==='salmon';
+      var selCol=isSalmon?'rgba(244,149,106,0.25)':'rgba(74,143,204,0.25)';
+      var rimCol=isSalmon?'#e0702a':'#2a6ab0';
+      C.fillStyle=sel&&!maxed?selCol:(maxed?'rgba(0,0,0,0.04)':'rgba(0,0,0,0.02)');
+      rr(ox+3,bpy+3,half-5,bph-6,9);C.fill();
+      C.strokeStyle=sel&&!maxed?rimCol:'rgba(0,0,0,0.07)';C.lineWidth=sel&&!maxed?2:1;
+      rr(ox+3,bpy+3,half-5,bph-6,9);C.stroke();
+      // Fish icon (centred in top half of cell)
+      var fIcon=isSalmon?imgSalmon:imgTuna;
+      var icX=ox+half/2-11;
+      if(fIcon.complete&&fIcon.naturalWidth>0)C.drawImage(fIcon,icX,bpy+7,22,22);
+      // Single action word: "Create" (blue) / "Upgrade" (red) / "MAX" (grey)
+      C.textAlign='center';
+      var isCreate=opt.action==='create';
+      var txtCol=maxed?'#bbb':(isCreate?'#1a6ec2':'#c43010');
+      C.fillStyle=txtCol;
+      var word=maxed?'MAX':(isCreate?'Create':'Upgrade');
+      C.font='800 12px "Segoe UI",sans-serif';
+      C.fillText(word,ox+half/2,bpy+46);
+    }
+    C.fillStyle='rgba(70,90,120,0.72)';C.font='600 7.5px "Segoe UI",sans-serif';
+    C.fillText('\u25c4\u25ba select  \u2022  A confirm  \u2022  B cancel',px,bpy-4);
+  }
   C.textAlign='left';
 }
 
 function drawHUD(){
   if(!G)return;
   var iconPx=22;
-  var rightReserve=268,hh=94,padL=10,gap=6,bottomPad=10;
-  var hw=Math.min(W-16,Math.max(560,Math.floor(W*0.66)));
+  var rightReserve=0,hh=94,padL=10,gap=6,bottomPad=10;
+  var hw=Math.min(W-16,Math.max(560,Math.floor(W*0.72)));
   var sw=(hw-padL-gap-rightReserve)/4;
-  var minHud=padL+gap+rightReserve+4*72;
+  var minHud=padL+gap+4*72;
   if(hw<minHud)hw=Math.min(W-16,minHud);
-  sw=(hw-padL-gap-rightReserve)/4;
+  sw=(hw-padL-gap)/4;
   var hx=(W-hw)/2;
-  if(W>680&&hx<272)hx=272;
   if(hx+hw>W-12)hx=Math.max(8,W-12-hw);
-  var hy=H-hh-bottomPad,dvx=hx+hw-rightReserve;
+  hx=Math.max(8,hx-6);
+  var hy=H-hh-bottomPad;
   var yRowStats=hy+78;
   C.fillStyle='rgba(255,255,255,0.96)';
   rr(hx,hy,hw,hh,22);C.fill();
   C.strokeStyle='rgba(160,195,220,0.9)';C.lineWidth=1.5;rr(hx,hy,hw,hh,22);C.stroke();
-  C.strokeStyle='rgba(0,0,0,0.06)';C.lineWidth=1;
-  C.beginPath();C.moveTo(dvx,hy+12);C.lineTo(dvx,hy+hh-12);C.stroke();
+  // (no right-panel divider — time+prices moved to top bar below)
   for(var i=0;i<4;i++){
     var sx=hx+padL+i*sw,cxL=sx+sw*0.26,cxR=sx+sw*0.74,cxm=sx+sw*0.5;
     C.fillStyle='rgba(45,65,88,0.88)';C.font='800 12px "Segoe UI",system-ui,sans-serif';C.textAlign='left';
@@ -1098,8 +1317,9 @@ function drawHUD(){
     C.fillText((mor>0?'+':'')+mor,cxR,hy+58);
     var rel=G.players[i].releases,st=G.players[i].steals;
     var rsLine='Release '+rel+'\uD83D\uDC1F  --  Stolen '+st+'\uD83D\uDC1F';
-    C.fillStyle='rgba(45,70,95,0.96)';C.font='600 10px "Segoe UI",system-ui,sans-serif';
-    if(C.measureText(rsLine).width>sw-4)C.font='600 9px "Segoe UI",system-ui,sans-serif';
+    C.fillStyle='rgba(45,70,95,0.96)';C.font='700 12px "Segoe UI",system-ui,sans-serif';
+    if(C.measureText(rsLine).width>sw-4)C.font='700 11px "Segoe UI",system-ui,sans-serif';
+    if(C.measureText(rsLine).width>sw-4)C.font='700 10px "Segoe UI",system-ui,sans-serif';
     C.textAlign='center';
     C.fillText(rsLine,cxm,yRowStats);
     C.textAlign='left';
@@ -1108,27 +1328,53 @@ function drawHUD(){
       C.beginPath();C.moveTo(sx+sw,hy+14);C.lineTo(sx+sw,hy+hh-14);C.stroke();
     }
   }
+  // ── Top-center bar: clock + time + live fish prices ──────────────────────
+  var infoW=440,infoH=50,infoX=(W-infoW)/2,infoY=10;
+  C.fillStyle='rgba(255,255,255,0.96)';
+  rr(infoX,infoY,infoW,infoH,16);C.fill();
+  C.strokeStyle='rgba(160,195,220,0.9)';C.lineWidth=1.2;rr(infoX,infoY,infoW,infoH,16);C.stroke();
+  var topMid=infoY+infoH/2+8;
+  // Clock icon + time
+  var clkCx=infoX+24,clkCy=infoY+25;
+  if(!drawHudIcon(imgHudClock,clkCx,clkCy,22)){
+    C.font='19px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
+    C.fillStyle='#555';C.textAlign='left';C.fillText('\uD83D\uDD50',infoX+10,topMid);
+  }
   var mm=Math.floor(gameTime/60),ss=Math.floor(gameTime%60);
   var timeStr=mm+':'+(ss<10?'0':'')+ss;
-  var yMid=hy+hh/2+6;
-  C.textAlign='left';
-  var clkCx=dvx+22,clkCy=yMid-2;
-  if(!drawHudIcon(imgHudClock,clkCx,clkCy,24)){
-    C.font='20px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
-    C.fillText('\uD83D\uDD50',dvx+10,yMid);
-  }
-  C.fillStyle='#2c3e50';C.font='bold 19px Arial,sans-serif';
-  C.fillText(timeStr,dvx+44,yMid);
-  var ecoX=dvx+112,ecoStep=4.15;
-  C.fillStyle='rgba(30,100,30,0.82)';C.font='800 9px "Segoe UI",Arial,sans-serif';
-  C.fillText('ECOSYSTEM',ecoX,yMid);
-  var ecoStartX=ecoX+C.measureText('ECOSYSTEM').width+6;
-  for(var si=0;si<15;si++){
-    var lit=si<G.eco,swx=ecoStartX+si*ecoStep,swy=yMid-4;
-    C.fillStyle=lit?'#2ecc71':'rgba(0,0,0,0.09)';
-    C.beginPath();C.ellipse(swx,swy,2.7,5.2,0,0,Math.PI*2);C.fill();
-    if(lit){C.fillStyle='rgba(255,255,255,0.38)';C.beginPath();C.ellipse(swx-0.6,swy-1.2,1.2,2.6,0,0,Math.PI*2);C.fill();}
-  }
+  C.fillStyle='#2c3e50';C.font='bold 22px Arial,sans-serif';C.textAlign='left';
+  C.fillText(timeStr,infoX+40,topMid);
+  // Divider
+  var divX=infoX+118;
+  C.strokeStyle='rgba(0,0,0,0.08)';C.lineWidth=1;
+  C.beginPath();C.moveTo(divX,infoY+8);C.lineTo(divX,infoY+infoH-8);C.stroke();
+  // Live fish prices — centered in right section
+  var pulse=0.7+0.3*Math.sin(_t*6);
+  var iSz=22,prY=topMid;
+  var salmonHigh=fishPrices.salmon>=5,tunaHigh=fishPrices.tuna>=5;
+  C.font='700 15px "Segoe UI",Arial,sans-serif';
+  var salTxt='Salmon $'+fishPrices.salmon+(salmonHigh?' \u2b06':'');
+  var tunTxt='Tuna $'+fishPrices.tuna+(tunaHigh?' \u2b06':'');
+  var gap2=16;
+  var totalPrW=iSz+4+C.measureText(salTxt).width+gap2+iSz+4+C.measureText(tunTxt).width;
+  var rightW=infoW-(divX-infoX); // right section width
+  var prX=divX+Math.max(10,(rightW-totalPrW)/2);
+  // Salmon
+  if(imgSalmon.complete&&imgSalmon.naturalWidth>0){
+    C.drawImage(imgSalmon,prX,prY-iSz+3,iSz,iSz);
+  }else{C.font='16px sans-serif';C.fillStyle='#888';C.textAlign='left';C.fillText('\uD83D\uDC1F',prX,prY);}
+  C.font='700 15px "Segoe UI",Arial,sans-serif';
+  C.fillStyle=salmonHigh?'rgba(200,110,0,'+pulse.toFixed(2)+')':'#2c3e50';
+  C.textAlign='left';C.fillText(salTxt,prX+iSz+4,prY);
+  var salW=iSz+4+C.measureText(salTxt).width+gap2;
+  // Tuna
+  var tuX=prX+salW;
+  if(imgTuna.complete&&imgTuna.naturalWidth>0){
+    C.drawImage(imgTuna,tuX,prY-iSz+3,iSz,iSz);
+  }else{C.font='16px sans-serif';C.fillStyle='#888';C.fillText('\uD83D\uDC21',tuX,prY);}
+  C.font='700 15px "Segoe UI",Arial,sans-serif';
+  C.fillStyle=tunaHigh?'rgba(20,80,200,'+pulse.toFixed(2)+')':'#2c3e50';
+  C.fillText(tunTxt,tuX+iSz+4,prY);
   C.textAlign='left';
 }
 
@@ -1138,10 +1384,10 @@ function draw(ts){
   C.clearRect(0,0,W,H);
   drawBackground();
   if(G)for(var j=0;j<G.seaweeds.length;j++)drawSeaweed(G.seaweeds[j]);
+  drawBuildings();
   if(G){
     for(var j=0;j<G.ponds.length;j++)drawPond(G.ponds[j]);
   }
-  drawBuildings();
   if(G)for(var i=0;i<4;i++)drawPlayer(G.players[i]);
   drawHUD();
   if(G&&G.eco<=3){
@@ -1173,22 +1419,59 @@ function startGame(){
 
 function endGame(){
   running=false;
-  var sorted=G.players.slice().sort(function(a,b){return b.money-a.money;});
-  var medals=['🏆','🥈','🥉','　'];
-  document.getElementById('rl').innerHTML=sorted.map(function(p,ri){
-    return '<div class="rr"><span class="rm">'+medals[ri]+'</span><span class="rname" style="color:'+PC[p.i]+'">'+PN[p.i]+'</span><span class="rmoney">$'+p.money+'</span></div>';
-  }).join('');
-  var totS=0,totR=0;for(var i=0;i<4;i++){totS+=G.players[i].steals;totR+=G.players[i].releases;}
-  var hero=G.players.reduce(function(a,b){return b.releases>a.releases?b:a;});
-  var prt=G.players.reduce(function(a,b){return b.steals>a.steals?b:a;});
-  document.getElementById('sg').innerHTML=
-    '<div class="sb"><div class="sv">'+totS+'</div><div class="sl">Total steals</div></div>'+
-    '<div class="sb"><div class="sv">'+totR+'</div><div class="sl">Total releases</div></div>'+
-    '<div class="sb"><div class="sv" style="color:'+PC[hero.i]+'">'+PN[hero.i]+'</div><div class="sl">Eco hero</div></div>'+
-    '<div class="sb"><div class="sv" style="color:'+PC[prt.i]+'">'+PN[prt.i]+'</div><div class="sl">Most steals</div></div>';
-  document.getElementById('beh').innerHTML=
-    G.players.map(function(p){return '<span style="color:'+PC[p.i]+'">'+PN[p.i]+'</span>: '+p.steals+' steals · '+p.releases+' releases';}).join(' · ')
-    +'<br><br>Did winning help everyone?';
+  var maxRel=Math.max.apply(null,G.players.map(function(p){return p.releases;}));
+  var maxSt=Math.max.apply(null,G.players.map(function(p){return p.steals;}));
+  var ranked=G.players.map(function(p){
+    var eco=(p.releases===maxRel&&maxRel>0);
+    var over=(p.steals===maxSt&&maxSt>0);
+    var bonus=(eco?5:0)+(over?-5:0);
+    return{p:p,eco:eco,over:over,bonus:bonus,rankScore:p.money+bonus};
+  }).sort(function(a,b){
+    if(b.rankScore!==a.rankScore)return b.rankScore-a.rankScore;
+    if(b.p.morality!==a.p.morality)return b.p.morality-a.p.morality;
+    return a.p.i-b.p.i;
+  });
+  function badgeHTML(r){
+    var arr=[];
+    if(r.eco)arr.push('<span class="res-badge eco">🌿 Eco Hero +5</span>');
+    if(r.over)arr.push('<span class="res-badge over">🧹 Poacher -5</span>');
+    return arr.join('');
+  }
+  function cardHTML(r,rank){
+    var p=r.p;
+    return '<article class="res-card rank'+rank+'">'+
+      '<div class="res-avatar"><img src="assets/player'+(p.i+1)+'.png" alt="'+PN[p.i]+'"></div>'+
+      '<div class="res-head">'+rank+'</div>'+
+      '<div class="res-body">'+
+        '<div class="res-badges">'+badgeHTML(r)+'</div>'+
+        '<p class="res-pname" style="color:'+PC[p.i]+'">'+PN[p.i]+'</p>'+
+        '<p class="res-money">$'+r.rankScore+'</p>'+
+        (r.bonus!==0?'<p class="res-basemoney">base $'+p.money+(r.bonus>0?' <span style="color:#2a9a40">+'+r.bonus+'</span>':' <span style="color:#c43020">'+r.bonus+'</span>')+'</p>':'')+
+        '<p class="res-moral">⚖ '+(p.morality>0?'+':'')+p.morality+' moral</p>'+
+        '<div class="res-mini"><span><b>'+p.steals+'</b>steal</span><span><b>'+p.releases+'</b>release</span></div>'+
+      '</div>'+
+    '</article>';
+  }
+  var podium=[ranked[1],ranked[0],ranked[2]];
+  document.getElementById('resPodium').innerHTML=
+    cardHTML(podium[0],2)+cardHTML(podium[1],1)+cardHTML(podium[2],3);
+  var r4=ranked[3],p4=r4.p;
+  var r4MoneyTxt='$'+r4.rankScore;
+  if(r4.bonus!==0){
+    var bSign=r4.bonus>0?'+':'';
+    r4MoneyTxt+=' <span style="font-size:14px;color:#888;font-weight:600">(base $'+p4.money+' '+bSign+r4.bonus+')</span>';
+  }
+  document.getElementById('resRow4').innerHTML=
+    '<div class="res-row4-rank">4</div>'+
+    '<div class="res-row4-avatar"><img src="assets/player'+(p4.i+1)+'.png" alt="'+PN[p4.i]+'"></div>'+
+    '<div class="res-row4-name" style="color:'+PC[p4.i]+'">'+PN[p4.i]+
+      (r4.eco?'<br><span class="res-badge eco" style="font-size:10px;padding:2px 6px">\uD83C\uDF3F Eco Hero +5</span>':'')+
+      (r4.over?'<br><span class="res-badge over" style="font-size:10px;padding:2px 6px">\uD83E\uDDF9 Poacher \u22125</span>':'')+
+    '</div>'+
+    '<div class="res-row4-money">'+r4MoneyTxt+'</div>'+
+    '<div class="res-row4-moral">\u2696 '+(p4.morality>0?'+':'')+p4.morality+'<span class="res-row4-lbl">moral</span></div>'+
+    '<div class="res-row4-st">'+p4.steals+'<span class="res-row4-lbl">steal</span></div>'+
+    '<div class="res-row4-rel">'+p4.releases+'<span class="res-row4-lbl">release</span></div>';
   document.getElementById('es').style.display='flex';
   document.getElementById('gameHelp').style.display='none';
 }

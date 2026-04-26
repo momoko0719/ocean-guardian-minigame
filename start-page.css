@@ -534,6 +534,7 @@
   position: absolute;
   z-index: 6;
   opacity: 0.75;
+  --swim-bob: 10px;
 }
 
 .fish-body {
@@ -553,14 +554,14 @@
   transition: border-left-color 1.8s ease;
 }
 
-.fish-1 { bottom: 25%; left: -30px; animation: swim 18s linear infinite; animation-delay: -9s; }
-.fish-2 { bottom: 18%; left: -30px; animation: swim 24s linear infinite; animation-delay: -12s; }
-.fish-3 { bottom: 12%; right: -30px; animation: swim-reverse 20s linear infinite; animation-delay: -10s; }
-.fish-4 { bottom: 28%; left: -25px; animation: swim 16s linear infinite; animation-delay: -8s; }
-.fish-5 { bottom: 22%; right: -30px; animation: swim-reverse 22s linear infinite; animation-delay: -11s; }
-.fish-6 { bottom: 15%; left: -30px; animation: swim 19s linear infinite; animation-delay: -9.5s; }
-.fish-7 { bottom: 30%; right: -30px; animation: swim-reverse 21s linear infinite; animation-delay: -10.5s; }
-.fish-8 { bottom: 20%; left: -30px; animation: swim 17s linear infinite; animation-delay: -8.5s; }
+.fish-1 { bottom: 25%; left: -30px; animation: swim-left 18s linear infinite; animation-delay: -9s; --swim-bob: 8px; }
+.fish-2 { bottom: 18%; left: -30px; animation: swim-right 24s linear infinite; animation-delay: -12s; --swim-bob: -11px; }
+.fish-3 { bottom: 12%; left: -30px; animation: swim-right 20s linear infinite; animation-delay: -10s; --swim-bob: 9px; }
+.fish-4 { bottom: 28%; left: -25px; animation: swim-left 16s linear infinite; animation-delay: -8s; --swim-bob: -7px; }
+.fish-5 { bottom: 22%; left: -30px; animation: swim-right 22s linear infinite; animation-delay: -11s; --swim-bob: 12px; }
+.fish-6 { bottom: 15%; left: -30px; animation: swim-left 19s linear infinite; animation-delay: -9.5s; --swim-bob: -10px; }
+.fish-7 { bottom: 30%; left: -30px; animation: swim-right 21s linear infinite; animation-delay: -10.5s; --swim-bob: 7px; }
+.fish-8 { bottom: 20%; left: -30px; animation: swim-left 17s linear infinite; animation-delay: -8.5s; --swim-bob: -8px; }
 
 /* Fish eye */
 .fish-eye {
@@ -603,9 +604,9 @@
 .day .fish-2 .fish-body::after { border-left-color: #F5D5C0; }
 
 .day .fish-3 .fish-body,
-.day .fish-blue { background: #A0C8D8; }
+.day .fish-blue { background: #F2C66D; }
 .day .fish-3 .fish-body::after,
-.day .fish-blue::after { border-left-color: #A0C8D8; }
+.day .fish-blue::after { border-left-color: #F2C66D; }
 
 .day .fish-4 .fish-body { background: var(--sage-soft); }
 .day .fish-4 .fish-body::after { border-left-color: var(--sage-soft); }
@@ -613,8 +614,8 @@
 .day .fish-5 .fish-body { background: var(--lavender-soft); }
 .day .fish-5 .fish-body::after { border-left-color: var(--lavender-soft); }
 
-.day .fish-6 .fish-body { background: #A0C8D8; }
-.day .fish-6 .fish-body::after { border-left-color: #A0C8D8; }
+.day .fish-6 .fish-body { background: #E8B86A; }
+.day .fish-6 .fish-body::after { border-left-color: #E8B86A; }
 
 .day .fish-7 .fish-body { background: #F5A8B8; }
 .day .fish-7 .fish-body::after { border-left-color: #F5A8B8; }
@@ -626,14 +627,14 @@
 .night .fish-1 .fish-body::after { border-left-color: rgba(232,160,160,0.35); }
 .night .fish-2 .fish-body { background: rgba(245,213,192,0.3); }
 .night .fish-2 .fish-body::after { border-left-color: rgba(245,213,192,0.3); }
-.night .fish-3 .fish-body { background: rgba(160,200,216,0.35); }
-.night .fish-3 .fish-body::after { border-left-color: rgba(160,200,216,0.35); }
+.night .fish-3 .fish-body { background: rgba(230,190,110,0.42); }
+.night .fish-3 .fish-body::after { border-left-color: rgba(230,190,110,0.42); }
 .night .fish-4 .fish-body { background: rgba(192,216,184,0.3); }
 .night .fish-4 .fish-body::after { border-left-color: rgba(192,216,184,0.3); }
 .night .fish-5 .fish-body { background: rgba(208,192,224,0.35); }
 .night .fish-5 .fish-body::after { border-left-color: rgba(208,192,224,0.35); }
-.night .fish-6 .fish-body { background: rgba(160,200,216,0.35); }
-.night .fish-6 .fish-body::after { border-left-color: rgba(160,200,216,0.35); }
+.night .fish-6 .fish-body { background: rgba(216,172,96,0.4); }
+.night .fish-6 .fish-body::after { border-left-color: rgba(216,172,96,0.4); }
 .night .fish-7 .fish-body { background: rgba(245,168,184,0.35); }
 .night .fish-7 .fish-body::after { border-left-color: rgba(245,168,184,0.35); }
 .night .fish-8 .fish-body { background: rgba(192,216,184,0.3); }
@@ -657,13 +658,15 @@
   left: 3px;
 }
 
-@keyframes swim {
-  from { transform: translateX(calc(100vw + 40px)); }
-  to { transform: translateX(-40px); }
+@keyframes swim-left {
+  0% { transform: translateX(calc(100vw + 60px)) translateY(0); }
+  50% { transform: translateX(50vw) translateY(var(--swim-bob)); }
+  100% { transform: translateX(-60px) translateY(0); }
 }
-@keyframes swim-reverse {
-  from { transform: translateX(calc(-100vw - 40px)) scaleX(-1); }
-  to { transform: translateX(40px) scaleX(-1); }
+@keyframes swim-right {
+  0% { transform: translateX(-60px) translateY(0) scaleX(-1); }
+  50% { transform: translateX(50vw) translateY(var(--swim-bob)) scaleX(-1); }
+  100% { transform: translateX(calc(100vw + 60px)) translateY(0) scaleX(-1); }
 }
 
 /* Seaweed */
@@ -1055,140 +1058,151 @@
 /* Turtle Character */
 .character-turtle {
   position: relative;
-  width: 130px;
-  height: 130px;
+  width: 128px;
+  height: 128px;
   transform: scale(1.3);
 }
 
 .turtle-shell {
   position: absolute;
-  width: 80px;
-  height: 72px;
-  background: #C8A888;
-  border-radius: 50% 50% 48% 48%;
-  bottom: 24px;
-  left: 24px;
-  border: 4px solid #A88868;
+  width: 30px;
+  height: 50px;
+  background: linear-gradient(180deg, #C9AB87 0%, #B28C68 100%);
+  border-radius: 55% 45% 50% 45%;
+  bottom: 18px;
+  left: 82px;
+  border: 3px solid #9A7555;
+  transform: rotate(18deg);
   transition: background 1.8s ease, border-color 1.8s ease;
 }
 .night .turtle-shell {
-  background: #B89878;
-  border-color: #987858;
+  background: linear-gradient(180deg, #A88B69 0%, #8C6B4F 100%);
+  border-color: #7C5D45;
 }
 
 .turtle-shell::after {
   content: '';
   position: absolute;
-  width: 56px;
-  height: 48px;
-  background: #E8C8A8;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 5px 4px;
+  border-radius: 55% 45% 50% 45%;
+  background:
+    linear-gradient(180deg, transparent 0 8%, rgba(255,255,255,0.18) 8% 13%, transparent 13% 31%, rgba(122,96,77,0.46) 31% 40%, transparent 40% 58%, rgba(122,96,77,0.46) 58% 67%, transparent 67% 84%, rgba(122,96,77,0.46) 84% 92%, transparent 92% 100%);
   transition: background 1.8s ease;
 }
 .night .turtle-shell::after {
-  background: #D8B898;
+  background:
+    linear-gradient(180deg, transparent 0 10%, rgba(255,255,255,0.08) 10% 15%, transparent 15% 33%, rgba(70,54,42,0.42) 33% 42%, transparent 42% 60%, rgba(70,54,42,0.42) 60% 69%, transparent 69% 86%, rgba(70,54,42,0.42) 86% 94%, transparent 94% 100%);
 }
 
 .turtle-body {
   position: absolute;
-  width: 72px;
-  height: 56px;
-  background: #F0C8A8;
-  border-radius: 50%;
-  bottom: 16px;
-  left: 29px;
+  width: 60px;
+  height: 72px;
+  background: #D6B08E;
+  border-radius: 42% 42% 36% 36%;
+  bottom: 12px;
+  left: 28px;
   transition: background 1.8s ease;
 }
 .night .turtle-body {
-  background: #E0B898;
+  background: #B79173;
 }
 
 .turtle-head {
   position: absolute;
-  width: 45px;
-  height: 38px;
-  background: #F0C8A8;
-  border-radius: 50% 50% 40% 40%;
-  bottom: 56px;
-  left: 16px;
+  width: 54px;
+  height: 50px;
+  background: #C99E78;
+  border-radius: 50%;
+  bottom: 68px;
+  left: 31px;
   transition: background 1.8s ease;
 }
 .night .turtle-head {
-  background: #E0B898;
+  background: #A78166;
+}
+
+.turtle-head::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 18px;
+  left: 15px;
+  bottom: 8px;
+  border-radius: 50%;
+  background: #F2E0CC;
+  transition: background 1.8s ease;
+}
+.night .turtle-head::before {
+  background: #D9C1A7;
+}
+
+.turtle-head::after {
+  content: none;
+}
+.night .turtle-head::after {
+  background: none;
 }
 
 .turtle-cap {
   position: absolute;
-  width: 35px;
-  height: 19px;
-  background: #D8A888;
-  border-radius: 50% 50% 20% 20%;
-  bottom: 83px;
-  left: 21px;
+  width: 56px;
+  height: 18px;
+  background: transparent;
+  bottom: 108px;
+  left: 30px;
+}
+
+.turtle-cap::before,
+.turtle-cap::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  background: #6F625D;
+  border-radius: 50%;
   transition: background 1.8s ease;
 }
-.night .turtle-cap {
-  background: #C89878;
+.turtle-cap::before {
+  left: 2px;
+}
+.turtle-cap::after {
+  right: 2px;
+}
+.night .turtle-cap::before,
+.night .turtle-cap::after {
+  background: #5C524F;
 }
 
 .turtle-eye {
   position: absolute;
-  width: 7px;
-  height: 7px;
-  background: #2A2A3E;
+  width: 8px;
+  height: 8px;
+  background: #201717;
   border-radius: 50%;
-  bottom: 70px;
-  left: 32px;
-  z-index: 1;
+  bottom: 92px;
+  left: 41px;
+  z-index: 3;
+  box-shadow: 24px 0 0 #201717;
 }
 
 .turtle-mouth {
   position: absolute;
-  width: 13px;
-  height: 5px;
-  border-radius: 0 0 50% 50%;
-  background: rgba(0,0,0,0.15);
-  bottom: 61px;
-  left: 27px;
+  width: 6px;
+  height: 6px;
+  left: 55px;
+  bottom: 79px;
+  border-radius: 50%;
+  background: #6C4A3E;
 }
 
 .turtle-arm {
-  position: absolute;
-  width: 19px;
-  height: 26px;
-  background: #E0B898;
-  border-radius: 30%;
-  bottom: 32px;
-  right: 16px;
-  transform: rotate(-25deg);
-  transition: background 1.8s ease;
-}
-.night .turtle-arm {
-  background: #D0A888;
+  display: none;
 }
 
 .turtle-rod {
-  position: absolute;
-  width: 4px;
-  height: 56px;
-  background: #8A6A4A;
-  bottom: 16px;
-  right: 19px;
-  transform: rotate(-30deg);
-  transform-origin: bottom;
-  transition: background 1.8s ease;
-  animation: rod-swing 2.5s ease-in-out infinite;
-}
-.night .turtle-rod {
-  background: #7A5A3A;
-}
-
-@keyframes rod-swing {
-  0%, 100% { transform: rotate(-30deg); }
-  50% { transform: rotate(-20deg); }
+  display: none;
 }
 
 /* Jellyfish Character */

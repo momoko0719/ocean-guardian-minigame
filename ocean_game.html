@@ -100,7 +100,7 @@ canvas{display:block;width:100%;height:100%}
 .mgbf{width:100%;border-radius:6px;transition:height .07s}
 .mgbl{font:700 11px/1 'Helvetica Neue',Arial,sans-serif}
 #mgcnt{font:900 42px/1 'Helvetica Neue',Arial,sans-serif;color:#ff6b6b;letter-spacing:4px}
-#ann{position:fixed;top:86px;left:50%;transform:translateX(-50%);z-index:40;pointer-events:none;white-space:nowrap}
+#ann{position:fixed;top:94px;left:50%;transform:translateX(-50%);z-index:40;pointer-events:none;white-space:nowrap}
 #annbox{display:none;background:rgba(255,255,255,0.96);border-radius:20px;padding:7px 20px;font:700 12px/1 'Segoe UI',Arial,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,0.14);animation:annPop .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes annPop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 .game-help{position:fixed;left:10px;top:74px;z-index:35;max-width:min(318px,calc(100vw - 20px));font:11px/1.45 'Segoe UI',system-ui,sans-serif;pointer-events:auto;animation:helpSlide .45s ease-out}
@@ -296,28 +296,6 @@ canvas{display:block;width:100%;height:100%}
     <div id="sparkles"></div>
     <button type="button" class="start-btn" id="startBtn" aria-label="Start game"><span class="start-btn-inner">START</span></button>
   </div>
-  <div class="ss-inner ss-below">
-    <section class="ss-panel" aria-label="Controls">
-      <h2 class="ss-panel-h">Controls (gamepad)</h2>
-      <div class="cgrid">
-        <div class="cc"><div class="cn" style="color:#e88888">P1 · 1st pad</div><div class="ss-keys"><div class="ss-row"><span>Move</span><span class="kbd kbd-mv kbd-pad">LS · D-Pad</span></div><div class="ss-row"><span class="ss-lbl-act">Act</span><span class="kbd kbd-act">A</span></div><div class="ss-row"><span class="ss-lbl-grd">Grd</span><span class="kbd kbd-grd">B</span></div></div></div>
-        <div class="cc"><div class="cn" style="color:#6a9fd4">P2 · 2nd</div><div class="ss-keys"><div class="ss-row"><span>Move</span><span class="kbd kbd-mv kbd-pad">LS · D-Pad</span></div><div class="ss-row"><span class="ss-lbl-act">Act</span><span class="kbd kbd-act">A</span></div><div class="ss-row"><span class="ss-lbl-grd">Grd</span><span class="kbd kbd-grd">B</span></div></div></div>
-        <div class="cc"><div class="cn" style="color:#7bc99a">P3 · 3rd</div><div class="ss-keys"><div class="ss-row"><span>Move</span><span class="kbd kbd-mv kbd-pad">LS · D-Pad</span></div><div class="ss-row"><span class="ss-lbl-act">Act</span><span class="kbd kbd-act">A</span></div><div class="ss-row"><span class="ss-lbl-grd">Grd</span><span class="kbd kbd-grd">B</span></div></div></div>
-        <div class="cc"><div class="cn" style="color:#e8a86e">P4 · 4th</div><div class="ss-keys"><div class="ss-row"><span>Move</span><span class="kbd kbd-mv kbd-pad">LS · D-Pad</span></div><div class="ss-row"><span class="ss-lbl-act">Act</span><span class="kbd kbd-act">A</span></div><div class="ss-row"><span class="ss-lbl-grd">Grd</span><span class="kbd kbd-grd">B</span></div></div></div>
-      </div>
-      <p class="ss-gp-note">Xbox-style names: <b>A</b> = bottom face (button 0), <b>B</b> = right face (button 1). PS: × / ○. Order = USB connect order. Keyboard controls unchanged (WASD, arrows, …).</p>
-    </section>
-    <section class="ss-panel" aria-label="How to play flow">
-      <h2 class="ss-panel-h">Flow</h2>
-      <ul class="ss-flow">
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏆</span><p class="ss-f-txt"><strong>Goal</strong> — Most <strong>$</strong> when time ends.</p></li>
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🌊</span><p class="ss-f-txt"><span class="gh-c-act">Action</span> in ocean → seaweed → pond in your zone (<strong>🌿×3</strong>).</p></li>
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏪</span><p class="ss-f-txt"><strong>Market</strong> sell · <strong>Kitchen</strong> cook → sell at Market.</p></li>
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">🏴</span><p class="ss-f-txt"><span class="gh-c-act">A</span> on rival ponds to steal · <span class="gh-c-grd">Hold B</span> to raise shield.</p></li>
-        <li class="ss-f"><span class="ss-f-ic" aria-hidden="true">♻️</span><p class="ss-f-txt"><span class="gh-c-grd">B</span> in ocean → release fish + seaweed · Short press on island → build pond.</p></li>
-      </ul>
-    </section>
-  </div>
 </div>
 
 <div class="scr" id="es" style="display:none">
@@ -341,19 +319,34 @@ canvas{display:block;width:100%;height:100%}
 var spSparkleTimer=null;
 var CV=document.getElementById('c'),C=CV.getContext('2d');
 var W=0,H=0;
-var MAP_FULLSCREEN_SHIFT_Y=-15;
-function mapShiftYForViewport(vw,vh){
-  var nearAvail=(vh>=screen.availHeight-2&&vw>=screen.availWidth-2);
-  var nearScreen=(vh>=screen.height-2&&vw>=screen.width-2);
-  return (nearAvail||nearScreen||!!document.fullscreenElement)?MAP_FULLSCREEN_SHIFT_Y:0;
+var _wasFullscreen=false;
+var _fullscreenYOffset=0;
+var _FULLSCREEN_SHIFT_Y=-15;
+function isFullscreenLike(){
+  if(document.fullscreenElement)return true;
+  var sw=window.screen&&window.screen.width?window.screen.width:window.innerWidth;
+  var sh=window.screen&&window.screen.height?window.screen.height:window.innerHeight;
+  return Math.abs(window.innerWidth-sw)<=2&&Math.abs(window.innerHeight-sh)<=2;
 }
-function shiftWorldY(dy){
-  if(!G||Math.abs(dy)<0.1)return;
-  for(var i=0;i<G.players.length;i++)G.players[i].y+=dy;
-  for(var j=0;j<G.ponds.length;j++)G.ponds[j].y+=dy;
-  for(var k=0;k<G.seaweeds.length;k++)G.seaweeds[k].y+=dy;
-  for(var q=0;q<particles.length;q++)particles[q].y+=dy;
-  if(police)police.y+=dy;
+function shiftWorld(dx,dy){
+  if(!dx&&!dy)return;
+  if(G){
+    for(var i=0;i<G.players.length;i++){
+      var p=G.players[i];
+      p.x+=dx;p.y+=dy;
+      if(p.gathering){p.gathering.tx+=dx;p.gathering.ty+=dy;}
+    }
+    for(var j=0;j<G.ponds.length;j++){
+      G.ponds[j].x+=dx;G.ponds[j].y+=dy;
+    }
+    for(var k=0;k<G.seaweeds.length;k++){
+      G.seaweeds[k].x+=dx;G.seaweeds[k].y+=dy;
+    }
+  }
+  if(police){police.x+=dx;police.y+=dy;}
+  for(var t=0;t<particles.length;t++){
+    particles[t].x+=dx;particles[t].y+=dy;
+  }
 }
 function startSparkles(){
   if(spSparkleTimer)clearInterval(spSparkleTimer);
@@ -369,12 +362,43 @@ function startSparkles(){
     setTimeout(function(){if(s.parentNode)s.remove();},5000);
   },800);
 }
+function randomizeStartPageFish(){
+  var fishNodes=document.querySelectorAll('#ss .waves-container .fish');
+  for(var i=0;i<fishNodes.length;i++){
+    var fish=fishNodes[i];
+    var swimRight=Math.random()<0.5;
+    var duration=16+Math.random()*10;
+    var delay=-(Math.random()*duration);
+    var bottom=11+Math.random()*20;
+    var opacity=0.58+Math.random()*0.25;
+    fish.style.left='-30px';
+    fish.style.right='auto';
+    fish.style.bottom=bottom+'%';
+    fish.style.opacity=opacity.toFixed(2);
+    fish.style.setProperty('--swim-bob',((Math.random()<0.5?-1:1)*(6+Math.random()*8)).toFixed(1)+'px');
+    fish.style.animationName=swimRight?'swim-right':'swim-left';
+    fish.style.animationDuration=duration.toFixed(2)+'s';
+    fish.style.animationDelay=delay.toFixed(2)+'s';
+  }
+}
 function rsz(){
   var oldW=W,oldH=H;
-  var oldCy=(oldW>0&&oldH>0)?(oldH*0.57+mapShiftYForViewport(oldW,oldH)):null;
+  var hadSize=oldW>0&&oldH>0;
+  var oldCenter=hadSize?islandCenter():null;
+
   W=CV.width=window.innerWidth;H=CV.height=window.innerHeight;
-  var newCy=H*0.57+mapShiftYForViewport(W,H);
-  if(oldCy!==null)shiftWorldY(newCy-oldCy);
+  var nowFs=isFullscreenLike();
+  _wasFullscreen=nowFs;
+  if(!hadSize)return;
+
+  var nextOffset=nowFs?_FULLSCREEN_SHIFT_Y:0;
+  var offsetDelta=nextOffset-_fullscreenYOffset;
+  _fullscreenYOffset=nextOffset;
+
+  var newCenter=islandCenter();
+  var dx=newCenter.x-oldCenter.x;
+  var dy=newCenter.y-oldCenter.y+offsetDelta;
+  if(dx||dy)shiftWorld(dx,dy);
 }
 rsz();window.addEventListener('resize',rsz);
 (function(){
@@ -477,7 +501,7 @@ document.addEventListener('keyup',function(e){
 // Island geometry
 function IC(){
   var rx=Math.min(W*0.36,420),ry=Math.min(H*0.31,230);
-  return{x:W/2,y:H*0.57+mapShiftYForViewport(W,H),rx:rx,ry:ry};
+  return{x:W/2,y:H*0.57,rx:rx,ry:ry};
 }
 // Invisible island/ocean split (no drawing). islandTune matches tuned ellipse; use inIsland / inOcean for rules.
 var islandTune={boundSq:1.131,rxM:1.193,ryM:0.823,cx:-1,cy:-54};
@@ -519,8 +543,15 @@ function pp(pi,idx){
 // State
 var G=null,running=false,gameTime=0,lastTs=0,raf=0,annT=0,mg=null,_t=0,police=null;
 var fishPrices={salmon:4,tuna:3},priceTimer=0;
-var priceHistory={salmon:[4,4],tuna:[3,3]};
+var priceHistory={salmon:[4],tuna:[3]};
 var nextPrices={salmon:4,tuna:4};
+function nextFishPrice(cur){
+  var delta;
+  if(cur<=3)delta=1;
+  else if(cur>=5)delta=-1;
+  else delta=Math.random()<0.5?-1:1;
+  return Math.max(3,Math.min(5,cur+delta));
+}
 var imgBg=new Image();
 var imgP=[new Image(),new Image(),new Image(),new Image()];
 var imgSeaweed=new Image();
@@ -650,8 +681,8 @@ function genFixedSeaweeds(){
 function mkGame(){
   var sw=genFixedSeaweeds();
   G={players:[mkP(0),mkP(1),mkP(2),mkP(3)],ponds:[],nextId:1,seaweeds:sw,eco:15};police=null;particles=[];
-fishPrices={salmon:4,tuna:3};priceTimer=0;priceHistory={salmon:[4,4],tuna:[3,3]};
-nextPrices={salmon:3+Math.floor(Math.random()*3),tuna:3+Math.floor(Math.random()*3)};
+fishPrices={salmon:4,tuna:3};priceTimer=0;priceHistory={salmon:[4],tuna:[3]};
+nextPrices={salmon:nextFishPrice(fishPrices.salmon),tuna:nextFishPrice(fishPrices.tuna)};
 }
 
 function addSW(n){
@@ -934,11 +965,11 @@ function update(dt){
   gameTime-=dt;if(gameTime<=0){gameTime=0;endGame();return;}
   priceTimer+=dt;
   if(priceTimer>=30){
-    priceTimer=0;
+    priceTimer-=30;
     fishPrices={salmon:nextPrices.salmon,tuna:nextPrices.tuna};
     priceHistory.salmon.push(fishPrices.salmon);if(priceHistory.salmon.length>7)priceHistory.salmon.shift();
     priceHistory.tuna.push(fishPrices.tuna);if(priceHistory.tuna.length>7)priceHistory.tuna.shift();
-    nextPrices={salmon:3+Math.floor(Math.random()*3),tuna:3+Math.floor(Math.random()*3)};
+    nextPrices={salmon:nextFishPrice(fishPrices.salmon),tuna:nextFishPrice(fishPrices.tuna)};
     ann('📊 Market update!  Salmon $'+fishPrices.salmon+'  •  Tuna $'+fishPrices.tuna,'#c8860a');
   }
   var emu=G.eco<5?0.4:1;
@@ -1465,80 +1496,133 @@ function drawPlayer(p){
 function drawPriceSparkline(x,y,w,h,hist,fishType,nxtPrice){
   var isSal=fishType==='salmon';
   var lineCol=isSal?'#d85a20':'#1e5fc0';
-  var fillCol=isSal?'rgba(216,90,32,0.13)':'rgba(30,95,192,0.13)';
   var gridCol=isSal?'rgba(200,100,60,0.2)':'rgba(40,90,200,0.2)';
-  var minV=2.7,maxV=5.3;
-  var n=hist.length;
+  var axisCol='rgba(55,70,90,0.45)';
+  var minV=3,maxV=5;
+  var padT=7,padB=8,labelW=19;
+  var plotX=x+labelW,plotY=y+padT,plotW=w-labelW-4,plotH=h-padT-padB;
+  var visibleHist=hist.slice(-2);
+  var n=visibleHist.length;
+  function priceY(val){
+    return plotY+plotH-(val-minV)/(maxV-minV)*plotH;
+  }
+  function clampY(py){
+    return Math.max(plotY+2,Math.min(plotY+plotH-2,py));
+  }
+  function drawStepLine(pts,dashed,col,width){
+    if(pts.length<2)return;
+    C.save();
+    if(dashed)C.setLineDash([5,5]);
+    C.strokeStyle=col;C.lineWidth=width;C.lineJoin='round';C.lineCap='round';
+    C.beginPath();C.moveTo(pts[0].x,pts[0].y);
+    for(var i=1;i<pts.length;i++){
+      var midX=pts[i].x;
+      C.lineTo(midX,pts[i-1].y);
+      C.lineTo(midX,pts[i].y);
+    }
+    C.stroke();C.restore();
+  }
+  function pathLength(pts){
+    var len=0;
+    for(var i=1;i<pts.length;i++)len+=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);
+    return len;
+  }
+  function pointAtDistance(pts,dist){
+    if(pts.length===0)return{x:0,y:0};
+    for(var i=1;i<pts.length;i++){
+      var a=pts[i-1],b=pts[i],seg=Math.hypot(b.x-a.x,b.y-a.y);
+      if(seg<=0)continue;
+      if(dist<=seg){
+        var t=dist/seg;
+        return{x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};
+      }
+      dist-=seg;
+    }
+    return pts[pts.length-1];
+  }
+  function drawPathRange(pts,fromD,toD,dashed,col,width){
+    var total=pathLength(pts);
+    fromD=Math.max(0,Math.min(total,fromD));
+    toD=Math.max(0,Math.min(total,toD));
+    if(toD<=fromD+0.01)return;
+    var out=[pointAtDistance(pts,fromD)];
+    var walked=0;
+    for(var i=1;i<pts.length;i++){
+      var a=pts[i-1],b=pts[i],seg=Math.hypot(b.x-a.x,b.y-a.y);
+      if(seg<=0)continue;
+      var nextWalked=walked+seg;
+      if(nextWalked>fromD&&nextWalked<toD)out.push({x:b.x,y:b.y});
+      walked=nextWalked;
+    }
+    out.push(pointAtDistance(pts,toD));
+    C.save();
+    if(dashed)C.setLineDash([5,5]);
+    C.strokeStyle=col;C.lineWidth=width;C.lineCap='round';C.lineJoin='round';
+    C.beginPath();C.moveTo(out[0].x,out[0].y);
+    for(var j=1;j<out.length;j++)C.lineTo(out[j].x,out[j].y);
+    C.stroke();C.restore();
+  }
+  function drawPointLabel(px,py,val,color,isRightEdge){
+    var label='$'+val;
+    var textW=label.length*6;
+    var labelX=isRightEdge?(px-textW-6):(px+7);
+    var labelY=py+(val>=4.7?-6:12);
+    labelX=Math.max(plotX+2,Math.min(x+w-textW-3,labelX));
+    labelY=Math.max(y+12,Math.min(y+h-3,labelY));
+    C.fillStyle=color;
+    C.font='900 9px "Segoe UI",sans-serif';
+    C.textAlign='left';
+    C.fillText(label,labelX,labelY);
+  }
   // Sparkline area bg
   C.fillStyle=isSal?'rgba(255,240,232,0.55)':'rgba(232,240,255,0.55)';
   rr(x,y,w,h,7);C.fill();
+  C.strokeStyle=isSal?'rgba(210,110,65,0.16)':'rgba(50,100,200,0.16)';
+  C.lineWidth=1;rr(x+0.5,y+0.5,w-1,h-1,7);C.stroke();
   // Clip everything to chart area to prevent overflow
   C.save();
   C.beginPath();C.rect(x,y,w,h);C.clip();
-  // Grid lines at $3,$4,$5 with labels inside
+  // Fixed $3/$4/$5 axis, matching the hand-drawn reference.
   C.setLineDash([2,3]);C.lineWidth=0.8;
   for(var gv=3;gv<=5;gv++){
-    var gy=y+h-(gv-minV)/(maxV-minV)*h;
+    var gy=priceY(gv);
     C.strokeStyle=gridCol;
-    C.beginPath();C.moveTo(x,gy);C.lineTo(x+w,gy);C.stroke();
-    C.fillStyle='rgba(80,100,130,0.45)';C.font='600 7px "Segoe UI",sans-serif';
-    C.textAlign='left';C.fillText('$'+gv,x+3,gy-1);
+    C.beginPath();C.moveTo(plotX,gy);C.lineTo(x+w-4,gy);C.stroke();
+    C.fillStyle='rgba(50,65,85,0.62)';C.font='800 8px "Segoe UI",sans-serif';
+    C.textAlign='left';C.fillText('$'+gv,x+3,gy+3);
   }
   C.setLineDash([]);
-  if(n>=2){
-    // History points occupy less width, reserve more gap for "next" prediction
-    var histW=w*0.64;
-    var pts=[];
-    for(var k=0;k<n;k++){
-      var px2=x+8+(k/(n-1))*histW;
-      var py2=y+h-(hist[k]-minV)/(maxV-minV)*h;
-      py2=Math.max(y+4,Math.min(y+h-4,py2));
-      pts.push({x:px2,y:py2});
+  C.strokeStyle=axisCol;C.lineWidth=1;
+  C.beginPath();C.moveTo(plotX,plotY-1);C.lineTo(plotX,plotY+plotH+1);C.stroke();
+  if(n>=1){
+    // The step path scrolls left beneath a fixed "now" dot.
+    var dashCol=isSal?'rgba(190,80,30,0.62)':'rgba(25,70,190,0.62)';
+    var progress=Math.max(0,Math.min(1,priceTimer/30));
+    var slotW=plotW*0.32;
+    var dotX=plotX+plotW*0.57;
+    var scroll=slotW*progress;
+    var histVals=hist.slice(-6);
+    if(histVals.length===1&&priceTimer<0.12)histVals=[histVals[0],histVals[0]];
+    var currentStartX=dotX-scroll;
+    var solidPts=[];
+    for(var hi=0;hi<histVals.length;hi++){
+      solidPts.push({
+        x:currentStartX-(histVals.length-1-hi)*slotW,
+        y:clampY(priceY(histVals[hi]))
+      });
     }
-    // Next-price predicted point (right edge)
-    var nxtX=x+w-7;
-    var nxtY=y+h-(nxtPrice-minV)/(maxV-minV)*h;
-    nxtY=Math.max(y+4,Math.min(y+h-4,nxtY));
-    // Area fill under history
-    C.beginPath();
-    C.moveTo(pts[0].x,y+h);C.lineTo(pts[0].x,pts[0].y);
-    for(var k=1;k<n;k++)C.lineTo(pts[k].x,pts[k].y);
-    C.lineTo(pts[n-1].x,y+h);C.closePath();
-    C.fillStyle=fillCol;C.fill();
-    // History solid line
-    C.save();C.strokeStyle=lineCol;C.lineWidth=2;C.lineJoin='round';C.lineCap='round';
-    C.beginPath();C.moveTo(pts[0].x,pts[0].y);
-    for(var k=1;k<n;k++)C.lineTo(pts[k].x,pts[k].y);
-    C.stroke();C.restore();
-    // Dashed line from current → next price
-    C.save();C.setLineDash([3,3]);
-    C.strokeStyle=isSal?'rgba(190,80,30,0.55)':'rgba(25,70,190,0.55)';
-    C.lineWidth=1.5;C.lineCap='round';
-    C.beginPath();C.moveTo(pts[n-1].x,pts[n-1].y);C.lineTo(nxtX,nxtY);C.stroke();
+    var curY=solidPts[solidPts.length-1].y;
+    var nxtY=clampY(priceY(nxtPrice));
+    solidPts.push({x:dotX,y:curY});
+    var futureStepX=dotX+slotW*(1-progress);
+    var rightX=dotX+slotW;
+    C.save();
+    C.beginPath();C.rect(plotX,plotY-2,x+w-plotX-4,plotH+4);C.clip();
+    drawStepLine(solidPts,false,lineCol,3.2);
+    drawStepLine([{x:dotX,y:curY},{x:futureStepX,y:nxtY},{x:rightX,y:nxtY}],true,dashCol,2.6);
+    C.fillStyle=lineCol;C.beginPath();C.arc(dotX,curY,5.2,0,Math.PI*2);C.fill();
+    C.strokeStyle='rgba(255,255,255,0.92)';C.lineWidth=1.8;C.stroke();
     C.restore();
-    // History dots (small, white-filled)
-    for(var k=0;k<n-1;k++){
-      C.fillStyle='rgba(255,255,255,0.9)';C.strokeStyle=lineCol;C.lineWidth=1.5;
-      C.beginPath();C.arc(pts[k].x,pts[k].y,2,0,Math.PI*2);C.fill();C.stroke();
-    }
-    // Current price dot (large, solid)
-    var lp=pts[n-1];
-    C.fillStyle=lineCol;C.beginPath();C.arc(lp.x,lp.y,4.5,0,Math.PI*2);C.fill();
-    // Current price label
-    var lv=hist[n-1];
-    C.fillStyle=lineCol;C.font='800 9px "Segoe UI",sans-serif';C.textAlign='center';
-    var lY=lp.y+(lv>=5?-7:9);lY=Math.max(y+11,Math.min(y+h-3,lY));
-    C.fillText('$'+lv,lp.x,lY);
-    // Next price ghost dot
-    var nxtCol=isSal?'rgba(220,130,80,0.75)':'rgba(80,130,220,0.75)';
-    C.fillStyle=nxtCol;C.strokeStyle=lineCol;C.lineWidth=1.5;C.setLineDash([]);
-    C.beginPath();C.arc(nxtX,nxtY,4,0,Math.PI*2);C.fill();C.stroke();
-    // Next price label (bold, inside chart)
-    var nxtLabel='$'+nxtPrice;
-    C.fillStyle=isSal?'rgba(170,60,20,0.85)':'rgba(20,55,170,0.85)';
-    C.font='800 9px "Segoe UI",sans-serif';C.textAlign='center';
-    var nY=nxtY+(nxtPrice>=5?-7:9);nY=Math.max(y+11,Math.min(y+h-3,nY));
-    C.fillText(nxtLabel,nxtX,nY);
   }
   C.restore(); // end clip
   C.textAlign='left';
@@ -1578,11 +1662,14 @@ function drawFishPriceCard(cx,cy,cw,ch,fishType){
   var nxtDiff=nxt-price;
   var nxtArrow=nxtDiff>0?'▲':nxtDiff<0?'▼':'→';
   var nxtCol=nxtDiff>0?'#18a045':nxtDiff<0?'#cc2020':'#888';
-  C.font='700 8.5px "Segoe UI",sans-serif';C.textAlign='left';
-  C.fillStyle='rgba(80,100,120,0.7)';C.fillText('Next',cx+33,cy+ch-8);
-  C.fillStyle=nxtCol;C.fillText(nxtArrow+' $'+nxt,cx+55,cy+ch-8);
+  C.font='800 10px "Segoe UI",sans-serif';C.textAlign='left';
+  C.fillStyle='rgba(80,100,120,0.72)';C.fillText('Next',cx+16,cy+ch-8);
+  C.font='900 13px "Segoe UI",sans-serif';
+  C.fillStyle=nxtCol;C.fillText(nxtArrow,cx+43,cy+ch-8);
+  C.font='900 14px "Segoe UI",sans-serif';
+  C.fillText('$'+nxt,cx+57,cy+ch-8);
   // Sparkline (right portion, well-bounded)
-  var chX=cx+cw*0.46,chY=cy+8,chW=cw*0.52,chH=ch-14;
+  var chX=cx+cw*0.44,chY=cy+7,chW=cw*0.54,chH=ch-12;
   drawPriceSparkline(chX,chY,chW,chH,hist,fishType,nxt);
   C.textAlign='left';
 }
@@ -1645,7 +1732,7 @@ function drawHUD(){
     }
   }
   // ── Top bar: [Salmon] [Timer] [Tuna] — same height, shared top Y ───────
-  var barH=60;
+  var barH=68;
   var tcW=114,tcH=barH,tcY=20,tcX=Math.round(W/2-tcW/2);
   var pcW=Math.min(178,tcX-16),pcH=barH;
   // -- Timer card (center) --
@@ -1783,10 +1870,12 @@ function resetGame(){
   for(var ri=0;ri<4;ri++){gpPrevAct[ri]=false;gpPrevGrd[ri]=false;}
   document.getElementById('es').style.display='none';
   document.getElementById('ss').style.display='flex';
+  randomizeStartPageFish();
   startSparkles();
   lastTs=performance.now();raf=requestAnimationFrame(loop);
 }
 
+randomizeStartPageFish();
 startSparkles();
 document.getElementById('startBtn').addEventListener('click',startGame);
 document.getElementById('rb').addEventListener('click',resetGame);

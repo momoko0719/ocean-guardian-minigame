@@ -100,7 +100,7 @@ canvas{display:block;width:100%;height:100%}
 .mgbf{width:100%;border-radius:6px;transition:height .07s}
 .mgbl{font:700 11px/1 'Helvetica Neue',Arial,sans-serif}
 #mgcnt{font:900 42px/1 'Helvetica Neue',Arial,sans-serif;color:#ff6b6b;letter-spacing:4px}
-#ann{position:fixed;top:76px;left:50%;transform:translateX(-50%);z-index:40;pointer-events:none;white-space:nowrap}
+#ann{position:fixed;top:86px;left:50%;transform:translateX(-50%);z-index:40;pointer-events:none;white-space:nowrap}
 #annbox{display:none;background:rgba(255,255,255,0.96);border-radius:20px;padding:7px 20px;font:700 12px/1 'Segoe UI',Arial,sans-serif;box-shadow:0 4px 18px rgba(0,0,0,0.14);animation:annPop .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes annPop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 .game-help{position:fixed;left:10px;top:74px;z-index:35;max-width:min(318px,calc(100vw - 20px));font:11px/1.45 'Segoe UI',system-ui,sans-serif;pointer-events:auto;animation:helpSlide .45s ease-out}
@@ -143,19 +143,6 @@ canvas{display:block;width:100%;height:100%}
 <audio id="bgm" preload="auto" src="assets/bgm.mp3"></audio>
 <div id="ann"><div id="annbox"></div></div>
 
-<div id="gameHelp" class="game-help collapsed" style="display:none" aria-live="polite">
-  <button type="button" class="gh-toggle" id="ghToggle">How to play</button>
-  <div class="gh-body" id="ghBody">
-    <div class="gh-flow">
-      <p class="gh-goal"><b>Goal</b> — Most <b>$</b> when time runs out.</p>
-      <p class="gh-flow-line">🕹 <b>Left Stick / D-Pad</b> — Move</p>
-      <p class="gh-flow-line"><span class="gh-c-act">A</span> — Gather seaweed &middot; Choose &amp; build pond (🌿×3) &middot; Pick fish &middot; Sell at Market &middot; Steal</p>
-      <p class="gh-flow-line"><span class="gh-c-grd">B</span> — Ocean: release fish (+seaweed) &middot; Island short-press: build/upgrade pond menu &middot; Island hold: Guard shield (5 s, then cooldown)</p>
-      <p class="gh-flow-line">🐟 Build <b>Salmon</b> or <b>Tuna</b> ponds — watch the live price board and sell when hot!</p>
-      <p class="gh-flow-line">⭐ Rare <b>SSR</b> fish can spawn — stealing one triggers a mash battle!</p>
-    </div>
-  </div>
-</div>
 
 <div class="scr" id="ss">
   <div class="sp-root day">
@@ -438,16 +425,25 @@ function sfxBeep(freq,dur,vol,type){
   g.gain.linearRampToValueAtTime(0,t+dur);
   o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+dur+0.08);
 }
-function sfxCoin(){sfxBeep(740,0.07,0.07,'sine');setTimeout(function(){if(audioCtx)sfxBeep(990,0.09,0.06,'sine');},45);}
+// ── Voice audio (assets/voices/) ─────────────────────────────────────────────
+var _va={};
+(function(){var ns=['steal','sell','collect','release','cook'];
+  for(var ni=0;ni<ns.length;ni++){(function(n){var a=new Audio('assets/voices/'+n+'.mp3');a.volume=0.65;_va[n]=a;})(ns[ni]);}
+})();
+function playVoice(name){var a=_va[name];if(!a)return;try{a.currentTime=0;a.play().catch(function(){});}catch(e){}}
+// ─────────────────────────────────────────────────────────────────────────────
+function sfxCoin(){playVoice('sell');}
 function sfxPop(){sfxBeep(520,0.1,0.07,'triangle');}
-function sfxSplash(){sfxBeep(180,0.15,0.1,'sine');setTimeout(function(){if(audioCtx)sfxBeep(320,0.12,0.06,'sine');},60);}
-function sfxSteal(){sfxBeep(220,0.12,0.1,'sawtooth');sfxBeep(140,0.15,0.05,'triangle');}
+function sfxSplash(){playVoice('release');}
+function sfxSteal(){playVoice('steal');}
 function sfxBuild(){sfxBeep(440,0.08,0.07);setTimeout(function(){if(audioCtx)sfxBeep(554,0.1,0.06);},70);}
 function sfxNo(){sfxBeep(120,0.18,0.12,'triangle');}
 function sfxSSR(){sfxBeep(880,0.06,0.05);setTimeout(function(){if(audioCtx){sfxBeep(1174,0.08,0.05);sfxBeep(1400,0.12,0.04);}},40);}
 function sfxWin(){sfxBeep(523,0.1,0.07);setTimeout(function(){if(audioCtx)sfxBeep(659,0.12,0.07);},90);setTimeout(function(){if(audioCtx)sfxBeep(784,0.2,0.06);},180);}
 function sfxStart(){sfxBeep(392,0.12,0.06);setTimeout(function(){if(audioCtx)sfxBeep(523,0.15,0.07);},100);}
-function sfxGather(){sfxBeep(660,0.11,0.08,'triangle');}
+function sfxGather(){playVoice('collect');}
+function sfxCook(){playVoice('cook');}
+function sfxPoliceWail(){sfxBeep(820,0.15,0.09,'sawtooth');setTimeout(function(){if(audioCtx)sfxBeep(620,0.15,0.09,'sawtooth');},160);setTimeout(function(){if(audioCtx)sfxBeep(820,0.12,0.07,'sawtooth');},320);}
 document.addEventListener('keydown',function(e){
   var k=e.key.toLowerCase();
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].indexOf(k)>=0)e.preventDefault();
@@ -461,7 +457,7 @@ document.addEventListener('keyup',function(e){
 // Island geometry
 function IC(){
   var rx=Math.min(W*0.36,420),ry=Math.min(H*0.31,230);
-  return{x:W/2,y:H*0.52,rx:rx,ry:ry};
+  return{x:W/2,y:H*0.57,rx:rx,ry:ry};
 }
 // Invisible island/ocean split (no drawing). islandTune matches tuned ellipse; use inIsland / inOcean for rules.
 var islandTune={boundSq:1.131,rxM:1.193,ryM:0.823,cx:-1,cy:-54};
@@ -501,8 +497,10 @@ function pp(pi,idx){
 }
 
 // State
-var G=null,running=false,gameTime=0,lastTs=0,raf=0,annT=0,mg=null,_t=0;
+var G=null,running=false,gameTime=0,lastTs=0,raf=0,annT=0,mg=null,_t=0,police=null;
 var fishPrices={salmon:4,tuna:3},priceTimer=0;
+var priceHistory={salmon:[4,4],tuna:[3,3]};
+var nextPrices={salmon:4,tuna:4};
 var imgBg=new Image();
 var imgP=[new Image(),new Image(),new Image(),new Image()];
 var imgSeaweed=new Image();
@@ -519,6 +517,62 @@ var imgMarket=new Image();
 var imgKitchen=new Image();
 imgMarket.src='assets/market.png';
 imgKitchen.src='assets/kitchen.png';
+var imgPolice=new Image();imgPolice.src='assets/police.png';
+// Dust GIF overlay — 4 HTML img elements (one per player), animated natively by the browser
+// ── Particle system ──────────────────────────────────────────────────────────
+var particles=[];
+var _DUSTCOLS=['rgba(215,195,158,1)','rgba(200,182,145,1)','rgba(230,215,180,1)'];
+var _FXCOLS  =['#27ae60','#2ecc71','#7ed6a2','#a8e6cf','#52d48a','#ffffff'];
+var _BUILDCOLS=['#f4b942','#e8a020','#ffd966','#c8a850','#fff0a0'];
+var _COINCOLS =['#ffd700','#f4c430','#ffec6e','#fff4b0','#ffffff'];
+var _GROWCOLS =['#52d48a','#7ed6a2','#b8f0cc','#d4f5e0','#ffffff'];
+
+function _burst(x,y,n,cols,spdMin,spdMax,vyBias,gravV,lifeMin,lifeMax,rMin,rMax){
+  for(var k=0;k<n;k++){
+    var ang=(k/n)*Math.PI*2+(Math.random()-0.5)*0.7;
+    var spd=spdMin+Math.random()*(spdMax-spdMin);
+    particles.push({tp:'fx',x:x,y:y,
+      vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd+vyBias,
+      life:1,maxLife:lifeMin+Math.random()*(lifeMax-lifeMin),
+      r:rMin+Math.random()*(rMax-rMin),grav:gravV,
+      col:cols[Math.floor(Math.random()*cols.length)]});
+  }
+}
+
+function spawnCollect(x,y){
+  _burst(x,y,16,_FXCOLS,38,100,-28,90,0.6,1.05,2.2,6.2);
+}
+function spawnBuild(x,y){
+  _burst(x,y,14,_BUILDCOLS,28,80,-20,70,0.45,0.85,2.5,5.5);
+}
+function spawnCoin(x,y){
+  _burst(x,y,12,_COINCOLS,22,65,-35,85,0.4,0.75,2.0,5.0);
+}
+function spawnSeaweedGrow(x,y){
+  _burst(x,y,10,_GROWCOLS,18,50,-12,55,0.35,0.65,1.5,4.0);
+}
+
+function updateParticles(dt){
+  for(var k=particles.length-1;k>=0;k--){
+    var p=particles[k];
+    p.life-=dt/p.maxLife;
+    if(p.life<=0){particles.splice(k,1);continue;}
+    p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.grav*dt;
+    if(p.tp==='dust')p.r+=p.dr*dt;
+  }
+}
+
+function drawParticleLayer(tp){
+  for(var k=0;k<particles.length;k++){
+    var p=particles[k];if(p.tp!==tp)continue;
+    var al=p.life*(tp==='dust'?0.62:0.88);if(al<=0)continue;
+    C.save();C.globalAlpha=al;C.fillStyle=p.col;
+    C.beginPath();
+    if(tp==='dust')C.ellipse(p.x,p.y,Math.max(0.5,p.r*1.55),Math.max(0.5,p.r*0.8),0,0,Math.PI*2);
+    else C.arc(p.x,p.y,Math.max(0.5,p.r),0,Math.PI*2);
+    C.fill();C.restore();
+  }
+}
 var imgHudMoney=new Image(),imgHudMoral=new Image(),imgHudClock=new Image();
 imgHudMoney.src='assets/money.png';
 imgHudMoral.src='assets/moral.png';
@@ -531,7 +585,7 @@ function drawHudIcon(img,cx,cy,pix){
   return true;
 }
 
-function mkP(i){var p=zc(i);return{i:i,x:p.x,y:p.y,money:0,morality:0,seaweed:0,hand:[],cooking:null,cookT:0,cooked:[],gathering:null,guarding:false,guardT:0,guardCD:0,stealCD:0,steals:0,releases:0,buildMenu:false,buildMenuSel:0,buildMenuOpts:[],guardHeld:false,guardHoldT:0,sellMenu:false,sellMenuSel:0,sellMenuOpts:[],cookMenu:false,cookMenuSel:0,cookMenuOpts:[],menuDxPrev:0};}
+function mkP(i){var p=zc(i);return{i:i,x:p.x,y:p.y,money:0,morality:0,seaweed:0,hand:[],cooking:null,cookT:0,cooked:[],gathering:null,guarding:false,guardT:0,guardCD:0,stealCD:0,steals:0,releases:0,buildMenu:false,buildMenuSel:0,buildMenuOpts:[],guardHeld:false,guardHoldT:0,sellMenu:false,sellMenuSel:0,sellMenuOpts:[],cookMenu:false,cookMenuSel:0,cookMenuOpts:[],menuDxPrev:0,vx:0,vy:0,moving:false,dustT:0};}
 
 function genSW(){
   // Used only when releasing fish (addSW). Spawns one seaweed near island shore.
@@ -575,8 +629,9 @@ function genFixedSeaweeds(){
 
 function mkGame(){
   var sw=genFixedSeaweeds();
-  G={players:[mkP(0),mkP(1),mkP(2),mkP(3)],ponds:[],nextId:1,seaweeds:sw,eco:15};
-fishPrices={salmon:4,tuna:3};priceTimer=0;
+  G={players:[mkP(0),mkP(1),mkP(2),mkP(3)],ponds:[],nextId:1,seaweeds:sw,eco:15};police=null;particles=[];
+fishPrices={salmon:4,tuna:3};priceTimer=0;priceHistory={salmon:[4,4],tuna:[3,3]};
+nextPrices={salmon:3+Math.floor(Math.random()*3),tuna:3+Math.floor(Math.random()*3)};
 }
 
 function addSW(n){
@@ -585,7 +640,7 @@ function addSW(n){
     tries++;var sw=genSW();var ok=inOcean(sw.x,sw.y);
     if(!ok)continue;
     for(var j=0;j<G.seaweeds.length;j++)if(Math.hypot(G.seaweeds[j].x-sw.x,G.seaweeds[j].y-sw.y)<35){ok=false;break;}
-    if(ok){G.seaweeds.push(sw);added++;}
+    if(ok){G.seaweeds.push(sw);spawnSeaweedGrow(sw.x,sw.y);added++;}
   }
   G.eco=Math.min(15,G.eco+added);
 }
@@ -708,10 +763,10 @@ function doAction(pi){
       // Check pond collision
       for(var ci=0;ci<G.ponds.length;ci++){if(Math.hypot(px-G.ponds[ci].x,py-G.ponds[ci].y)<52){sfxNo();ann('Too close to another pond!','#888');p.seaweed+=3;return true;}}
       G.ponds.push({id:G.nextId++,owner:pi,level:1,fish:[],timer:0,x:px,y:py,fishType:sel.fishType});
-      sfxBuild();ann(PN[pi]+' created '+sel.fishType+' pond! \uD83C\uDF89',PC[pi]);
+      sfxBuild();spawnBuild(px,py);ann(PN[pi]+' created '+sel.fishType+' pond! \uD83C\uDF89',PC[pi]);
     } else {
       var tgt=sel.fishType==='salmon'?salPond:tunPond;
-      if(tgt){tgt.level++;sfxBuild();ann(PN[pi]+' '+sel.fishType+' pond Lv.'+tgt.level+'! \uD83C\uDF89',PC[pi]);}
+      if(tgt){tgt.level++;sfxBuild();spawnBuild(px,py);ann(PN[pi]+' '+sel.fishType+' pond Lv.'+tgt.level+'! \uD83C\uDF89',PC[pi]);}
     }
     return true;
   }
@@ -721,10 +776,10 @@ function doAction(pi){
       var sopt=p.sellMenuOpts[p.sellMenuSel];p.sellMenu=false;
       if(sopt.source==='cooked'){
         var cidx=-1;for(var k=p.cooked.length-1;k>=0;k--)if(p.cooked[k].fishType===sopt.fishType){cidx=k;break;}
-        if(cidx>=0){var f=p.cooked.splice(cidx,1)[0];var cp=getFishCookPrice(f);p.money+=cp;sfxCoin();ann(PN[pi]+' sold cooked '+f.name+' +$'+cp,PC[pi]);}
+        if(cidx>=0){var f=p.cooked.splice(cidx,1)[0];var cp=getFishCookPrice(f);p.money+=cp;sfxCoin();spawnCoin(px,py);ann(PN[pi]+' sold cooked '+f.name+' +$'+cp,PC[pi]);}
       }else{
         var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===sopt.fishType){fidx=k;break;}
-        if(fidx>=0){var f=p.hand.splice(fidx,1)[0];var sp=getFishSellPrice(f);p.money+=sp;sfxCoin();ann(PN[pi]+' sold '+f.name+' +$'+sp,PC[pi]);}
+        if(fidx>=0){var f=p.hand.splice(fidx,1)[0];var sp=getFishSellPrice(f);p.money+=sp;sfxCoin();spawnCoin(px,py);ann(PN[pi]+' sold '+f.name+' +$'+sp,PC[pi]);}
       }
       return;
     }
@@ -736,8 +791,8 @@ function doAction(pi){
     if(sopts.length===0){sfxNo();ann('No fish to sell','#888');return;}
     if(sopts.length===1){
       var sopt=sopts[0];
-      if(sopt.source==='cooked'){var cidx=-1;for(var k=p.cooked.length-1;k>=0;k--)if(p.cooked[k].fishType===sopt.fishType){cidx=k;break;}if(cidx>=0){var f=p.cooked.splice(cidx,1)[0];var cp=sopt.price;p.money+=cp;sfxCoin();ann(PN[pi]+' sold cooked '+f.name+' +$'+cp,PC[pi]);}}
-      else{var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===sopt.fishType){fidx=k;break;}if(fidx>=0){var f=p.hand.splice(fidx,1)[0];var sp=sopt.price;p.money+=sp;sfxCoin();ann(PN[pi]+' sold '+f.name+' +$'+sp,PC[pi]);}}
+      if(sopt.source==='cooked'){var cidx=-1;for(var k=p.cooked.length-1;k>=0;k--)if(p.cooked[k].fishType===sopt.fishType){cidx=k;break;}if(cidx>=0){var f=p.cooked.splice(cidx,1)[0];var cp=sopt.price;p.money+=cp;sfxCoin();spawnCoin(px,py);ann(PN[pi]+' sold cooked '+f.name+' +$'+cp,PC[pi]);}}
+      else{var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===sopt.fishType){fidx=k;break;}if(fidx>=0){var f=p.hand.splice(fidx,1)[0];var sp=sopt.price;p.money+=sp;sfxCoin();spawnCoin(px,py);ann(PN[pi]+' sold '+f.name+' +$'+sp,PC[pi]);}}
       return;
     }
     p.sellMenu=true;p.sellMenuSel=0;p.sellMenuOpts=sopts;p.menuDxPrev=0;
@@ -748,7 +803,7 @@ function doAction(pi){
     if(p.cookMenu){
       var copt=p.cookMenuOpts[p.cookMenuSel];p.cookMenu=false;
       var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===copt.fishType){fidx=k;break;}
-      if(fidx>=0){var f=p.hand.splice(fidx,1)[0];p.cooking=f;p.cookT=f.cookT;sfxPop();ann(PN[pi]+' cooking '+f.name,'#d4a050');}
+      if(fidx>=0){var f=p.hand.splice(fidx,1)[0];p.cooking=f;p.cookT=f.cookT;sfxCook();ann(PN[pi]+' cooking '+f.name,'#d4a050');}
       return;
     }
     if(p.cooking){ann('Cooking\u2026 '+Math.ceil(p.cookT)+'s','#d4a050');return;}
@@ -757,7 +812,7 @@ function doAction(pi){
     for(var k=0;k<p.hand.length;k++){var cft=p.hand[k].fishType||'salmon';if(!ctypes[cft]){ctypes[cft]=true;copts.push({fishType:cft,label:'Cook '+cft.charAt(0).toUpperCase()+cft.slice(1)});}}
     if(copts.length===1){
       var fidx=-1;for(var k=p.hand.length-1;k>=0;k--)if(p.hand[k].fishType===copts[0].fishType){fidx=k;break;}
-      if(fidx>=0){var f=p.hand.splice(fidx,1)[0];p.cooking=f;p.cookT=f.cookT;sfxPop();ann(PN[pi]+' cooking '+f.name,'#d4a050');}
+      if(fidx>=0){var f=p.hand.splice(fidx,1)[0];p.cooking=f;p.cookT=f.cookT;sfxCook();ann(PN[pi]+' cooking '+f.name,'#d4a050');}
       return;
     }
     p.cookMenu=true;p.cookMenuSel=0;p.cookMenuOpts=copts;p.menuDxPrev=0;
@@ -786,6 +841,14 @@ function trySteal(pi,oi,pd){
   if(f.type==='ssr'){startMG(pi,oi,pd);return;}
   pd.fish.pop();G.players[pi].hand.push(f);G.players[pi].steals++;G.players[pi].morality--;G.players[pi].stealCD=10;
   sfxSteal();ann('🏴 '+PN[pi]+' stole '+f.name+' from '+PN[oi],'#b85850');
+  if(!police&&Math.random()<0.5)spawnPolice(pi,f,pd);
+}
+
+function spawnPolice(targetPi,stolenFish,sourcePond){
+  var ic=IC();
+  police={x:ic.x,y:ic.y+ic.ry*0.6,targetPi:targetPi,timer:10,stolenFish:stolenFish||null,sourcePondId:sourcePond?sourcePond.id:null};
+  sfxPoliceWail();
+  ann('🚔 Police! '+PN[targetPi]+' is being chased!','#d02020');
 }
 
 function startMG(pi,oi,pd){
@@ -804,7 +867,6 @@ function startMG(pi,oi,pd){
   })(k);}
   document.getElementById('mgcnt').textContent='3';
   document.getElementById('mgs').style.display='flex';
-  document.getElementById('gameHelp').style.display='none';
   mg.iv=setInterval(function(){mg.timer--;document.getElementById('mgcnt').textContent=mg.timer;if(mg.timer<=0){clearInterval(mg.iv);endMG();}},1000);
 }
 
@@ -815,10 +877,11 @@ function onMgKey(k){
 
 function endMG(){
   document.getElementById('mgs').style.display='none';
-  if(G)document.getElementById('gameHelp').style.display='block';
   var wi=mg.scores[0]>=mg.scores[1]?mg.pis[0]:mg.pis[1];
+  var savedPd=mg.pd;
   var f=mg.pd.fish.pop();if(f){G.players[wi].hand.push(f);G.players[wi].steals++;G.players[wi].morality--;}
   G.players[wi].stealCD=10;sfxWin();ann('🌟 '+PN[wi]+' won the SSR clash!','#ffd700');mg=null;running=true;
+  if(G&&!police&&Math.random()<0.5)spawnPolice(wi,f,savedPd);
 }
 
 function ann(txt,col){
@@ -852,9 +915,11 @@ function update(dt){
   priceTimer+=dt;
   if(priceTimer>=30){
     priceTimer=0;
-    var ps=3+Math.floor(Math.random()*3),pt=3+Math.floor(Math.random()*3);
-    fishPrices={salmon:ps,tuna:pt};
-    ann('📊 Market update!  Salmon $'+ps+'  •  Tuna $'+pt,'#c8860a');
+    fishPrices={salmon:nextPrices.salmon,tuna:nextPrices.tuna};
+    priceHistory.salmon.push(fishPrices.salmon);if(priceHistory.salmon.length>7)priceHistory.salmon.shift();
+    priceHistory.tuna.push(fishPrices.tuna);if(priceHistory.tuna.length>7)priceHistory.tuna.shift();
+    nextPrices={salmon:3+Math.floor(Math.random()*3),tuna:3+Math.floor(Math.random()*3)};
+    ann('📊 Market update!  Salmon $'+fishPrices.salmon+'  •  Tuna $'+fishPrices.tuna,'#c8860a');
   }
   var emu=G.eco<5?0.4:1;
   for(var j=0;j<G.ponds.length;j++){
@@ -881,6 +946,27 @@ function update(dt){
       if(nlen>1){dx/=nlen;dy/=nlen;}
     }
     var spd=118*dt;p.x=Math.max(15,Math.min(W-15,p.x+dx*spd));p.y=Math.max(15,Math.min(H-15,p.y+dy*spd));
+    p.moving=(dx!==0||dy!==0);if(p.moving){p.vx=dx;p.vy=dy;}
+    // Dust particles while moving
+    if(p.moving){
+      p.dustT-=dt;
+      if(p.dustT<=0){
+        p.dustT=0.07;
+        var isH=Math.abs(dx)>=Math.abs(dy);
+        var dSide=isH?(dx>0?-1:1):(dy>0?-1:1);
+        for(var _k=0;_k<3;_k++){
+          var _sp=(Math.random()-0.5)*10;
+          particles.push({tp:'dust',
+            x:p.x+(isH?dSide*(16+Math.random()*8):_sp*1.5),
+            y:p.y+18+Math.random()*5,
+            vx:dSide*(10+Math.random()*14)+_sp*0.4,
+            vy:-(4+Math.random()*8),
+            life:1,maxLife:0.25+Math.random()*0.15,
+            r:2.4+Math.random()*2.6,dr:6+Math.random()*5,
+            grav:18,col:_DUSTCOLS[Math.floor(Math.random()*_DUSTCOLS.length)]});
+        }
+      }
+    }else{p.dustT=0;}
     if(p.gathering&&inIsland(p.x,p.y))p.gathering=null;
     if(p.stealCD>0)p.stealCD-=dt;
     if(p.guardCD>0)p.guardCD-=dt;
@@ -917,7 +1003,7 @@ function update(dt){
         ann(PN[i]+' guard expired','#6b86a8');
       }
     }
-    if(p.cooking&&p.cookT>0){p.cookT-=dt;if(p.cookT<=0){p.cooked.push(p.cooking);p.cooking=null;sfxPop();ann(PN[i]+' \u2705 fish cooked! Sell at Market',PC[i]);}}
+    if(p.cooking&&p.cookT>0){p.cookT-=dt;if(p.cookT<=0){p.cooked.push(p.cooking);p.cooking=null;sfxCook();ann(PN[i]+' \u2705 fish cooked! Sell at Market',PC[i]);}}
     if(p.gathering){
       var gi=-1,gd=999;
       for(var gj=0;gj<G.seaweeds.length;gj++){
@@ -928,8 +1014,37 @@ function update(dt){
       p.gathering.t+=dt;
       if(p.gathering.t>=p.gathering.maxT){
         // gi is already confirmed valid; splice directly to avoid 18px vs 22px mismatch bug
+        var _sw=G.seaweeds[gi];spawnCollect(_sw.x,_sw.y);
         G.seaweeds.splice(gi,1);G.eco=Math.max(0,G.eco-1);p.seaweed++;p.gathering=null;
         sfxGather();ann(PN[i]+' gathered seaweed · '+p.seaweed+' 🌿',PC[i]);
+      }
+    }
+  }
+  // Police NPC update
+  if(police){
+    police.timer-=dt;
+    if(police.timer<=0){police=null;}
+    else{
+      var tp=G.players[police.targetPi];
+      var pdx=tp.x-police.x,pdy=tp.y-police.y,pdist=Math.hypot(pdx,pdy);
+      if(pdist>1){var pspd=118*dt;police.x+=pdx/pdist*pspd;police.y+=pdy/pdist*pspd;}
+      if(pdist<32){
+        tp.money-=10;
+        // Return stolen fish to source pond
+        if(police.stolenFish){
+          var fi=tp.hand.indexOf(police.stolenFish);
+          if(fi>=0){
+            tp.hand.splice(fi,1);
+            for(var pi2=0;pi2<G.ponds.length;pi2++){
+              if(G.ponds[pi2].id===police.sourcePondId){
+                var cap=PCAP[G.ponds[pi2].level];
+                if(G.ponds[pi2].fish.length<cap)G.ponds[pi2].fish.push(police.stolenFish);
+                break;
+              }
+            }
+          }
+        }
+        sfxNo();ann('🚔 '+PN[police.targetPi]+' caught! -$10, fish confiscated!','#d02020');police=null;
       }
     }
   }
@@ -940,6 +1055,7 @@ function update(dt){
     if(moneyFlash[mi]>0)moneyFlash[mi]-=dt*1.8;
   }
   for(var j=0;j<G.seaweeds.length;j++)G.seaweeds[j].wave+=dt*1.05;
+  updateParticles(dt);
   annT-=dt;if(annT<=0)document.getElementById('annbox').style.display='none';
 }
 
@@ -1102,6 +1218,58 @@ function drawPond(pd){
   }
 }
 
+function drawPoliceSiren(cx,cy){
+  // Pill/capsule: left half RED, right half BLUE, alternating flash
+  var w=36,h=13,hr=h/2;
+  var phase=Math.sin(_t*10)>0; // ~1.6 Hz flash
+  // Background capsule
+  C.fillStyle='rgba(12,12,22,0.82)';
+  rr(cx-w/2,cy-hr,w,h,hr);C.fill();
+  C.save();
+  // Left half (red)
+  C.beginPath();C.rect(cx-w/2,cy-hr,w/2,h);C.clip();
+  C.fillStyle='rgba(255,30,30,'+(phase?'1':'0.12')+')';
+  if(phase){C.shadowColor='#ff1a1a';C.shadowBlur=12;}
+  rr(cx-w/2,cy-hr,w,h,hr);C.fill();
+  C.restore();
+  C.save();
+  // Right half (blue)
+  C.beginPath();C.rect(cx,cy-hr,w/2,h);C.clip();
+  C.fillStyle='rgba(30,50,255,'+(phase?'0.12':'1')+')';
+  if(!phase){C.shadowColor='#1a2aff';C.shadowBlur=12;}
+  rr(cx-w/2,cy-hr,w,h,hr);C.fill();
+  C.restore();
+  // Outline
+  C.strokeStyle='rgba(255,255,255,0.8)';C.lineWidth=1;
+  rr(cx-w/2,cy-hr,w,h,hr);C.stroke();
+}
+
+function drawPolice(){
+  if(!police)return;
+  var px=police.x,py=police.y;
+  var ph=80,pw=ph;
+  // Shadow
+  C.fillStyle='rgba(0,0,0,0.14)';
+  C.beginPath();C.ellipse(px,py+24,18,6,0,0,Math.PI*2);C.fill();
+  // Sprite or fallback
+  if(imgPolice.complete&&imgPolice.naturalWidth>0){
+    pw=ph*imgPolice.naturalWidth/imgPolice.naturalHeight;
+    C.drawImage(imgPolice,px-pw/2,py-ph+24,pw,ph);
+  }else{
+    C.fillStyle='#1a44cc';C.beginPath();C.arc(px,py-8,22,0,Math.PI*2);C.fill();
+    C.fillStyle='#fff';C.font='700 10px "Segoe UI",sans-serif';C.textAlign='center';
+    C.fillText('PO',px,py-4);C.textAlign='left';
+  }
+  // Siren capsule above head
+  drawPoliceSiren(px,py-ph+14);
+  // Chase timer bar
+  var prog=police.timer/10;
+  drawProgBar(px,py-ph-6,50,7,prog,'#ff4040','#ffaaaa');
+  // Label
+  C.fillStyle='rgba(200,20,20,0.92)';C.font='700 9px "Segoe UI",Arial,sans-serif';C.textAlign='center';
+  C.fillText('\uD83D\uDE94 '+Math.ceil(police.timer)+'s',px,py-ph-13);C.textAlign='left';
+}
+
 function drawProgBar(cx,cy,w,h,prog,colA,colB){
   prog=Math.max(0,Math.min(1,prog));
   C.fillStyle='rgba(40,55,65,0.28)';rr(cx-w/2,cy-h/2,w,h,6);C.fill();
@@ -1133,6 +1301,8 @@ function drawPlayer(p){
   var pw=ph;
   if(spr&&spr.complete&&spr.naturalWidth>0){
     pw=ph*spr.naturalWidth/spr.naturalHeight;
+  }
+  if(spr&&spr.complete&&spr.naturalWidth>0){
     C.drawImage(spr,px-pw/2,top,pw,ph);
   }else{
     C.fillStyle='rgba(55,85,105,0.11)';C.beginPath();C.ellipse(px,footY-4,15,5.2,0,0,Math.PI*2);C.fill();
@@ -1271,6 +1441,132 @@ function drawPlayer(p){
   C.textAlign='left';
 }
 
+// ── Fish price sparkline helpers ─────────────────────────────────────────────
+function drawPriceSparkline(x,y,w,h,hist,fishType,nxtPrice){
+  var isSal=fishType==='salmon';
+  var lineCol=isSal?'#d85a20':'#1e5fc0';
+  var fillCol=isSal?'rgba(216,90,32,0.13)':'rgba(30,95,192,0.13)';
+  var gridCol=isSal?'rgba(200,100,60,0.2)':'rgba(40,90,200,0.2)';
+  var minV=2.7,maxV=5.3;
+  var n=hist.length;
+  // Sparkline area bg
+  C.fillStyle=isSal?'rgba(255,240,232,0.55)':'rgba(232,240,255,0.55)';
+  rr(x,y,w,h,7);C.fill();
+  // Clip everything to chart area to prevent overflow
+  C.save();
+  C.beginPath();C.rect(x,y,w,h);C.clip();
+  // Grid lines at $3,$4,$5 with labels inside
+  C.setLineDash([2,3]);C.lineWidth=0.8;
+  for(var gv=3;gv<=5;gv++){
+    var gy=y+h-(gv-minV)/(maxV-minV)*h;
+    C.strokeStyle=gridCol;
+    C.beginPath();C.moveTo(x,gy);C.lineTo(x+w,gy);C.stroke();
+    C.fillStyle='rgba(80,100,130,0.45)';C.font='600 7px "Segoe UI",sans-serif';
+    C.textAlign='left';C.fillText('$'+gv,x+3,gy-1);
+  }
+  C.setLineDash([]);
+  if(n>=2){
+    // History points occupy less width, reserve more gap for "next" prediction
+    var histW=w*0.64;
+    var pts=[];
+    for(var k=0;k<n;k++){
+      var px2=x+8+(k/(n-1))*histW;
+      var py2=y+h-(hist[k]-minV)/(maxV-minV)*h;
+      py2=Math.max(y+4,Math.min(y+h-4,py2));
+      pts.push({x:px2,y:py2});
+    }
+    // Next-price predicted point (right edge)
+    var nxtX=x+w-7;
+    var nxtY=y+h-(nxtPrice-minV)/(maxV-minV)*h;
+    nxtY=Math.max(y+4,Math.min(y+h-4,nxtY));
+    // Area fill under history
+    C.beginPath();
+    C.moveTo(pts[0].x,y+h);C.lineTo(pts[0].x,pts[0].y);
+    for(var k=1;k<n;k++)C.lineTo(pts[k].x,pts[k].y);
+    C.lineTo(pts[n-1].x,y+h);C.closePath();
+    C.fillStyle=fillCol;C.fill();
+    // History solid line
+    C.save();C.strokeStyle=lineCol;C.lineWidth=2;C.lineJoin='round';C.lineCap='round';
+    C.beginPath();C.moveTo(pts[0].x,pts[0].y);
+    for(var k=1;k<n;k++)C.lineTo(pts[k].x,pts[k].y);
+    C.stroke();C.restore();
+    // Dashed line from current → next price
+    C.save();C.setLineDash([3,3]);
+    C.strokeStyle=isSal?'rgba(190,80,30,0.55)':'rgba(25,70,190,0.55)';
+    C.lineWidth=1.5;C.lineCap='round';
+    C.beginPath();C.moveTo(pts[n-1].x,pts[n-1].y);C.lineTo(nxtX,nxtY);C.stroke();
+    C.restore();
+    // History dots (small, white-filled)
+    for(var k=0;k<n-1;k++){
+      C.fillStyle='rgba(255,255,255,0.9)';C.strokeStyle=lineCol;C.lineWidth=1.5;
+      C.beginPath();C.arc(pts[k].x,pts[k].y,2,0,Math.PI*2);C.fill();C.stroke();
+    }
+    // Current price dot (large, solid)
+    var lp=pts[n-1];
+    C.fillStyle=lineCol;C.beginPath();C.arc(lp.x,lp.y,4.5,0,Math.PI*2);C.fill();
+    // Current price label
+    var lv=hist[n-1];
+    C.fillStyle=lineCol;C.font='800 9px "Segoe UI",sans-serif';C.textAlign='center';
+    var lY=lp.y+(lv>=5?-7:9);lY=Math.max(y+11,Math.min(y+h-3,lY));
+    C.fillText('$'+lv,lp.x,lY);
+    // Next price ghost dot
+    var nxtCol=isSal?'rgba(220,130,80,0.75)':'rgba(80,130,220,0.75)';
+    C.fillStyle=nxtCol;C.strokeStyle=lineCol;C.lineWidth=1.5;C.setLineDash([]);
+    C.beginPath();C.arc(nxtX,nxtY,4,0,Math.PI*2);C.fill();C.stroke();
+    // Next price label (bold, inside chart)
+    var nxtLabel='$'+nxtPrice;
+    C.fillStyle=isSal?'rgba(170,60,20,0.85)':'rgba(20,55,170,0.85)';
+    C.font='800 9px "Segoe UI",sans-serif';C.textAlign='center';
+    var nY=nxtY+(nxtPrice>=5?-7:9);nY=Math.max(y+11,Math.min(y+h-3,nY));
+    C.fillText(nxtLabel,nxtX,nY);
+  }
+  C.restore(); // end clip
+  C.textAlign='left';
+}
+
+function drawFishPriceCard(cx,cy,cw,ch,fishType){
+  var isSal=fishType==='salmon';
+  var price=fishPrices[fishType];
+  var nxt=nextPrices[fishType];
+  var hist=priceHistory[fishType];
+  var isHigh=price>=5;
+  var pulse=0.55+0.35*Math.abs(Math.sin(_t*5));
+  var accentCol=isSal?'#c04818':'#1448b0';
+  // Background
+  C.fillStyle=isSal?'rgba(255,248,243,0.97)':'rgba(243,247,255,0.97)';
+  rr(cx,cy,cw,ch,15);C.fill();
+  if(isHigh){
+    C.save();C.globalAlpha=0.07+0.07*pulse;
+    C.fillStyle=isSal?'#ff5010':'#1040ff';
+    rr(cx,cy,cw,ch,15);C.fill();C.restore();
+  }
+  var bAlpha=isHigh?(0.42+0.28*pulse):0.38;
+  C.strokeStyle=isSal?'rgba(210,90,40,'+bAlpha.toFixed(2)+')':'rgba(30,90,210,'+bAlpha.toFixed(2)+')';
+  C.lineWidth=isHigh?2:1.5;rr(cx,cy,cw,ch,15);C.stroke();
+  // Fish icon
+  var img=isSal?imgSalmon:imgTuna;var iSz=22;
+  if(img.complete&&img.naturalWidth>0)C.drawImage(img,cx+7,cy+8,iSz,iSz);
+  // Fish name label
+  C.fillStyle=accentCol;C.font='700 8px "Segoe UI",sans-serif';C.textAlign='left';
+  C.fillText(isSal?'SALMON':'TUNA',cx+33,cy+14);
+  // Current price (large)
+  var priceStr='$'+price;
+  C.font='900 19px "Segoe UI",Arial,sans-serif';
+  C.fillStyle=isHigh?(isSal?'rgba(200,60,10,'+pulse.toFixed(2)+')':'rgba(10,50,200,'+pulse.toFixed(2)+')'):(accentCol);
+  C.textAlign='left';C.fillText(priceStr,cx+33,cy+38);
+  // Next price indicator (below current price)
+  var nxtDiff=nxt-price;
+  var nxtArrow=nxtDiff>0?'▲':nxtDiff<0?'▼':'→';
+  var nxtCol=nxtDiff>0?'#18a045':nxtDiff<0?'#cc2020':'#888';
+  C.font='700 8.5px "Segoe UI",sans-serif';C.textAlign='left';
+  C.fillStyle='rgba(80,100,120,0.7)';C.fillText('Next',cx+33,cy+ch-8);
+  C.fillStyle=nxtCol;C.fillText(nxtArrow+' $'+nxt,cx+55,cy+ch-8);
+  // Sparkline (right portion, well-bounded)
+  var chX=cx+cw*0.46,chY=cy+8,chW=cw*0.52,chH=ch-14;
+  drawPriceSparkline(chX,chY,chW,chH,hist,fishType,nxt);
+  C.textAlign='left';
+}
+
 function drawHUD(){
   if(!G)return;
   var iconPx=22;
@@ -1328,54 +1624,40 @@ function drawHUD(){
       C.beginPath();C.moveTo(sx+sw,hy+14);C.lineTo(sx+sw,hy+hh-14);C.stroke();
     }
   }
-  // ── Top-center bar: clock + time + live fish prices ──────────────────────
-  var infoW=440,infoH=50,infoX=(W-infoW)/2,infoY=10;
-  C.fillStyle='rgba(255,255,255,0.96)';
-  rr(infoX,infoY,infoW,infoH,16);C.fill();
-  C.strokeStyle='rgba(160,195,220,0.9)';C.lineWidth=1.2;rr(infoX,infoY,infoW,infoH,16);C.stroke();
-  var topMid=infoY+infoH/2+8;
-  // Clock icon + time
-  var clkCx=infoX+24,clkCy=infoY+25;
-  if(!drawHudIcon(imgHudClock,clkCx,clkCy,22)){
-    C.font='19px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
-    C.fillStyle='#555';C.textAlign='left';C.fillText('\uD83D\uDD50',infoX+10,topMid);
+  // ── Top bar: [Salmon] [Timer] [Tuna] — same height, shared top Y ───────
+  var barH=60;
+  var tcW=114,tcH=barH,tcY=20,tcX=Math.round(W/2-tcW/2);
+  var pcW=Math.min(178,tcX-16),pcH=barH;
+  // -- Timer card (center) --
+  var timeCrit=gameTime<=10;
+  var flashP=timeCrit?Math.abs(Math.sin(_t*Math.PI*1.4)):0;
+  C.fillStyle='rgba(255,255,255,0.97)';
+  rr(tcX,tcY,tcW,tcH,13);C.fill();
+  if(timeCrit){
+    C.save();C.globalAlpha=0.05+0.07*flashP;
+    C.fillStyle='#e01010';rr(tcX,tcY,tcW,tcH,13);C.fill();C.restore();
+  }
+  C.strokeStyle=timeCrit?'rgba(200,30,30,'+(0.3+0.25*flashP).toFixed(2)+')':'rgba(160,195,220,0.9)';
+  C.lineWidth=timeCrit?2:1.2;rr(tcX,tcY,tcW,tcH,13);C.stroke();
+  var midY=tcY+tcH/2;
+  if(!drawHudIcon(imgHudClock,tcX+17,midY,18)){
+    C.save();C.textBaseline='middle';C.textAlign='center';
+    C.font='14px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
+    C.fillStyle='#555';C.fillText('\uD83D\uDD50',tcX+17,midY);C.restore();
   }
   var mm=Math.floor(gameTime/60),ss=Math.floor(gameTime%60);
   var timeStr=mm+':'+(ss<10?'0':'')+ss;
-  C.fillStyle='#2c3e50';C.font='bold 22px Arial,sans-serif';C.textAlign='left';
-  C.fillText(timeStr,infoX+40,topMid);
-  // Divider
-  var divX=infoX+118;
-  C.strokeStyle='rgba(0,0,0,0.08)';C.lineWidth=1;
-  C.beginPath();C.moveTo(divX,infoY+8);C.lineTo(divX,infoY+infoH-8);C.stroke();
-  // Live fish prices — centered in right section
-  var pulse=0.7+0.3*Math.sin(_t*6);
-  var iSz=22,prY=topMid;
-  var salmonHigh=fishPrices.salmon>=5,tunaHigh=fishPrices.tuna>=5;
-  C.font='700 15px "Segoe UI",Arial,sans-serif';
-  var salTxt='Salmon $'+fishPrices.salmon+(salmonHigh?' \u2b06':'');
-  var tunTxt='Tuna $'+fishPrices.tuna+(tunaHigh?' \u2b06':'');
-  var gap2=16;
-  var totalPrW=iSz+4+C.measureText(salTxt).width+gap2+iSz+4+C.measureText(tunTxt).width;
-  var rightW=infoW-(divX-infoX); // right section width
-  var prX=divX+Math.max(10,(rightW-totalPrW)/2);
-  // Salmon
-  if(imgSalmon.complete&&imgSalmon.naturalWidth>0){
-    C.drawImage(imgSalmon,prX,prY-iSz+3,iSz,iSz);
-  }else{C.font='16px sans-serif';C.fillStyle='#888';C.textAlign='left';C.fillText('\uD83D\uDC1F',prX,prY);}
-  C.font='700 15px "Segoe UI",Arial,sans-serif';
-  C.fillStyle=salmonHigh?'rgba(200,110,0,'+pulse.toFixed(2)+')':'#2c3e50';
-  C.textAlign='left';C.fillText(salTxt,prX+iSz+4,prY);
-  var salW=iSz+4+C.measureText(salTxt).width+gap2;
-  // Tuna
-  var tuX=prX+salW;
-  if(imgTuna.complete&&imgTuna.naturalWidth>0){
-    C.drawImage(imgTuna,tuX,prY-iSz+3,iSz,iSz);
-  }else{C.font='16px sans-serif';C.fillStyle='#888';C.fillText('\uD83D\uDC21',tuX,prY);}
-  C.font='700 15px "Segoe UI",Arial,sans-serif';
-  C.fillStyle=tunaHigh?'rgba(20,80,200,'+pulse.toFixed(2)+')':'#2c3e50';
-  C.fillText(tunTxt,tuX+iSz+4,prY);
+  var timeCol=timeCrit?'rgba(195,25,10,'+(0.7+0.2*flashP).toFixed(2)+')':'#2c3e50';
+  C.save();C.textBaseline='middle';C.textAlign='center';
+  C.fillStyle=timeCol;C.font='bold '+(timeCrit?'23':'21')+'px "Segoe UI",Arial,sans-serif';
+  C.fillText(timeStr,tcX+tcW/2+7,midY);C.restore();
   C.textAlign='left';
+  // -- Salmon card (left of timer) --
+  var salX=tcX-8-pcW,salY=tcY;
+  if(salX>=4)drawFishPriceCard(salX,salY,pcW,pcH,'salmon');
+  // -- Tuna card (right of timer) --
+  var tunX=tcX+tcW+8,tunY=tcY;
+  if(tunX+pcW<=W-4)drawFishPriceCard(tunX,tunY,pcW,pcH,'tuna');
 }
 
 // ─── MAIN DRAW ───
@@ -1388,7 +1670,10 @@ function draw(ts){
   if(G){
     for(var j=0;j<G.ponds.length;j++)drawPond(G.ponds[j]);
   }
+  drawParticleLayer('dust');
   if(G)for(var i=0;i<4;i++)drawPlayer(G.players[i]);
+  drawParticleLayer('fx');
+  if(G)drawPolice();
   drawHUD();
   if(G&&G.eco<=3){
     C.strokeStyle='rgba(220,60,50,'+(0.3+Math.sin(_t*5)*0.22)+')';
@@ -1408,8 +1693,6 @@ function startGame(){
   for(var si=0;si<4;si++)prevMoney[si]=G.players[si].money;
   document.getElementById('ss').style.display='none';
   if(spSparkleTimer){clearInterval(spSparkleTimer);spSparkleTimer=null;}
-  var gh=document.getElementById('gameHelp');
-  gh.style.display='block';gh.classList.add('collapsed');
   sfxInit();
   if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(function(){});
   sfxStart();
@@ -1418,7 +1701,7 @@ function startGame(){
 }
 
 function endGame(){
-  running=false;
+  running=false;police=null;
   var maxRel=Math.max.apply(null,G.players.map(function(p){return p.releases;}));
   var maxSt=Math.max.apply(null,G.players.map(function(p){return p.steals;}));
   var ranked=G.players.map(function(p){
@@ -1473,14 +1756,12 @@ function endGame(){
     '<div class="res-row4-st">'+p4.steals+'<span class="res-row4-lbl">steal</span></div>'+
     '<div class="res-row4-rel">'+p4.releases+'<span class="res-row4-lbl">release</span></div>';
   document.getElementById('es').style.display='flex';
-  document.getElementById('gameHelp').style.display='none';
 }
 
 function resetGame(){
   cancelAnimationFrame(raf);G=null;running=false;keys={};mg=null;
   for(var ri=0;ri<4;ri++){gpPrevAct[ri]=false;gpPrevGrd[ri]=false;}
   document.getElementById('es').style.display='none';
-  document.getElementById('gameHelp').style.display='none';
   document.getElementById('ss').style.display='flex';
   startSparkles();
   lastTs=performance.now();raf=requestAnimationFrame(loop);
@@ -1489,9 +1770,6 @@ function resetGame(){
 startSparkles();
 document.getElementById('startBtn').addEventListener('click',startGame);
 document.getElementById('rb').addEventListener('click',resetGame);
-document.getElementById('ghToggle').addEventListener('click',function(){
-  document.getElementById('gameHelp').classList.toggle('collapsed');
-});
 lastTs=performance.now();raf=requestAnimationFrame(loop);
 })();
 </script>

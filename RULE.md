@@ -146,6 +146,28 @@ When you press **A** at the **Market**:
 - If the pond owner is **Guarding** → steal is blocked; thief gets 5 s cooldown.
 - Stealing triggers a **10 s cooldown** for the thief and **−1 Morality**.
 
+---
+
+## Police NPC
+
+A police officer NPC can appear after any successful steal (including SSR clash victory).
+
+### Spawn conditions
+- **50% chance** to spawn each time a steal succeeds (non-SSR or SSR clash winner).
+- **Only one police** can be active at a time — if already chasing, no new police spawns.
+- Spawn point: **bottom-center of the island** (the dock area gap between seaweed spots).
+
+### Behaviour
+- The police immediately **chases the stealing player** for **10 seconds**.
+- Police speed is **~150 px/s**, faster than a player (~118 px/s).
+- A **red/blue siren capsule** flashes above the police, plus a countdown timer bar.
+- A warning announcement appears: 🚔 *Police! Px is being chased!*
+
+### Catch
+- If the police closes within 32 px of the target player → **−$10** (money can go negative).
+- The police then disappears immediately.
+- If the 10-second timer expires without catching the player → police disappears without penalty.
+
 ### SSR Clash (minigame)
 
 If the stolen fish is SSR, a button-mashing clash starts:

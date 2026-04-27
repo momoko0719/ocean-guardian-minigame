@@ -566,8 +566,10 @@ var imgSalmon=new Image(),imgTuna=new Image();
 imgSalmon.src='assets/salmon.png';imgTuna.src='assets/tuna.png';
 var imgMarket=new Image();
 var imgKitchen=new Image();
+var imgPoliceStation=new Image();
 imgMarket.src='assets/market.png';
 imgKitchen.src='assets/kitchen.png';
+imgPoliceStation.src='assets/policestation.png';
 var imgPolice=new Image();imgPolice.src='assets/police.png';
 // Dust GIF overlay — 4 HTML img elements (one per player), animated natively by the browser
 // ── Particle system ──────────────────────────────────────────────────────────
@@ -636,7 +638,105 @@ function drawHudIcon(img,cx,cy,pix){
   return true;
 }
 
-function mkP(i){var p=zc(i);return{i:i,x:p.x,y:p.y,money:0,morality:0,seaweed:0,hand:[],cooking:null,cookT:0,cooked:[],gathering:null,guarding:false,guardT:0,guardCD:0,stealCD:0,steals:0,releases:0,buildMenu:false,buildMenuSel:0,buildMenuOpts:[],guardHeld:false,guardHoldT:0,sellMenu:false,sellMenuSel:0,sellMenuOpts:[],cookMenu:false,cookMenuSel:0,cookMenuOpts:[],menuDxPrev:0,vx:0,vy:0,moving:false,dustT:0};}
+function drawHudPlayerAvatar(img,cx,cy,maxW,maxH){
+  maxW=maxW||24;maxH=maxH||42;
+  if(!img||!img.complete||!img.naturalWidth)return false;
+  var iw=img.naturalWidth,ih=img.naturalHeight;
+  var sc=Math.min(maxW/iw,maxH/ih);
+  var dw=iw*sc,dh=ih*sc;
+  C.drawImage(img,cx-dw/2,cy-dh/2,dw,dh);
+  return true;
+}
+
+function drawFaceButton(cx,cy,label,strokeCol){
+  var r=12;
+  C.save();
+  var glow=0.72+0.28*Math.sin(_t*6);
+  C.shadowColor='rgba(18,97,27,'+(0.25+0.25*glow).toFixed(2)+')';
+  C.shadowBlur=6+4*glow;
+  C.fillStyle='#648967';
+  C.beginPath();C.arc(cx,cy,r,0,Math.PI*2);C.fill();
+  C.strokeStyle=strokeCol||'#12611B';C.lineWidth=1.8;
+  C.stroke();
+  C.fillStyle='#ffffff';C.font='800 11px "Segoe UI",sans-serif';C.textAlign='center';C.textBaseline='middle';
+  C.fillText(label,cx,cy+0.5);
+  C.restore();
+}
+
+function drawMiniKeyBadge(x,y,label,fillCol,strokeCol){
+  var w=20,h=16,rx=5;
+  C.save();
+  C.fillStyle=fillCol||'rgba(245,250,255,0.98)';
+  rr(x-w/2,y-h/2,w,h,rx);C.fill();
+  C.strokeStyle=strokeCol||'rgba(80,120,180,0.75)';C.lineWidth=1.4;rr(x-w/2,y-h/2,w,h,rx);C.stroke();
+  C.fillStyle='#2a3a4a';C.font='800 10px "Segoe UI",sans-serif';C.textAlign='center';C.textBaseline='middle';
+  C.fillText(label,x,y+0.5);
+  C.restore();
+}
+
+function drawWorldGatherHints(){
+  if(!G)return;
+  var maxD=58;
+  var ic=IC(),bw=ic.rx*0.28,bh=ic.ry*0.44,sep=ic.rx*0.22;
+  var mx=ic.x-bw-ic.rx*0.04-sep,my=ic.y-ic.ry*0.98;
+  var kx=ic.x+ic.rx*0.04+sep,ky=my;
+  var marketHint={x:mx+bw*0.5,y:my+bh*0.62};
+  var kitchenHint={x:kx+bw*0.5,y:ky+bh*0.62};
+  for(var pi=0;pi<4;pi++){
+    var p=G.players[pi];
+    if(inIsland(p.x,p.y)){
+      if(!p.sellMenu&&!p.cookMenu&&!p.buildMenu){
+        var dm=Math.hypot(p.x-marketHint.x,p.y-marketHint.y);
+        var dk=Math.hypot(p.x-kitchenHint.x,p.y-kitchenHint.y);
+        var floatB=Math.sin(_t*4+pi*0.9)*2.2;
+        if(dm<86)drawFaceButton(marketHint.x+12,marketHint.y-12+floatB,'A','#12611B');
+        if(dk<86)drawFaceButton(kitchenHint.x-12,kitchenHint.y-12+floatB,'A','#12611B');
+        var nearPd=null,nearD=66;
+        for(var pj=0;pj<G.ponds.length;pj++){
+          var pdh=G.ponds[pj];
+          if(!pdh.fish||pdh.fish.length===0)continue;
+          var dpd=Math.hypot(p.x-pdh.x,p.y-pdh.y);
+          if(dpd<nearD){nearD=dpd;nearPd=pdh;}
+        }
+        if(nearPd){
+          var pFloat=Math.sin(_t*4+pi*0.9+0.7)*2.2;
+          var bx=nearPd.x+(nearPd.owner===pi?-16:16),by=nearPd.y-28+pFloat;
+          drawFaceButton(bx,by,'A','#12611B');
+          if(nearPd.owner!==pi){
+            C.save();
+            var stealTxt='Steal!';
+            C.font='800 10px "Segoe UI",sans-serif';
+            var stW=C.measureText(stealTxt).width,stPadX=5,stPadY=3,stH=13;
+            var stx=bx+14,sty=by;
+            C.fillStyle='rgba(255,255,255,0.94)';
+            rr(stx-stPadX,sty-stH/2-stPadY,stW+stPadX*2,stH+stPadY*2,6);C.fill();
+            C.strokeStyle='rgba(180,60,60,0.35)';C.lineWidth=1;rr(stx-stPadX,sty-stH/2-stPadY,stW+stPadX*2,stH+stPadY*2,6);C.stroke();
+            C.fillStyle='rgba(190,45,45,0.95)';
+            C.textAlign='left';C.textBaseline='middle';
+            C.fillText(stealTxt,stx,sty+0.5);
+            C.restore();
+          }
+        }
+      }
+      continue;
+    }
+    var best=-1,bestD=maxD+1;
+    for(var j=0;j<G.seaweeds.length;j++){
+      var d=Math.hypot(p.x-G.seaweeds[j].x,p.y-G.seaweeds[j].y);
+      if(d<bestD){bestD=d;best=j;}
+    }
+    if(best<0)continue;
+    var sw=G.seaweeds[best];
+    if(p.gathering&&Math.hypot(p.gathering.tx-sw.x,p.gathering.ty-sw.y)<8)continue;
+    // Render hint next to seaweed; draw order keeps it under player sprites.
+    var offX=(pi%2===0)?-14:14;
+    var offY=(pi<2)?-14:12;
+    var floatY=Math.sin(_t*4+pi*0.9)*2.2;
+    drawFaceButton(sw.x+offX,sw.y+offY+floatY,'A','#12611B');
+  }
+}
+
+function mkP(i){var p=zc(i);return{i:i,x:p.x,y:p.y,money:0,morality:0,seaweed:0,hand:[],cooking:null,cookT:0,cooked:[],gathering:null,guarding:false,guardT:0,guardCD:0,stealCD:0,steals:0,releases:0,buildMenu:false,buildMenuSel:0,buildMenuOpts:[],guardHeld:false,guardHoldT:0,sellMenu:false,sellMenuSel:0,sellMenuOpts:[],cookMenu:false,cookMenuSel:0,cookMenuOpts:[],menuDxPrev:0,vx:0,vy:0,moving:false,dustT:0,faceLeft:false,colR:18,buildHintDismissed:false,prevSeaweed:0};}
 
 function genSW(){
   // Used only when releasing fish (addSW). Spawns one seaweed near island shore.
@@ -696,8 +796,10 @@ function addSW(n){
   G.eco=Math.min(15,G.eco+added);
 }
 
-function pickFishForPond(ft){
-  if(Math.random()<0.05)return{fishType:'ssr',name:'SSR goldfish',sell:15,cook:35,cookT:20,col:'#ffd700',rad:7};
+function pickFishForPond(ft,pondLv){
+  var lv=Math.min(3,Math.max(1,pondLv||1));
+  var ssrP=[0,0.05,0.15,0.25][lv];
+  if(Math.random()<ssrP)return{fishType:'ssr',name:'SSR goldfish',sell:15,cook:35,cookT:20,col:'#ffd700',rad:7};
   var col=ft==='salmon'?'#f4956a':'#4a8fcc';
   return{fishType:ft,name:ft==='salmon'?'Salmon':'Tuna',sell:0,cook:0,cookT:10,col:col,rad:5};
 }
@@ -710,7 +812,7 @@ function getFishCookPrice(f){
   return Math.round((fishPrices[f.fishType]||3)*2);
 }
 
-var PCAP=[0,5,10,15],PRATE=[0,13,10,8];
+var PCAP=[0,5,10,15],PRATE=[0,11,9,6];
 
 function grdKeyLabel(i){
   return 'B';
@@ -814,10 +916,11 @@ function doAction(pi){
       // Check pond collision
       for(var ci=0;ci<G.ponds.length;ci++){if(Math.hypot(px-G.ponds[ci].x,py-G.ponds[ci].y)<52){sfxNo();ann('Too close to another pond!','#888');p.seaweed+=3;return true;}}
       G.ponds.push({id:G.nextId++,owner:pi,level:1,fish:[],timer:0,x:px,y:py,fishType:sel.fishType});
+      p.buildHintDismissed=true;
       sfxBuild();spawnBuild(px,py);ann(PN[pi]+' created '+sel.fishType+' pond! \uD83C\uDF89',PC[pi]);
     } else {
       var tgt=sel.fishType==='salmon'?salPond:tunPond;
-      if(tgt){tgt.level++;sfxBuild();spawnBuild(px,py);ann(PN[pi]+' '+sel.fishType+' pond Lv.'+tgt.level+'! \uD83C\uDF89',PC[pi]);}
+      if(tgt){tgt.level++;p.buildHintDismissed=true;sfxBuild();spawnBuild(px,py);ann(PN[pi]+' '+sel.fishType+' pond Lv.'+tgt.level+'! \uD83C\uDF89',PC[pi]);}
     }
     return true;
   }
@@ -847,7 +950,7 @@ function doAction(pi){
       return;
     }
     p.sellMenu=true;p.sellMenuSel=0;p.sellMenuOpts=sopts;p.menuDxPrev=0;
-    ann(PN[pi]+': \u25c4\u25ba choose  \u2022  A sell  \u2022  B cancel','#2a8a40');return;
+    return;
   }
   // kitchen
   if(inKitchen(px,py)){
@@ -867,7 +970,7 @@ function doAction(pi){
       return;
     }
     p.cookMenu=true;p.cookMenuSel=0;p.cookMenuOpts=copts;p.menuDxPrev=0;
-    ann(PN[pi]+': \u25c4\u25ba choose  \u2022  A cook  \u2022  B cancel','#d4a050');return;
+    return;
   }
   // zone: build/upgrade pond
   if(tryZoneBuild())return;
@@ -877,9 +980,9 @@ function doAction(pi){
     for(var j=0;j<G.seaweeds.length;j++){var d=Math.hypot(px-G.seaweeds[j].x,py-G.seaweeds[j].y);if(d<bestD){bestD=d;best=j;}}
     if(best!==null){
       var sw=G.seaweeds[best];
-      if(p.gathering&&Math.hypot(p.gathering.tx-sw.x,p.gathering.ty-sw.y)<8){ann('Gathering…','#5a8a6a');return;}
+      if(p.gathering&&Math.hypot(p.gathering.tx-sw.x,p.gathering.ty-sw.y)<8){return;}
       p.gathering={tx:sw.x,ty:sw.y,t:0,maxT:GATHER_TIME};
-      sfxPop();ann(PN[pi]+' gathering seaweed…','#5a8a6a');return;
+      sfxPop();return;
     }
     sfxNo();ann('No seaweed nearby','#888');
   }
@@ -976,7 +1079,7 @@ function update(dt){
   for(var j=0;j<G.ponds.length;j++){
     var pd=G.ponds[j];if(pd.fish.length>=PCAP[pd.level])continue;
     pd.timer+=dt*emu;
-    if(pd.timer>=PRATE[pd.level]){pd.timer=0;var f=pickFishForPond(pd.fishType||'salmon');pd.fish.push(f);if(f.fishType==='ssr'){sfxSSR();ann('⚠ SSR in '+PN[pd.owner]+"'s pond!",'#ffd700');}}
+    if(pd.timer>=PRATE[pd.level]){pd.timer=0;var f=pickFishForPond(pd.fishType||'salmon',pd.level);pd.fish.push(f);if(f.fishType==='ssr'){sfxSSR();ann('⚠ SSR in '+PN[pd.owner]+"'s pond!",'#ffd700');}}
   }
   for(var i=0;i<4;i++){
     var p=G.players[i],ct=CTRL[i];var dx=0,dy=0;
@@ -997,7 +1100,11 @@ function update(dt){
       if(nlen>1){dx/=nlen;dy/=nlen;}
     }
     var spd=118*dt;p.x=Math.max(15,Math.min(W-15,p.x+dx*spd));p.y=Math.max(15,Math.min(H-15,p.y+dy*spd));
-    p.moving=(dx!==0||dy!==0);if(p.moving){p.vx=dx;p.vy=dy;}
+    p.moving=(dx!==0||dy!==0);
+    if(p.moving){
+      p.vx=dx;p.vy=dy;
+      if(Math.abs(dx)>=0.01){if(dx<0)p.faceLeft=true;else p.faceLeft=false;}
+    }
     // Dust particles while moving
     if(p.moving){
       p.dustT-=dt;
@@ -1070,6 +1177,26 @@ function update(dt){
         sfxGather();ann(PN[i]+' gathered seaweed · '+p.seaweed+' 🌿',PC[i]);
       }
     }
+    if(p.prevSeaweed<3&&p.seaweed>=3)p.buildHintDismissed=false;
+    if(p.seaweed<3)p.buildHintDismissed=false;
+    p.prevSeaweed=p.seaweed;
+  }
+  // Player collider: slightly smaller than sprite footprint.
+  for(var c0=0;c0<4;c0++){
+    for(var c1=c0+1;c1<4;c1++){
+      var p0=G.players[c0],p1=G.players[c1];
+      var hx0=p0.x,hy0=p0.y+8,hx1=p1.x,hy1=p1.y+8;
+      var dxp=hx1-hx0,dyp=hy1-hy0,dist=Math.hypot(dxp,dyp)||0.0001;
+      var minD=(p0.colR||14)+(p1.colR||14);
+      if(dist<minD){
+        var push=(minD-dist)*0.5;
+        var nx=dxp/dist,ny=dyp/dist;
+        p0.x-=nx*push;p0.y-=ny*push;
+        p1.x+=nx*push;p1.y+=ny*push;
+      }
+      p0.x=Math.max(15,Math.min(W-15,p0.x));p0.y=Math.max(15,Math.min(H-15,p0.y));
+      p1.x=Math.max(15,Math.min(W-15,p1.x));p1.y=Math.max(15,Math.min(H-15,p1.y));
+    }
   }
   // Police NPC update
   if(police){
@@ -1078,7 +1205,7 @@ function update(dt){
     else{
       var tp=G.players[police.targetPi];
       var pdx=tp.x-police.x,pdy=tp.y-police.y,pdist=Math.hypot(pdx,pdy);
-      if(pdist>1){var pspd=118*dt;police.x+=pdx/pdist*pspd;police.y+=pdy/pdist*pspd;}
+      if(pdist>1){var pspd=118*1.03*dt;police.x+=pdx/pdist*pspd;police.y+=pdy/pdist*pspd;}
       if(pdist<32){
         tp.money-=10;
         // Return stolen fish to source pond
@@ -1185,6 +1312,30 @@ function drawBuildings(){
     C.fillStyle='#6a3a34';C.font='600 '+Math.round(dh*0.13)+'px "Segoe UI",Arial,sans-serif';C.textAlign='center';
     C.fillText('KITCHEN',kxDraw+dw/2,kyDraw+dh*0.55);
   }
+  // Police station at police spawn area (island bottom center), smaller than market/kitchen.
+  var psH=dh*0.58,psW=psH;
+  var psCx=ic.x,psCy=ic.y+ic.ry*0.6;
+  if(imgPoliceStation.complete&&imgPoliceStation.naturalWidth>0){
+    psW=psH*imgPoliceStation.naturalWidth/imgPoliceStation.naturalHeight;
+    C.drawImage(imgPoliceStation,psCx-psW/2,psCy-psH+16,psW,psH);
+  }else{
+    C.fillStyle='#d7dde5';rr(psCx-psW*0.5,psCy-psH+16,psW,psH,8);C.fill();
+    C.strokeStyle='rgba(100,120,150,0.55)';C.lineWidth=1.2;rr(psCx-psW*0.5,psCy-psH+16,psW,psH,8);C.stroke();
+    C.fillStyle='#4c5f7a';C.font='700 '+Math.round(psH*0.22)+'px "Segoe UI",sans-serif';C.textAlign='center';
+    C.fillText('POLICE',psCx,psCy-psH*0.35);
+  }
+  // White rounded label under station
+  var tagLeft='50%',tagRight=' Police Response';
+  C.font='700 12px "Segoe UI",sans-serif';
+  var twL=C.measureText(tagLeft).width,twR=C.measureText(tagRight).width;
+  var tagW=twL+twR+20,tagH=20,tagX=psCx-tagW/2,tagY=psCy+12;
+  C.fillStyle='rgba(255,255,255,0.96)';rr(tagX,tagY,tagW,tagH,9);C.fill();
+  C.strokeStyle='rgba(160,190,220,0.8)';C.lineWidth=1;rr(tagX,tagY,tagW,tagH,9);C.stroke();
+  C.textAlign='left';C.textBaseline='middle';
+  var tx=psCx-(twL+twR)/2,ty=tagY+tagH/2+0.2;
+  C.fillStyle='#d43434';C.font='800 12px "Segoe UI",sans-serif';C.fillText(tagLeft,tx,ty);
+  C.fillStyle='rgba(50,70,95,0.92)';C.font='700 12px "Segoe UI",sans-serif';C.fillText(tagRight,tx+twL,ty);
+  C.textBaseline='alphabetic';
   C.textAlign='left';
 }
 
@@ -1215,31 +1366,40 @@ function drawPond(pd){
     wg.addColorStop(0,'#d4f5e8');wg.addColorStop(0.55,'#48c0e0');wg.addColorStop(1,'#187890');
     C.fillStyle=wg;C.beginPath();C.ellipse(pd.x,pd.y,rxw,ryw,0,0,Math.PI*2);C.fill();
   }
+  var fishVis=1.32;
   var fr=0.92+(lv-1)*0.04;
   for(var fk=0;fk<pd.fish.length;fk++){
     var f=pd.fish[fk],fa=(fk/Math.max(1,pd.fish.length))*Math.PI*2+_t*0.85;
-    var rad=f.rad*fr*sc;
+    var rad=f.rad*fr*sc*fishVis;
     var fx=pd.x+Math.cos(fa)*13*sc,fy=pd.y+Math.sin(fa)*7.5*sc;
+    var tailK=5.9;
     C.fillStyle=f.col;C.beginPath();C.ellipse(fx,fy,rad,rad*0.62,fa,0,Math.PI*2);C.fill();
     C.beginPath();C.moveTo(fx-Math.cos(fa)*rad,fy-Math.sin(fa)*rad*0.62);
-    C.lineTo(fx-Math.cos(fa)*rad-Math.cos(fa-0.9)*4.5*sc,fy-Math.sin(fa)*rad*0.62-Math.sin(fa-0.9)*4.5*sc);
-    C.lineTo(fx-Math.cos(fa)*rad-Math.cos(fa+0.9)*4.5*sc,fy-Math.sin(fa)*rad*0.62-Math.sin(fa+0.9)*4.5*sc);
+    C.lineTo(fx-Math.cos(fa)*rad-Math.cos(fa-0.9)*tailK*sc,fy-Math.sin(fa)*rad*0.62-Math.sin(fa-0.9)*tailK*sc);
+    C.lineTo(fx-Math.cos(fa)*rad-Math.cos(fa+0.9)*tailK*sc,fy-Math.sin(fa)*rad*0.62-Math.sin(fa+0.9)*tailK*sc);
     C.closePath();C.fill();
-    C.fillStyle='rgba(255,255,255,0.55)';C.beginPath();C.arc(fx+Math.cos(fa),fy+Math.sin(fa)*0.6,1.3*sc,0,Math.PI*2);C.fill();
+    C.fillStyle='rgba(255,255,255,0.55)';C.beginPath();C.arc(fx+Math.cos(fa),fy+Math.sin(fa)*0.6,1.65*sc,0,Math.PI*2);C.fill();
   }
-  // Panel above pond: fish icon + Lv (no player label — see flag below)
+  // Panel above pond: fish icon + Lv + SSR rate
   var lblIcon=pd.fishType==='tuna'?imgTuna:imgSalmon;
   var iconSz=14;
+  var ssrRates=['','5% SSR','15% SSR','25% SSR'];
+  var ssrLine=ssrRates[lv]||'';
   C.font='800 11px "Segoe UI",system-ui,sans-serif';
   var lvW=C.measureText('Lv'+lv).width;
   var hasIcon=lblIcon.complete&&lblIcon.naturalWidth>0;
-  var totalW=(hasIcon?iconSz+3:0)+lvW;
-  var tagW=Math.max(52,totalW+16),tagH=22,tagTop=pd.y-pondH/2-tagH-4;
+  C.font='700 9px "Segoe UI",system-ui,sans-serif';
+  var ssrW=C.measureText(ssrLine).width;
+  C.font='800 11px "Segoe UI",system-ui,sans-serif';
+  var row1W=(hasIcon?iconSz+3:0)+lvW;
+  var tagW=Math.max(76,Math.max(row1W,ssrW)+18),tagH=34,tagTop=pd.y-pondH/2-tagH-4;
   C.fillStyle='rgba(255,255,255,0.97)';rr(pd.x-tagW/2,tagTop,tagW,tagH,8);C.fill();
   C.strokeStyle=st.rim;C.lineWidth=lv>=2?2.5:1.8;rr(pd.x-tagW/2,tagTop,tagW,tagH,8);C.stroke();
-  var tx=pd.x-totalW/2,ty=tagTop+15;
+  var tx=pd.x-row1W/2,ty=tagTop+13;
   if(hasIcon){C.drawImage(lblIcon,tx,ty-iconSz+2,iconSz,iconSz);tx+=iconSz+3;}
   C.fillStyle=st.tag;C.textAlign='left';C.fillText('Lv'+lv,tx,ty);
+  C.font='700 9px "Segoe UI",sans-serif';C.fillStyle=st.sub;
+  C.textAlign='center';C.fillText(ssrLine,pd.x,tagTop+28);
   C.textAlign='left';
   // Flag: pole + triangular pennant with player color + player PNG
   var flagX=pd.x+pondW/2+10,poleBot=pd.y+pondH*0.2,poleTop2=pd.y-pondH/2-2;
@@ -1354,7 +1514,10 @@ function drawPlayer(p){
     pw=ph*spr.naturalWidth/spr.naturalHeight;
   }
   if(spr&&spr.complete&&spr.naturalWidth>0){
+    C.save();
+    if(p.faceLeft){C.translate(px,0);C.scale(-1,1);C.translate(-px,0);}
     C.drawImage(spr,px-pw/2,top,pw,ph);
+    C.restore();
   }else{
     C.fillStyle='rgba(55,85,105,0.11)';C.beginPath();C.ellipse(px,footY-4,15,5.2,0,0,Math.PI*2);C.fill();
     C.fillStyle=PD[i];C.beginPath();C.arc(px,py-28,22,0,Math.PI*2);C.fill();
@@ -1426,8 +1589,8 @@ function drawPlayer(p){
       C.fillStyle='rgba(40,60,40,0.65)';C.font='600 8px "Segoe UI",sans-serif';
       C.fillText(lbl,cx+cardW/2,cy+56);
     }
-    C.fillStyle='rgba(70,90,120,0.72)';C.font='600 7.5px "Segoe UI",sans-serif';
-    C.textAlign='center';C.fillText('\u25c4\u25ba select  \u2022  A sell  \u2022  B cancel',px,smY-5);
+    C.fillStyle='rgba(22,32,46,0.94)';C.font='700 10px "Segoe UI",sans-serif';
+    C.textAlign='center';C.fillText('A sell  ·  B cancel',px,smY-6);
     C.textAlign='left';
   }
   // Cook menu popup
@@ -1484,7 +1647,19 @@ function drawPlayer(p){
       C.fillStyle=txtCol;
       var word=maxed?'MAX':(isCreate?'Create':'Upgrade');
       C.font='800 12px "Segoe UI",sans-serif';
-      C.fillText(word,ox+half/2,bpy+46);
+      if(!maxed){
+        C.font='800 12px "Segoe UI",sans-serif';
+        var tw=C.measureText(word).width;
+        var bw=20,gapBtn=4;
+        var groupW=tw+gapBtn+bw;
+        var gx=ox+half/2-groupW/2;
+        C.textAlign='left';
+        C.fillText(word,gx,bpy+46);
+        drawMiniKeyBadge(gx+tw+gapBtn+bw/2,bpy+40,'A','rgba(245,252,255,0.98)','#1a6ec2');
+        C.textAlign='center';
+      }else{
+        C.fillText(word,ox+half/2,bpy+46);
+      }
     }
     C.fillStyle='rgba(70,90,120,0.72)';C.font='600 7.5px "Segoe UI",sans-serif';
     C.fillText('\u25c4\u25ba select  \u2022  A confirm  \u2022  B cancel',px,bpy-4);
@@ -1694,8 +1869,26 @@ function drawHUD(){
   // (no right-panel divider — time+prices moved to top bar below)
   for(var i=0;i<4;i++){
     var sx=hx+padL+i*sw,cxL=sx+sw*0.26,cxR=sx+sw*0.74,cxm=sx+sw*0.5;
-    C.fillStyle='rgba(45,65,88,0.88)';C.font='800 12px "Segoe UI",system-ui,sans-serif';C.textAlign='left';
-    C.fillText(PN[i],sx,hy+17);
+    C.textAlign='left';
+    if(!drawHudPlayerAvatar(imgP[i],sx+25,hy+hh/2,36,62))
+      {C.fillStyle='rgba(45,65,88,0.88)';C.font='800 12px "Segoe UI",system-ui,sans-serif';C.fillText(PN[i],sx,hy+17);}
+    if(G.players[i].seaweed>=3&&!G.players[i].buildHintDismissed){
+      var tipLabel='to build/upgrade pond';
+      C.font='700 10px "Segoe UI",system-ui,sans-serif';
+      var tw2=C.measureText(tipLabel).width;
+      var badgeW=20,gap2=5;
+      var groupW2=badgeW+gap2+tw2;
+      var tipH=24,tipW=Math.max(132,Math.min(sw-4,groupW2+16)),tipX=sx+(sw-tipW)/2,tipY=hy-tipH-8;
+      C.save();
+      C.shadowColor='rgba(25,50,80,0.2)';C.shadowBlur=6;C.shadowOffsetY=1.5;
+      C.fillStyle='rgba(255,255,255,0.98)';rr(tipX,tipY,tipW,tipH,10);C.fill();
+      C.restore();
+      C.strokeStyle='rgba(120,155,190,0.68)';C.lineWidth=1;rr(tipX,tipY,tipW,tipH,10);C.stroke();
+      C.fillStyle='rgba(50,80,120,0.92)';
+      var gx2=tipX+(tipW-groupW2)/2;
+      drawMiniKeyBadge(gx2+badgeW/2,tipY+tipH/2,'B','rgba(246,251,255,0.99)','rgba(70,115,185,0.78)');
+      C.textAlign='left';C.textBaseline='middle';C.fillText(tipLabel,gx2+badgeW+gap2,tipY+tipH/2+0.3);C.textBaseline='alphabetic';
+    }
     if(moneyFlash[i]>0){
       C.save();
       var mf=moneyFlash[i];
@@ -1778,6 +1971,7 @@ function draw(ts){
     for(var j=0;j<G.ponds.length;j++)drawPond(G.ponds[j]);
   }
   drawParticleLayer('dust');
+  drawWorldGatherHints();
   if(G)for(var i=0;i<4;i++)drawPlayer(G.players[i]);
   drawParticleLayer('fx');
   if(G)drawPolice();

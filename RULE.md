@@ -104,18 +104,23 @@ When a player has 🌿×3 and is on open island ground, **short-press B** to ope
 - The pond is built at the player's current standing position (must not overlap another pond).
 - If the selected option is at max level (Lv 3), a warning plays and seaweed is not consumed.
 
+### Pond production
+- **Lv1** — one fish every **11 s** (if not at capacity)
+- **Lv2** — one fish every **9 s**
+- **Lv3** — one fish every **6 s**
+
 ### Pond Label
-Each pond shows a small tag above it: **[fish icon] · LvX**. The owner is identified by a coloured triangular flag to the right of the pond.
+Each pond shows a small tag above it: **[fish icon] · LvX** and a line with **SSR** chance (e.g. `5% SSR` at Lv1). The owner is identified by a coloured triangular flag to the right of the pond.
 
 ---
 
 ## Fish Types
 
-| Fish | Raw sell | Cooked sell | Cook time | Spawn chance |
+| Fish | Raw sell | Cooked sell | Cook time | SSR chance (by pond level) |
 |---|---|---|---|---|
-| Salmon | market price ($3–5) | price × 2 | 10 s | 95% in Salmon pond |
-| Tuna | market price ($3–5) | price × 2 | 10 s | 95% in Tuna pond |
-| SSR Goldfish | $15 (fixed) | $35 (fixed) | 20 s | 5% in any pond |
+| Salmon | market price ($3–5) | price × 2 | 10 s | normal fish only (see SSR row) |
+| Tuna | market price ($3–5) | price × 2 | 10 s | normal fish only (see SSR row) |
+| SSR Goldfish | $15 (fixed) | $35 (fixed) | 20 s | **Lv1: 5% · Lv2: 15% · Lv3: 25%** |
 
 - SSR fish trigger the **SSR Clash** minigame when stolen.
 

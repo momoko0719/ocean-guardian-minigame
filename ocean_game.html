@@ -9,6 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="start-page.css">
 <style>
+@font-face{font-family:'Pixel Operator';src:url('assets/PixelOperator/PixelOperator.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Pixel Operator';src:url('assets/PixelOperator/PixelOperator-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Pixel Operator Bold';src:url('assets/PixelOperator/PixelOperator-Bold.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Pixel Operator Mono';src:url('assets/PixelOperator/PixelOperatorMono.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Pixel Operator Mono Bold';src:url('assets/PixelOperator/PixelOperatorMono-Bold.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Pixel Operator SC Bold';src:url('assets/PixelOperator/PixelOperatorSC-Bold.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#8ecae6}
 canvas{display:block;width:100%;height:100%}
@@ -61,15 +67,15 @@ canvas{display:block;width:100%;height:100%}
 .gbtn:hover{filter:brightness(1.08);box-shadow:0 6px 28px rgba(42,152,128,0.55);transform:translateY(-1px)}
 .gbtn:active{transform:translateY(0)}
 #ss .gbtn{margin-top:6px;width:100%;max-width:280px;margin-left:auto;margin-right:auto;display:block}
-#es .gbtn,#mgs .gbtn{background:rgba(255,255,255,0.9);color:#23506e;border:1.5px solid rgba(120,170,205,0.7);box-shadow:0 4px 12px rgba(20,60,90,.12);text-transform:none;letter-spacing:2px;padding:11px 40px;border-radius:10px;width:auto;max-width:none}
+#es .gbtn,#mgs .gbtn{background:rgba(255,255,255,0.9);color:#23506e;border:1.5px solid rgba(120,170,205,0.7);box-shadow:0 4px 12px rgba(20,60,90,.12);text-transform:none;letter-spacing:2px;padding:11px 40px;border-radius:10px;width:auto;max-width:none;font:400 17px/1 'Pixel Operator SC Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif}
 #es .gbtn:hover,#mgs .gbtn:hover{filter:none;background:#ffffff}
 #es.scr{background:url('assets/resultbg.png') center/cover no-repeat;backdrop-filter:none;overflow-y:auto}
-.res-wrap{width:min(1100px,96vw);max-height:none;padding:18px 22px 20px;border-radius:24px;display:flex;flex-direction:column;gap:0;background:transparent}
-.res-top-title{flex:0 0 auto;font:700 clamp(26px,4vw,44px)/1.18 'Silkscreen','Fredoka','Segoe UI',sans-serif;color:#1a7694;text-align:center;text-shadow:0 2px 0 rgba(255,255,255,.6);margin:0 0 4px;padding:4px 0;letter-spacing:.03em}
+.res-wrap{width:min(1100px,96vw);max-height:none;padding:18px 22px 20px;border-radius:24px;display:flex;flex-direction:column;gap:0;background:transparent;font-family:'Pixel Operator','Silkscreen','Segoe UI',sans-serif}
+#es .res-top-title{flex:0 0 auto;font:400 clamp(30px,4.4vw,48px)/1.12 'Pixel Operator SC Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#1a7694;text-align:center;text-shadow:0 2px 0 rgba(255,255,255,.6);margin:0 0 4px;padding:4px 0;letter-spacing:.03em}
 .res-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(16px,2.5vw,28px);align-items:end;padding:72px 12px 0;margin-bottom:0}
 .res-card{position:relative;border-radius:20px;overflow:visible;box-shadow:0 10px 22px rgba(16,48,78,.2);margin:0 6px;background:#fff}
 .res-card.rank1{transform:translateY(-14px)}
-.res-head{height:90px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font:700 45px/1 'Silkscreen','Fredoka','Segoe UI',sans-serif;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.16);border-radius:20px 20px 0 0}
+.res-head{height:90px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font:400 48px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.16);border-radius:20px 20px 0 0}
 .res-card.rank1 .res-head{background:#e5c44f}
 .res-card.rank2 .res-head{background:#c8cdc6}
 .res-card.rank3 .res-head{background:#c39669}
@@ -80,20 +86,20 @@ canvas{display:block;width:100%;height:100%}
 .res-badge{padding:3px 8px;border-radius:999px;font:700 11px/1 'Segoe UI',sans-serif;border:2px solid}
 .res-badge.eco{color:#067a46;background:#e8ffe9;border-color:#22b573}
 .res-badge.over{color:#b3133a;background:#ffe6ec;border-color:#f17098}
-.res-pname{font:800 22px/1 'Fredoka','Segoe UI',sans-serif;text-align:center;margin:0 0 6px}
-.res-money{font:700 37px/1 'Silkscreen','Fredoka','Segoe UI',sans-serif;color:#be7c00;text-align:center;margin:0;letter-spacing:.02em}
-.res-basemoney{font:600 12px/1.4 'Segoe UI',sans-serif;text-align:center;color:#888;margin:2px 0 0}
-.res-moral{font:700 15px/1 'Segoe UI',sans-serif;text-align:center;color:#48626f;margin:4px 0 8px}
-.res-mini{display:flex;justify-content:space-around;font:600 13px/1.2 'Segoe UI',sans-serif;color:#30444e}
-.res-mini b{display:block;font:700 19px/1 'Silkscreen','Segoe UI',sans-serif;margin-bottom:2px}
+.res-pname{font:400 24px/1 'Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;text-align:center;margin:0 0 6px}
+.res-money{font:400 40px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#be7c00;text-align:center;margin:0;letter-spacing:.02em}
+.res-basemoney{font:400 14px/1.3 'Pixel Operator','Silkscreen','Segoe UI',sans-serif;text-align:center;color:#888;margin:2px 0 0}
+.res-moral{font:400 16px/1 'Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;text-align:center;color:#48626f;margin:4px 0 8px}
+.res-mini{display:flex;justify-content:space-around;font:400 14px/1.2 'Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#30444e}
+.res-mini b{display:block;font:400 21px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;margin-bottom:2px}
 .res-row4{display:grid;grid-template-columns:64px 80px 1fr auto 110px 110px 110px;align-items:center;gap:10px;padding:12px 18px;border-radius:16px;background:#ffffff;border:1px solid rgba(120,160,190,.28);box-shadow:0 4px 14px rgba(0,40,70,.1);margin:16px 10px 0;flex:0 0 auto}
-.res-row4-rank{font:700 27px/1 'Silkscreen','Fredoka','Segoe UI',sans-serif;color:#3e4e53;text-align:center}
+.res-row4-rank{font:400 30px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#3e4e53;text-align:center}
 .res-row4-avatar{width:64px;height:64px;border-radius:10px;background:transparent;display:flex;align-items:center;justify-content:center}
 .res-row4-avatar img{width:100%;height:100%;object-fit:contain;display:block}
-.res-row4-name{font:800 20px/1 'Fredoka','Segoe UI',sans-serif}
-.res-row4-money{font:700 31px/1 'Silkscreen','Fredoka','Segoe UI',sans-serif;color:#be7c00;text-align:center;white-space:nowrap;letter-spacing:.02em}
-.res-row4-moral,.res-row4-st,.res-row4-rel{font:700 18px/1.1 'Segoe UI',sans-serif;color:#405861;text-align:center}
-.res-row4-lbl{display:block;font-size:11px;color:#6d8390;font-weight:700}
+.res-row4-name{font:400 22px/1 'Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif}
+.res-row4-money{font:400 34px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#be7c00;text-align:center;white-space:nowrap;letter-spacing:.02em}
+.res-row4-moral,.res-row4-st,.res-row4-rel{font:400 19px/1.1 'Pixel Operator Bold','Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#405861;text-align:center}
+.res-row4-lbl{display:block;font:400 12px/1.1 'Pixel Operator','Silkscreen','Segoe UI',sans-serif;color:#6d8390}
 .res-actions{display:flex;justify-content:center;margin-top:18px;padding-bottom:6px}
 .mgbars{display:flex;gap:28px;align-items:flex-end;height:88px;margin-bottom:14px}
 .mgbw{display:flex;flex-direction:column;align-items:center;gap:7px}
@@ -1431,8 +1437,8 @@ function drawBuildings(){
   C.strokeStyle='rgba(160,190,220,0.8)';C.lineWidth=1;rr(tagX,tagY,tagW,tagH,9);C.stroke();
   C.textAlign='left';C.textBaseline='middle';
   var tx=psCx-(twL+twR)/2,ty=tagY+tagH/2+0.2;
-  C.fillStyle='#d43434';C.font='800 12px "Segoe UI",sans-serif';C.fillText(tagLeft,tx,ty);
-  C.fillStyle='rgba(50,70,95,0.92)';C.font='700 12px "Segoe UI",sans-serif';C.fillText(tagRight,tx+twL,ty);
+  C.fillStyle='#d43434';C.font='800 14px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';C.fillText(tagLeft,tx,ty);
+  C.fillStyle='rgba(50,70,95,0.92)';C.font='700 14px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';C.fillText(tagRight,tx+twL,ty);
   C.textBaseline='alphabetic';
   C.textAlign='left';
 }
@@ -1843,7 +1849,7 @@ function drawPriceSparkline(x,y,w,h,hist,fishType,nxtPrice){
     labelX=Math.max(plotX+2,Math.min(x+w-textW-3,labelX));
     labelY=Math.max(y+12,Math.min(y+h-3,labelY));
     C.fillStyle=color;
-    C.font='700 10.5px "Silkscreen","Segoe UI",sans-serif';
+    C.font='700 10.5px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';
     C.textAlign='left';
     C.fillText(label,labelX,labelY);
   }
@@ -1861,7 +1867,7 @@ function drawPriceSparkline(x,y,w,h,hist,fishType,nxtPrice){
     var gy=priceY(gv);
     C.strokeStyle=gridCol;
     C.beginPath();C.moveTo(plotX,gy);C.lineTo(x+w-4,gy);C.stroke();
-    C.fillStyle='rgba(50,65,85,0.62)';C.font='700 9.5px "Silkscreen","Segoe UI",sans-serif';
+    C.fillStyle='rgba(50,65,85,0.62)';C.font='700 9.5px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';
     C.textAlign='left';C.fillText('$'+gv,x+3,gy+3);
   }
   C.setLineDash([]);
@@ -1928,7 +1934,7 @@ function drawFishPriceCard(cx,cy,cw,ch,fishType){
   C.fillText(isSal?'SALMON':'TUNA',cx+33,cy+14);
   // Current price (large)
   var priceStr='$'+price;
-  C.font='700 19px "Silkscreen","Segoe UI",sans-serif';
+  C.font='400 21px "Pixel Operator Mono Bold","Pixel Operator Bold","Pixel Operator","Silkscreen","Segoe UI",sans-serif';
   C.fillStyle=isHigh?(isSal?'rgba(200,60,10,'+pulse.toFixed(2)+')':'rgba(10,50,200,'+pulse.toFixed(2)+')'):(accentCol);
   C.textAlign='left';C.fillText(priceStr,cx+33,cy+38);
   // Next price indicator (below current price)
@@ -1937,9 +1943,9 @@ function drawFishPriceCard(cx,cy,cw,ch,fishType){
   var nxtCol=nxtDiff>0?'#18a045':nxtDiff<0?'#cc2020':'#888';
   C.font='800 10px "Segoe UI",sans-serif';C.textAlign='left';
   C.fillStyle='rgba(80,100,120,0.72)';C.fillText('Next',cx+16,cy+ch-8);
-  C.font='700 13px "Silkscreen","Segoe UI",sans-serif';
+  C.font='700 13px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';
   C.fillStyle=nxtCol;C.fillText(nxtArrow,cx+43,cy+ch-8);
-  C.font='700 14px "Silkscreen","Segoe UI",sans-serif';
+  C.font='700 14px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';
   C.fillText('$'+nxt,cx+57,cy+ch-8);
   // Sparkline (right portion, well-bounded)
   var chX=cx+cw*0.44,chY=cy+7,chW=cw*0.54,chH=ch-12;
@@ -1966,7 +1972,7 @@ function drawHUD(){
   C.strokeStyle='rgba(160,195,220,0.9)';C.lineWidth=1.5;rr(hx,hy,hw,hh,22);C.stroke();
   // (no right-panel divider — time+prices moved to top bar below)
   for(var i=0;i<4;i++){
-    var sx=hx+padL+i*sw,cxL=sx+sw*0.26,cxR=sx+sw*0.74,cxm=sx+sw*0.5;
+    var sx=hx+padL+i*sw,cxL=Math.round(sx+sw*0.26),cxR=Math.round(sx+sw*0.74),cxm=Math.round(sx+sw*0.5);
     C.textAlign='left';
     if(!drawHudPlayerAvatar(imgP[i],sx+25,hy+hh/2,36,62))
       {C.fillStyle='rgba(45,65,88,0.88)';C.font='800 12px "Segoe UI",system-ui,sans-serif';C.fillText(PN[i],sx,hy+17);}
@@ -2005,15 +2011,15 @@ function drawHUD(){
       C.font='18px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
       C.fillText('\u2696\uFE0F',cxR,hy+36);
     }
-    C.fillStyle=PD[i];C.font='700 20px "Silkscreen","Segoe UI",sans-serif';
+    C.fillStyle=PD[i];C.font='400 22px "Pixel Operator Mono Bold","Pixel Operator Bold","Pixel Operator","Silkscreen","Segoe UI",sans-serif';
     C.fillText('$'+G.players[i].money,cxL,hy+58);
     var mor=G.players[i].morality;
     C.fillText((mor>0?'+':'')+mor,cxR,hy+58);
     var rel=G.players[i].releases,st=G.players[i].steals;
     var rsLine='Release '+rel+'\uD83D\uDC1F  --  Stolen '+st+'\uD83D\uDC1F';
-    C.fillStyle='rgba(45,70,95,0.96)';C.font='700 12px "Segoe UI",system-ui,sans-serif';
-    if(C.measureText(rsLine).width>sw-4)C.font='700 11px "Segoe UI",system-ui,sans-serif';
-    if(C.measureText(rsLine).width>sw-4)C.font='700 10px "Segoe UI",system-ui,sans-serif';
+    C.fillStyle='rgba(45,70,95,0.96)';C.font='700 12px "Pixel Operator","Silkscreen","Segoe UI",system-ui,sans-serif';
+    if(C.measureText(rsLine).width>sw-4)C.font='700 11px "Pixel Operator","Silkscreen","Segoe UI",system-ui,sans-serif';
+    if(C.measureText(rsLine).width>sw-4)C.font='700 10px "Pixel Operator","Silkscreen","Segoe UI",system-ui,sans-serif';
     C.textAlign='center';
     C.fillText(rsLine,cxm,yRowStats);
     C.textAlign='left';
@@ -2037,7 +2043,7 @@ function drawHUD(){
   }
   C.strokeStyle=timeCrit?'rgba(200,30,30,'+(0.3+0.25*flashP).toFixed(2)+')':'rgba(160,195,220,0.9)';
   C.lineWidth=timeCrit?2:1.2;rr(tcX,tcY,tcW,tcH,13);C.stroke();
-  var midY=tcY+tcH/2;
+  var midY=Math.round(tcY+tcH/2);
   if(!drawHudIcon(imgHudClock,tcX+17,midY,18)){
     C.save();C.textBaseline='middle';C.textAlign='center';
     C.font='14px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
@@ -2047,8 +2053,8 @@ function drawHUD(){
   var timeStr=mm+':'+(ss<10?'0':'')+ss;
   var timeCol=timeCrit?'rgba(195,25,10,'+(0.7+0.2*flashP).toFixed(2)+')':'#2c3e50';
   C.save();C.textBaseline='middle';C.textAlign='center';
-  C.fillStyle=timeCol;C.font='700 '+(timeCrit?'21':'19')+'px "Silkscreen","Segoe UI",sans-serif';
-  C.fillText(timeStr,tcX+tcW/2+7,midY);C.restore();
+  C.fillStyle=timeCol;C.font='400 '+(timeCrit?'30':'28')+'px "Pixel Operator Mono Bold","Pixel Operator Bold","Pixel Operator","Silkscreen","Segoe UI",sans-serif';
+  C.fillText(timeStr,Math.round(tcX+tcW/2+7),midY);C.restore();
   C.textAlign='left';
   // -- Salmon card (left of timer) --
   var salX=tcX-8-pcW,salY=tcY;
@@ -2120,7 +2126,7 @@ function trStartLoading(){
     p+=Math.random()*12+5;
     if(p>=100){p=100;clearInterval(trLoadingTimer);trLoadingTimer=null;trLoadingDone=true;btn.classList.add('visible');}
     bar.style.width=p.toFixed(1)+'%';
-  },350);
+  },250);
 }
 async function trShowFrame(idx){
   trSetFrame(idx);

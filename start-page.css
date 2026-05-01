@@ -29,7 +29,37 @@
 #ss .ss-below{max-width:520px;width:100%;margin:0 auto;padding:8px 16px 28px;position:relative;z-index:60}
 #ss .start-btn:hover .start-btn-inner{transform:scale(1.05)}
 #ss .start-btn:active .start-btn-inner{transform:scale(0.95)}
-#ss .start-btn-inner{display:inline-block}
+#ss .start-btn-inner{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(12px,.85rem,18px);
+  letter-spacing:0;
+}
+#ss .start-btn-label{letter-spacing:0.25em;padding-right:2px}
+/* Circular pad “A” (start screen + transition tips) — shared class */
+.pad-key-a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  width:28px;height:28px;
+  border-radius:50%;
+  background:linear-gradient(165deg,#d4f2fc 0%,#9fdaef 52%,#7ec8ea 100%);
+  color:#254a62;
+  border:2px solid #6aabcc;
+  font-family:'Silkscreen',cursive,system-ui,sans-serif;
+  font-size:clamp(11px,.85rem,13px);
+  font-weight:600;
+  line-height:1;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.65),0 2px 0 #4a8aaa;
+}
+#ss .night .pad-key-a{
+  background:linear-gradient(165deg,#a8d8f0 0%,#74b8dc 46%,#4a94b8 100%);
+  color:#162830;
+  border-color:#5890b0;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.4),0 2px 0 #305878;
+}
 
 ﻿.day-bg {
   background: linear-gradient(180deg, var(--cream) 0%, var(--pale-aqua) 40%, var(--ocean) 100%);

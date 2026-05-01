@@ -190,6 +190,60 @@ canvas{display:block;width:100%;height:100%}
 .tr-cursor{display:inline-block;width:11px;height:17px;background:#3a9e8a;margin-left:5px;animation:trBlink .8s step-end infinite;vertical-align:middle}
 @keyframes trBlink{0%,100%{opacity:1}50%{opacity:0}}
 .tr-goal{margin-top:16px;font:400 clamp(11px,1.85vw,14px)/2.05 'Press Start 2P','Silkscreen','Segoe UI',sans-serif;color:#3a9080;background:linear-gradient(135deg,rgba(100,200,180,0.08),rgba(80,170,200,0.08));padding:12px 18px;border-radius:10px;border:2px solid rgba(80,190,170,0.3)}
+/* Vote page */
+#vs.scr{background:
+  radial-gradient(ellipse at 18% 16%, rgba(255,255,255,.7) 0 8%, transparent 24%),
+  radial-gradient(ellipse at 82% 18%, rgba(255,255,255,.45) 0 7%, transparent 22%),
+  radial-gradient(ellipse at 20% 78%, rgba(115,190,180,.22) 0 14%, transparent 36%),
+  radial-gradient(ellipse at 78% 78%, rgba(80,165,195,.2) 0 16%, transparent 38%),
+  linear-gradient(180deg,#fbf6e3 0%,#f1f5e1 13%,#d7ebd9 28%,#c6e3e8 46%,#9ed1df 68%,#73bfd4 100%);
+  background-size:120% 120%,120% 120%,115% 115%,115% 115%,100% 100%;
+  animation:oceanDrift 14s ease-in-out infinite alternate;
+  overflow:hidden;backdrop-filter:none}
+.vs-page{position:relative;width:100vw;height:100vh;display:grid;grid-template-rows:250px auto auto 120px;grid-template-columns:minmax(140px,220px) minmax(430px,700px);justify-content:center;column-gap:16px;row-gap:14px;padding:20px 26px 0}
+.vs-police{position:relative;grid-row:1/2;grid-column:1/2;width:100%;max-width:165px;justify-self:end;align-self:center;aspect-ratio:1/1.3;display:flex;align-items:flex-end;justify-content:center;filter:drop-shadow(0 14px 14px rgba(40,90,110,.18));animation:floaty 4.4s ease-in-out infinite;translate:0 42px;z-index:2}
+.vs-police img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.vs-dialog{position:relative;grid-row:1/2;grid-column:2/3;justify-self:start;align-self:center;width:min(620px,calc(100vw - 350px));margin:0;aspect-ratio:1611/734;padding:30px 44px 34px 106px;background:url('assets/dialog-bubble.png') center/100% 100% no-repeat;filter:drop-shadow(0 16px 24px rgba(60,110,130,.14));text-align:center;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;translate:0 42px}
+.vs-bubble-face{position:absolute;left:calc(50% - 228px);top:190px;width:52px;height:52px;z-index:3;pointer-events:none}
+.vs-bubble-face img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.vs-dialog h2{font:600 10px/1 'Quicksand',sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#7aa37c;margin-bottom:8px}
+.vs-dialog h2 .deco{color:#c8b25a;margin:0 6px}
+.vs-dialog p{font:600 clamp(16px,1.25vw,19px)/1.2 'Fredoka','Quicksand',sans-serif;color:#3e5b6c;margin-top:8px;max-width:400px}
+.vs-dialog p em{font-style:normal;color:#5a8a96;background:#eaf5ee;padding:0 8px;border-radius:8px}
+.vs-cue{margin-top:7px;font:500 12px/1.3 'Quicksand',sans-serif;color:#9bb59a;letter-spacing:.04em}
+.vs-keys{margin-top:7px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.vs-key{display:inline-flex;align-items:center;gap:8px;padding:5px 10px 5px 6px;background:#fbfbf6;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(140,170,160,.4),0 3px 0 rgba(140,170,160,.25),0 6px 12px rgba(60,110,130,.06);font:600 11px/1 'Quicksand',sans-serif;color:#6a8a7a;letter-spacing:.04em}
+.vs-key b{font:700 11px/1 'Quicksand',sans-serif;color:#3a5a6e;background:#fff;padding:5px 8px;border-radius:999px;box-shadow:inset 0 0 0 1.5px #cdd9c8,0 1px 0 #cdd9c8}
+.vs-options{position:relative;grid-row:2/3;grid-column:1/3;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:end;padding:0 6px;z-index:2}
+.vs-option{position:relative;display:flex;flex-direction:column;align-items:center;padding:18px 16px 16px;background:rgba(255,255,255,.92);border-radius:26px;box-shadow:inset 0 0 0 1.5px rgba(160,200,180,.55),0 6px 0 rgba(160,200,180,.35),0 14px 26px rgba(60,110,130,.1)}
+.vs-option .icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 22px/1 'Fredoka',sans-serif;margin-bottom:8px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.06)}
+.vs-option.up .icon{background:#dff0d8;color:#5a9a5a}.vs-option.down .icon{background:#f7e0d6;color:#c97a6a}.vs-option.same .icon{background:#f3e9c8;color:#b89858}
+.vs-option .label{font:600 22px/1 'Fredoka',sans-serif;color:#3e5b6c;margin-bottom:6px}
+.vs-option .hint{font:600 11px/1 'Quicksand',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#9bb59a}
+.vs-option .keycap{position:absolute;top:-14px;right:14px;font:700 14px/1 'Quicksand',sans-serif;color:#3a5a6e;background:#fff8db;padding:9px 13px;border-radius:14px;box-shadow:inset 0 0 0 1.5px #e8d99a,0 4px 0 #e8d99a}
+.vs-next{position:absolute;left:50%;bottom:138px;transform:translateX(-50%);display:none;z-index:5}
+.vs-next .kbdA{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;margin-left:8px;border-radius:999px;background:#fff8db;color:#3a5a6e;border:1.5px solid #e8d99a;box-shadow:0 2px 0 #e8d99a;font:700 14px/1 'Quicksand',sans-serif}
+.vs-next.show{display:block}
+.vs-benches{position:relative;grid-row:3/4;grid-column:1/3;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:0 6px 0;min-height:128px;align-self:start;pointer-events:none;z-index:1;transform:translateY(15px)}
+.vs-bench{position:relative;display:flex;justify-content:center;align-items:flex-start;gap:6px;padding-top:10px}
+.vs-bench:before{content:'';position:absolute;left:10%;right:10%;top:106px;height:22px;background:radial-gradient(ellipse at center,rgba(244,232,200,.95) 0 58%,rgba(244,232,200,0) 100%);border-radius:50%;filter:blur(1px)}
+.vs-slot{width:92px;height:122px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;opacity:0;transform:translateY(6px) scale(.85);transition:opacity .35s ease,transform .5s cubic-bezier(.2,1.5,.4,1)}
+.vs-slot.show{opacity:1;transform:translateY(-12px) scale(1)}
+.vs-slot img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;filter:drop-shadow(0 8px 5px rgba(20,70,90,.18));animation:voterFloat 3.8s ease-in-out infinite}
+.vs-slot .ptag{font:700 11px/1 'Quicksand',sans-serif;color:#fff;letter-spacing:.06em;background:var(--pc,#7aa97a);padding:5px 10px;border-radius:999px;box-shadow:0 3px 0 rgba(0,0,0,.12);margin-bottom:-4px;position:relative;z-index:2}
+.vs-slot.p0{--pc:#86b8c8}.vs-slot.p1{--pc:#7aa97a}.vs-slot.p2{--pc:#c9a17a}.vs-slot.p3{--pc:#b095c8}
+.vs-status{position:relative;grid-row:4/5;grid-column:1/3;margin:0 -26px;height:120px;display:grid;grid-template-columns:repeat(4,1fr);background:#ffffffee;border-top:1.5px solid rgba(120,160,190,.4);box-shadow:0 -8px 22px rgba(60,110,130,.08);z-index:3;border-radius:18px 18px 0 0;overflow:hidden}
+.vs-score{position:relative;display:grid;grid-template-columns:62px minmax(0,1fr);grid-template-rows:24px 48px 22px;align-items:center;justify-items:center;column-gap:9px;padding:10px 10px;text-align:center;border-right:1px dashed rgba(120,160,190,.35)}
+.vs-score:last-child{border-right:none}
+.vs-rank{position:absolute;left:8px;top:8px;font:400 16px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator',sans-serif;color:#35576d;background:rgba(255,255,255,0.95);border:1px solid rgba(120,165,190,.5);border-radius:8px;padding:3px 6px}
+.vs-avatar{grid-row:1/4;grid-column:1/2;width:52px;height:70px;display:flex;align-items:flex-end;justify-content:center}
+.vs-avatar img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.vs-name{grid-column:2/3;grid-row:1/2;font:700 11px/1 'Quicksand',sans-serif;color:#fff;letter-spacing:.06em;background:var(--pc,#7aa97a);padding:4px 10px;border-radius:999px}
+.vs-score.p0{--pc:#86b8c8}.vs-score.p1{--pc:#7aa97a}.vs-score.p2{--pc:#c9a17a}.vs-score.p3{--pc:#b095c8}
+.vs-stats{grid-column:2/3;grid-row:2/3;display:flex;align-items:end;justify-content:center;gap:24px;width:100%}
+.vs-money,.vs-moral{font:400 22px/1 'Pixel Operator Mono Bold','Pixel Operator Bold','Pixel Operator',sans-serif}
+.vs-money{color:#c89a4a}.vs-moral{color:#7aa97a}
+.vs-foot{grid-column:2/3;grid-row:3/4;font:400 12px/1.1 'Pixel Operator','Quicksand',sans-serif;color:#6d8390;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -399,6 +453,35 @@ canvas{display:block;width:100%;height:100%}
   </div>
 </div>
 
+<div class="scr" id="vs" style="display:none">
+  <main class="vs-page">
+    <div class="vs-police"><img src="assets/police.png" alt="Police"></div>
+    <div class="vs-bubble-face"><img src="assets/dialog-bubble-face.png" alt=""></div>
+    <section class="vs-dialog">
+      <h2 id="vsVerdictTitle"><span class="deco">✦</span> The Verdict <span class="deco">✦</span></h2>
+      <p>How often should the <em>police</em> show up next round?</p>
+      <div class="vs-cue">Cast your verdict together! ♡</div>
+      <div class="vs-keys">
+        <span class="vs-key"><b>A</b> More</span>
+        <span class="vs-key"><b>B</b> Less</span>
+        <span class="vs-key"><b>X</b> Same</span>
+      </div>
+    </section>
+    <section class="vs-options">
+      <div class="vs-option up"><span class="keycap">A</span><div class="icon">↑</div><div class="label">More often</div><div class="hint">Increase</div></div>
+      <div class="vs-option down"><span class="keycap">B</span><div class="icon">↓</div><div class="label">Less often</div><div class="hint">Decrease</div></div>
+      <div class="vs-option same"><span class="keycap">X</span><div class="icon">＝</div><div class="label">Stay the same</div><div class="hint">Same</div></div>
+    </section>
+    <section class="vs-benches">
+      <div class="vs-bench" data-bench="up"></div>
+      <div class="vs-bench" data-bench="down"></div>
+      <div class="vs-bench" data-bench="same"></div>
+    </section>
+    <button class="gbtn vs-next" id="vsNextBtn">Next Round <span class="kbdA">A</span></button>
+    <section class="vs-status" id="vsStatus"></section>
+  </main>
+</div>
+
 <div class="scr" id="es" style="display:none">
   <div class="res-wrap">
     <h1 class="res-top-title">Who Ruled the Sea?</h1>
@@ -527,8 +610,10 @@ var keys={};
 var GP_DEADZONE=0.22;
 var GP_BTN_ACT=0;
 var GP_BTN_GRD=1;
+var GP_BTN_ALT=2;
 var gpPrevAct=[false,false,false,false];
 var gpPrevGrd=[false,false,false,false];
+var gpPrevAlt=[false,false,false,false];
 function getPads(){
   var g=navigator.getGamepads&&navigator.getGamepads();
   if(!g)return[];
@@ -596,6 +681,31 @@ function sfxPoliceWail(){sfxBeep(820,0.15,0.09,'sawtooth');setTimeout(function()
 document.addEventListener('keydown',function(e){
   var k=e.key.toLowerCase();
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].indexOf(k)>=0)e.preventDefault();
+  if(voteState.active&&document.getElementById('vs').style.display!=='none'){
+    if(allVotesDone()&&(k==='enter'||k===' '||k==='n')){closeVoteToNextRound();return;}
+    var map=[CTRL[0],CTRL[1],CTRL[2],CTRL[3]];
+    for(var vi=0;vi<4;vi++){
+      if(k===map[vi].act){onVoteInput(vi,'up');return;}
+      if(k===map[vi].grd){onVoteInput(vi,'down');return;}
+    }
+    // Keyboard test aliases (single-key explicit per player)
+    if(k==='1'){onVoteInput(0,'up');return;}
+    if(k==='2'){onVoteInput(1,'up');return;}
+    if(k==='3'){onVoteInput(2,'up');return;}
+    if(k==='4'){onVoteInput(3,'up');return;}
+    if(k==='q'){onVoteInput(0,'down');return;}
+    if(k==='w'){onVoteInput(1,'down');return;}
+    if(k==='e'){onVoteInput(2,'down');return;}
+    if(k==='r'){onVoteInput(3,'down');return;}
+    if(k==='a'){onVoteInput(0,'same');return;}
+    if(k==='s'){onVoteInput(1,'same');return;}
+    if(k==='d'){onVoteInput(2,'same');return;}
+    if(k==='f'){onVoteInput(3,'same');return;}
+    if(k==='u'){for(var va=0;va<4;va++)if(!voteState.votes[va]){onVoteInput(va,'up');break;}return;}
+    if(k==='j'){for(var vb=0;vb<4;vb++)if(!voteState.votes[vb]){onVoteInput(vb,'down');break;}return;}
+    if(k==='k'){for(var vx=0;vx<4;vx++)if(!voteState.votes[vx]){onVoteInput(vx,'same');break;}return;}
+    return;
+  }
   if(!keys[k]){keys[k]=true;if(mg)onMgKey(k);else if(running)onKey(k);}
 });
 document.addEventListener('keyup',function(e){
@@ -647,6 +757,9 @@ function pp(pi,idx){
 
 // State
 var G=null,running=false,gameTime=0,lastTs=0,raf=0,annT=0,mg=null,_t=0,police=null;
+var TOTAL_ROUNDS=3,currentRound=1,policeSpawnChance=0.5;
+var carryStats=[{money:0,morality:0,steals:0,releases:0},{money:0,morality:0,steals:0,releases:0},{money:0,morality:0,steals:0,releases:0},{money:0,morality:0,steals:0,releases:0}];
+var voteState={active:false,votes:[null,null,null,null],ranked:null};
 var fishPrices={salmon:4,tuna:3},priceTimer=0;
 var priceHistory={salmon:[4],tuna:[3]};
 var nextPrices={salmon:4,tuna:4};
@@ -1102,7 +1215,7 @@ function trySteal(pi,oi,pd){
   if(f.type==='ssr'){startMG(pi,oi,pd);return;}
   pd.fish.pop();G.players[pi].hand.push(f);G.players[pi].steals++;G.players[pi].morality--;G.players[pi].stealCD=10;
   sfxSteal();ann('🏴 '+PN[pi]+' stole '+f.name+' from '+PN[oi],'#b85850');
-  if(!police&&Math.random()<0.5)spawnPolice(pi,f,pd);
+  if(!police&&Math.random()<policeSpawnChance)spawnPolice(pi,f,pd);
 }
 
 function spawnPolice(targetPi,stolenFish,sourcePond){
@@ -1142,11 +1255,111 @@ function endMG(){
   var savedPd=mg.pd;
   var f=mg.pd.fish.pop();if(f){G.players[wi].hand.push(f);G.players[wi].steals++;G.players[wi].morality--;}
   G.players[wi].stealCD=10;sfxWin();ann('🌟 '+PN[wi]+' won the SSR clash!','#ffd700');mg=null;running=true;
-  if(G&&!police&&Math.random()<0.5)spawnPolice(wi,f,savedPd);
+  if(G&&!police&&Math.random()<policeSpawnChance)spawnPolice(wi,f,savedPd);
 }
 
 function ann(txt,col){
   var el=document.getElementById('annbox');el.textContent=txt;el.style.color=col||'#333';el.style.display='block';annT=2.5;
+}
+
+function captureCarryStatsFromGame(){
+  if(!G)return;
+  for(var i=0;i<4;i++){
+    carryStats[i].money=G.players[i].money;
+    carryStats[i].morality=G.players[i].morality;
+    carryStats[i].steals=G.players[i].steals;
+    carryStats[i].releases=G.players[i].releases;
+  }
+}
+function applyCarryStatsToGame(){
+  if(!G)return;
+  for(var i=0;i<4;i++){
+    G.players[i].money=carryStats[i].money;
+    G.players[i].morality=carryStats[i].morality;
+    G.players[i].steals=carryStats[i].steals;
+    G.players[i].releases=carryStats[i].releases;
+  }
+}
+function resetCarryStats(){
+  for(var i=0;i<4;i++)carryStats[i]={money:0,morality:0,steals:0,releases:0};
+}
+function voteChoiceText(c){return c==='up'?'More often':(c==='down'?'Less often':'Stay the same');}
+function voteRaiseImg(pi){return 'assets/player'+(pi+1)+'-raise.png';}
+function renderVotePage(){
+  var vsStatus=document.getElementById('vsStatus');
+  var benches=document.querySelectorAll('.vs-bench');
+  for(var bi=0;bi<benches.length;bi++)benches[bi].innerHTML='';
+  var ranked=(voteState.ranked||[]).slice();
+  var rankMap=[4,4,4,4];
+  for(var ri=0;ri<ranked.length;ri++)rankMap[ranked[ri].p.i]=ri+1;
+  vsStatus.innerHTML=G.players.map(function(p){
+    var pi=p.i;
+    var moralTxt=(p.morality>0?'+':'')+p.morality;
+    var voted=voteState.votes[pi];
+    if(voted){
+      var bench=document.querySelector('.vs-bench[data-bench="'+voted+'"]');
+      if(bench){
+        var slot=document.createElement('div');
+        slot.className='vs-slot show p'+pi;
+        slot.innerHTML='<span class="ptag">'+PN[pi]+'</span><img src="'+voteRaiseImg(pi)+'" alt="'+PN[pi]+'">';
+        bench.appendChild(slot);
+      }
+    }
+    var voteTxt=voted?(' · Vote: '+voteChoiceText(voted)):' · Vote: ...';
+    return '<div class="vs-score p'+pi+'">'+
+      '<div class="vs-rank">#'+rankMap[pi]+'</div>'+
+      '<div class="vs-avatar"><img src="assets/player'+(pi+1)+'.png" alt="'+PN[pi]+'"></div>'+
+      '<div class="vs-name">'+PN[pi]+'</div>'+
+      '<div class="vs-stats"><div class="vs-money">$'+p.money+'</div><div class="vs-moral">'+moralTxt+'</div></div>'+
+      '<div class="vs-foot">Release '+p.releases+' · Stolen '+p.steals+voteTxt+'</div>'+
+    '</div>';
+  }).join('');
+}
+function allVotesDone(){
+  for(var i=0;i<4;i++)if(!voteState.votes[i])return false;
+  return true;
+}
+function setPoliceChanceFromVotes(){
+  var up=0,down=0,same=0;
+  for(var i=0;i<4;i++){
+    if(voteState.votes[i]==='up')up++;
+    else if(voteState.votes[i]==='down')down++;
+    else same++;
+  }
+  // Round-to-round incremental adjustment based on previous chance.
+  if(up>down&&up>=same)policeSpawnChance=Math.min(0.75,policeSpawnChance+0.25);
+  else if(down>up&&down>=same)policeSpawnChance=Math.max(0.25,policeSpawnChance-0.25);
+}
+function onVoteInput(pi,choice){
+  if(!voteState.active||pi<0||pi>3)return;
+  if(voteState.votes[pi])return;
+  voteState.votes[pi]=choice;
+  sfxPop();
+  ann(PN[pi]+' voted: '+voteChoiceText(choice),'#3e7b92');
+  renderVotePage();
+  if(allVotesDone()){
+    document.getElementById('vsNextBtn').classList.add('show');
+    setPoliceChanceFromVotes();
+    ann('🗳 Vote complete! Next round police chance: '+Math.round(policeSpawnChance*100)+'%','#2b6f88');
+  }
+}
+function openVotePage(ranked){
+  voteState.active=true;
+  voteState.votes=[null,null,null,null];
+  voteState.ranked=ranked;
+  var tt=document.getElementById('vsVerdictTitle');
+  if(tt)tt.innerHTML='<span class="deco">✦</span> Round '+currentRound+' Verdict <span class="deco">✦</span>';
+  document.getElementById('vs').style.display='flex';
+  document.getElementById('vsNextBtn').classList.remove('show');
+  renderVotePage();
+}
+function closeVoteToNextRound(){
+  if(!voteState.active||!allVotesDone())return;
+  sfxStart();
+  voteState.active=false;
+  document.getElementById('vs').style.display='none';
+  currentRound=Math.min(TOTAL_ROUNDS,currentRound+1);
+  startGame(false);
 }
 
 function update(dt){
@@ -1154,10 +1367,12 @@ function update(dt){
   var menuGpConsumed=false;
   var ssEl=document.getElementById('ss');
   var trnEl=document.getElementById('trn');
+  var vsEl=document.getElementById('vs');
   for(var gpi=0;gpi<4;gpi++){
     var gp=pads[gpi];
     var act=gp&&gpBtnDown(gp,GP_BTN_ACT);
     var grd=gp&&gpBtnDown(gp,GP_BTN_GRD);
+    var alt=gp&&gpBtnDown(gp,GP_BTN_ALT);
     if(mg){
       if((gpi===mg.pis[0]||gpi===mg.pis[1])&&act&&!gpPrevAct[gpi]){
         var mj=gpi===mg.pis[0]?0:1;
@@ -1165,6 +1380,11 @@ function update(dt){
         var bel=document.getElementById('mgf'+mj);
         if(bel)bel.style.height=Math.min(72,mg.scores[mj]*5)+'px';
       }
+    }else if(voteState.active&&vsEl.style.display!=='none'){
+      if(allVotesDone()&&act&&!gpPrevAct[gpi]){closeVoteToNextRound();}
+      if(act&&!gpPrevAct[gpi])onVoteInput(gpi,'up');
+      if(grd&&!gpPrevGrd[gpi])onVoteInput(gpi,'down');
+      if(alt&&!gpPrevAlt[gpi])onVoteInput(gpi,'same');
     }else if(running&&G){
       if(act&&!gpPrevAct[gpi])doAction(gpi);
       if(grd&&!gpPrevGrd[gpi])onGuardPress(gpi);
@@ -1179,6 +1399,7 @@ function update(dt){
     }
     gpPrevAct[gpi]=!!act;
     gpPrevGrd[gpi]=!!grd;
+    gpPrevAlt[gpi]=!!alt;
   }
   if(mg)return;
   if(!running||!G)return;
@@ -1445,7 +1666,7 @@ function drawBuildings(){
     C.fillText('POLICE',psCx,psCy-psH*0.35);
   }
   // White rounded label under station
-  var tagLeft='50%',tagRight=' Police Response';
+  var tagLeft=Math.round(policeSpawnChance*100)+'%',tagRight=' Police Response';
   C.font='700 12px "Segoe UI",sans-serif';
   var twL=C.measureText(tagLeft).width,twR=C.measureText(tagRight).width;
   var tagW=twL+twR+20,tagH=20,tagX=psCx-tagW/2,tagY=psCy+12;
@@ -2060,7 +2281,14 @@ function drawHUD(){
   }
   C.strokeStyle=timeCrit?'rgba(200,30,30,'+(0.3+0.25*flashP).toFixed(2)+')':'rgba(160,195,220,0.9)';
   C.lineWidth=timeCrit?2:1.2;rr(tcX,tcY,tcW,tcH,13);C.stroke();
-  var midY=Math.round(tcY+tcH/2);
+  var midY=Math.round(tcY+tcH/2+9);
+  var roundLine='Round '+currentRound+'-'+TOTAL_ROUNDS;
+  C.save();
+  C.textBaseline='middle';C.textAlign='center';
+  C.fillStyle='rgba(45,75,105,0.86)';
+  C.font='700 10px "Pixel Operator","Silkscreen","Segoe UI",sans-serif';
+  C.fillText(roundLine,Math.round(tcX+tcW/2),tcY+16);
+  C.restore();
   if(!drawHudIcon(imgHudClock,tcX+17,midY,18)){
     C.save();C.textBaseline='middle';C.textAlign='center';
     C.font='14px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
@@ -2177,7 +2405,7 @@ function closeTransitionToGame(){
   var trn=document.getElementById('trn');
   trTransitioning=true;
   if(trLoadingTimer){clearInterval(trLoadingTimer);trLoadingTimer=null;}
-  startGame();
+  startGame(true);
   trn.classList.add('tr-entering');
   setTimeout(function(){
     trn.style.display='none';
@@ -2227,11 +2455,20 @@ function trDrawBg(){
   requestAnimationFrame(trDrawBg);
 }
 
-function startGame(){
-  mkGame();gameTime=180;running=true;
+function startGame(resetAll){
+  if(resetAll){
+    currentRound=1;
+    policeSpawnChance=0.5;
+    resetCarryStats();
+  }
+  mkGame();
+  applyCarryStatsToGame();
+  gameTime=180;running=true;
   prevMoney=[0,0,0,0];moneyFlash=[0,0,0,0];
   for(var si=0;si<4;si++)prevMoney[si]=G.players[si].money;
   document.getElementById('ss').style.display='none';
+  document.getElementById('vs').style.display='none';
+  document.getElementById('es').style.display='none';
   if(spSparkleTimer){clearInterval(spSparkleTimer);spSparkleTimer=null;}
   sfxInit();
   if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(function(){});
@@ -2240,11 +2477,10 @@ function startGame(){
   raf=requestAnimationFrame(loop);
 }
 
-function endGame(){
-  running=false;police=null;
+function getRoundRanking(){
   var maxRel=Math.max.apply(null,G.players.map(function(p){return p.releases;}));
   var maxSt=Math.max.apply(null,G.players.map(function(p){return p.steals;}));
-  var ranked=G.players.map(function(p){
+  return G.players.map(function(p){
     var eco=(p.releases===maxRel&&maxRel>0);
     var over=(p.steals===maxSt&&maxSt>0);
     var bonus=(eco?5:0)+(over?-5:0);
@@ -2254,6 +2490,16 @@ function endGame(){
     if(b.p.morality!==a.p.morality)return b.p.morality-a.p.morality;
     return a.p.i-b.p.i;
   });
+}
+
+function endGame(){
+  running=false;police=null;
+  captureCarryStatsFromGame();
+  var ranked=getRoundRanking();
+  if(currentRound<TOTAL_ROUNDS){
+    openVotePage(ranked);
+    return;
+  }
   function badgeHTML(r){
     var arr=[];
     if(r.eco)arr.push('<span class="res-badge eco">🌿 Eco Hero +5</span>');
@@ -2300,8 +2546,10 @@ function endGame(){
 
 function resetGame(){
   cancelAnimationFrame(raf);G=null;running=false;keys={};mg=null;
-  for(var ri=0;ri<4;ri++){gpPrevAct[ri]=false;gpPrevGrd[ri]=false;}
+  for(var ri=0;ri<4;ri++){gpPrevAct[ri]=false;gpPrevGrd[ri]=false;gpPrevAlt[ri]=false;}
+  currentRound=1;policeSpawnChance=0.5;voteState.active=false;voteState.votes=[null,null,null,null];voteState.ranked=null;resetCarryStats();
   document.getElementById('es').style.display='none';
+  document.getElementById('vs').style.display='none';
   document.getElementById('trn').style.display='none';
   document.getElementById('ss').style.display='flex';
   randomizeStartPageFish();
@@ -2323,6 +2571,7 @@ document.addEventListener('keydown',function(e){
   advanceTransition();
 });
 document.getElementById('rb').addEventListener('click',resetGame);
+document.getElementById('vsNextBtn').addEventListener('click',closeVoteToNextRound);
 lastTs=performance.now();raf=requestAnimationFrame(loop);
 })();
 </script>

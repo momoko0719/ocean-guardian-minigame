@@ -220,7 +220,7 @@ canvas{display:block;width:100%;height:100%}
 .vs-option .hint{font:600 11px/1 'Quicksand',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#9bb59a}
 .vs-option .keycap{position:absolute;top:-14px;right:14px;font:700 14px/1 'Quicksand',sans-serif;color:#3a5a6e;background:#fff8db;padding:9px 13px;border-radius:14px;box-shadow:inset 0 0 0 1.5px #e8d99a,0 4px 0 #e8d99a}
 .vs-next{position:absolute;left:50%;bottom:138px;transform:translateX(-50%);display:none;z-index:5}
-.vs-next .kbdA{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;margin-left:8px;border-radius:999px;background:#fff8db;color:#3a5a6e;border:1.5px solid #e8d99a;box-shadow:0 2px 0 #e8d99a;font:700 14px/1 'Quicksand',sans-serif}
+.vs-next .kbdY{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;margin-left:8px;border-radius:999px;background:#fff8db;color:#3a5a6e;border:1.5px solid #e8d99a;box-shadow:0 2px 0 #e8d99a;font:700 14px/1 'Quicksand',sans-serif}
 .vs-next.show{display:block}
 .vs-next:hover,.vs-next:active{transform:translateX(-50%)}
 .vs-benches{position:relative;grid-row:3/4;grid-column:1/3;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:0 6px 0;min-height:128px;align-self:start;pointer-events:none;z-index:1;transform:translateY(15px)}
@@ -475,7 +475,7 @@ canvas{display:block;width:100%;height:100%}
       <div class="vs-bench" data-bench="down"></div>
       <div class="vs-bench" data-bench="same"></div>
     </section>
-    <button class="gbtn vs-next" id="vsNextBtn">Next Round <span class="kbdA">A</span></button>
+    <button class="gbtn vs-next" id="vsNextBtn">Next Round <span class="kbdY">Y</span></button>
     <section class="vs-status" id="vsStatus"></section>
   </main>
 </div>
@@ -587,11 +587,14 @@ function rsz(){
   if(dx||dy)shiftWorld(dx,dy);
 }
 rsz();window.addEventListener('resize',rsz);
+var ensureBgmStarted=function(){};
 (function(){
   var bgmEl=document.getElementById('bgm');
   function startBgm(){if(!bgmEl)return;bgmEl.volume=0.2;bgmEl.loop=true;var pr=bgmEl.play();if(pr&&pr.catch)pr.catch(function(){});}
+  ensureBgmStarted=startBgm;
   startBgm();
   document.addEventListener('pointerdown',startBgm,{once:true,capture:true});
+  document.addEventListener('keydown',startBgm,{once:true,capture:true});
 })();
 
 var PC=['#e88888','#6a9fd4','#7bc99a','#e8a86e'];
@@ -609,9 +612,11 @@ var GP_DEADZONE=0.22;
 var GP_BTN_ACT=0;
 var GP_BTN_GRD=1;
 var GP_BTN_ALT=2;
+var GP_BTN_NEXT=3;
 var gpPrevAct=[false,false,false,false];
 var gpPrevGrd=[false,false,false,false];
 var gpPrevAlt=[false,false,false,false];
+var gpPrevNext=[false,false,false,false];
 function getPads(){
   var g=navigator.getGamepads&&navigator.getGamepads();
   if(!g)return[];
@@ -680,7 +685,7 @@ document.addEventListener('keydown',function(e){
   var k=e.key.toLowerCase();
   if(['arrowup','arrowdown','arrowleft','arrowright',' '].indexOf(k)>=0)e.preventDefault();
   if(voteState.active&&document.getElementById('vs').style.display!=='none'){
-    if(allVotesDone()&&(k==='enter'||k===' '||k==='n')){closeVoteToNextRound();return;}
+    if(allVotesDone()&&k==='y'){closeVoteToNextRound();return;}
     var map=[CTRL[0],CTRL[1],CTRL[2],CTRL[3]];
     for(var vi=0;vi<4;vi++){
       if(k===map[vi].act){onVoteInput(vi,'up');return;}
@@ -1331,15 +1336,19 @@ function setPoliceChanceFromVotes(){
 }
 function onVoteInput(pi,choice){
   if(!voteState.active||pi<0||pi>3)return;
-  if(voteState.votes[pi])return;
+  var prev=voteState.votes[pi];
   voteState.votes[pi]=choice;
-  sfxPop();
-  ann(PN[pi]+' voted: '+voteChoiceText(choice),'#3e7b92');
+  if(prev!==choice){
+    sfxPop();
+    ann(PN[pi]+' voted: '+voteChoiceText(choice),'#3e7b92');
+  }
   renderVotePage();
   if(allVotesDone()){
     document.getElementById('vsNextBtn').classList.add('show');
     setPoliceChanceFromVotes();
     ann('🗳 Vote complete! Next round police chance: '+Math.round(policeSpawnChance*100)+'%','#2b6f88');
+  }else{
+    document.getElementById('vsNextBtn').classList.remove('show');
   }
 }
 function openVotePage(ranked){
@@ -1372,6 +1381,7 @@ function update(dt){
     var act=gp&&gpBtnDown(gp,GP_BTN_ACT);
     var grd=gp&&gpBtnDown(gp,GP_BTN_GRD);
     var alt=gp&&gpBtnDown(gp,GP_BTN_ALT);
+    var nxt=gp&&gpBtnDown(gp,GP_BTN_NEXT);
     if(mg){
       if((gpi===mg.pis[0]||gpi===mg.pis[1])&&act&&!gpPrevAct[gpi]){
         var mj=gpi===mg.pis[0]?0:1;
@@ -1380,7 +1390,7 @@ function update(dt){
         if(bel)bel.style.height=Math.min(72,mg.scores[mj]*5)+'px';
       }
     }else if(voteState.active&&vsEl.style.display!=='none'){
-      if(allVotesDone()&&act&&!gpPrevAct[gpi]){closeVoteToNextRound();}
+      if(allVotesDone()&&nxt&&!gpPrevNext[gpi]){closeVoteToNextRound();}
       if(act&&!gpPrevAct[gpi])onVoteInput(gpi,'up');
       if(grd&&!gpPrevGrd[gpi])onVoteInput(gpi,'down');
       if(alt&&!gpPrevAlt[gpi])onVoteInput(gpi,'same');
@@ -1390,6 +1400,7 @@ function update(dt){
       if(!grd&&gpPrevGrd[gpi])onGuardRelease(gpi);
     }else if(!menuGpConsumed&&!mg&&act&&!gpPrevAct[gpi]){
       if(ssEl.style.display!=='none'&&!running){
+        ensureBgmStarted();
         openTransition();menuGpConsumed=true;
       }else if(trnEl.style.display!=='none'){
         if(trIdx===2&&trLoadingDone){closeTransitionToGame();menuGpConsumed=true;}
@@ -1399,6 +1410,7 @@ function update(dt){
     gpPrevAct[gpi]=!!act;
     gpPrevGrd[gpi]=!!grd;
     gpPrevAlt[gpi]=!!alt;
+    gpPrevNext[gpi]=!!nxt;
   }
   if(mg)return;
   if(!running||!G)return;
@@ -2393,6 +2405,7 @@ async function trShowFrame(idx){
   }
 }
 function openTransition(){
+  ensureBgmStarted();
   document.getElementById('ss').style.display='none';
   var trn=document.getElementById('trn');
   trn.classList.remove('tr-entering');
@@ -2545,7 +2558,7 @@ function endGame(){
 
 function resetGame(){
   cancelAnimationFrame(raf);G=null;running=false;keys={};mg=null;
-  for(var ri=0;ri<4;ri++){gpPrevAct[ri]=false;gpPrevGrd[ri]=false;gpPrevAlt[ri]=false;}
+  for(var ri=0;ri<4;ri++){gpPrevAct[ri]=false;gpPrevGrd[ri]=false;gpPrevAlt[ri]=false;gpPrevNext[ri]=false;}
   currentRound=1;policeSpawnChance=0.5;voteState.active=false;voteState.votes=[null,null,null,null];voteState.ranked=null;resetCarryStats();
   document.getElementById('es').style.display='none';
   document.getElementById('vs').style.display='none';
